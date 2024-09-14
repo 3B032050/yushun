@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('appointmenttimes', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('masters_id'); //使用者編號
+            $table->foreign('masters_id')->references('id')->on('masters');
+            $table->unsignedBigInteger('users_id'); //使用者編號
+            $table->foreign('users_id')->references('id')->on('users');
+            $table->unsignedBigInteger('serviceitems_id'); //使用者編號
+            $table->foreign('serviceitems_id')->references('id')->on('serviceitems');
+            $table->datetime('service_date')->nullable();
+            $table->datetime('time_period')->nullable();
+            $table->string('status')->default(0);
             $table->timestamps();
         });
     }
