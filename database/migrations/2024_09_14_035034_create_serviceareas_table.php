@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('serviceareas', function (Blueprint $table) {
             $table->id();
+            $table->string('area');
+            $table->string('status');
             $table->timestamps();
         });
     }

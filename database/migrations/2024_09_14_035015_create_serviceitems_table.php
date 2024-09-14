@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('serviceitems', function (Blueprint $table) {
             $table->id();
+            $table->string('service_item');
+            $table->string('service_item_description');
+            $table->string('service_area_id')->nullable();
             $table->timestamps();
         });
     }
