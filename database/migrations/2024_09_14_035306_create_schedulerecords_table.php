@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('schedulerecords', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('masters_id'); //使用者編號
-            $table->foreign('masters_id')->references('id')->on('masters');
-            $table->unsignedBigInteger('users_id'); //使用者編號
-            $table->foreign('users_id')->references('id')->on('users');
+            $table->unsignedBigInteger('master_id');
+            $table->foreign('master_id')->references('id')->on('masters');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->integer('price');
             $table->datetime('time_period')->nullable();
             $table->datetime('payment_date')->nullable();

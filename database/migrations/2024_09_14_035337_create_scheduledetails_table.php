@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('scheduledetails', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('schedulerecords_id'); //使用者編號
-            $table->foreign('schedulerecords_id')->references('id')->on('schedulerecords');
+            $table->unsignedBigInteger('schedulerecord_id');
+            $table->foreign('schedulerecord_id')->references('id')->on('schedulerecords');
             $table->string('status')->default(0);
             $table->integer('price');
             $table->timestamps();
