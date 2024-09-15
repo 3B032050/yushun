@@ -28,5 +28,9 @@ class Appointmenttime extends Model
     {
         return $this->hasMany(Schedulerecord::class,'appointmenttime_id');
     }
+    public function master()
+    {
+        return $this->belongsToMany(Master::class, 'master_appointment_relationship', 'master_id', 'appointmenttime_id');
+    }
 
 }
