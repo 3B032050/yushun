@@ -19,11 +19,7 @@ class Master extends Model
         'service_area_id'
     ];
 
-    public function User()
-    {
-        return $this->hasMany(User::class, 'user_id');
-    }
-    public function masters()
+    public function serviceitem()
     {
         return $this->belongsToMany(Serviceitem::class, 'item_master_relationship', 'service_item_id', 'master_id');
     }

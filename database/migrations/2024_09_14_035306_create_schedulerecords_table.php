@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('master_id')->references('id')->on('masters');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('appointmenttime_id');
+            $table->foreign('appointmenttime_id')->references('id')->on('appointmenttime_id');
             $table->integer('price');
             $table->datetime('time_period')->nullable();
             $table->datetime('payment_date')->nullable();

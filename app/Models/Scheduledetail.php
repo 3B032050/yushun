@@ -16,7 +16,7 @@ class Scheduledetail extends Model
         'price',
     ];
 
-    public function Schedulerecord()
+    public function schedulerecord()
     {
         return $this->hasOne(Schedulerecord::class);
     }

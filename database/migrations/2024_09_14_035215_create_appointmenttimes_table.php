@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('master_id');
             $table->foreign('master_id')->references('id')->on('masters');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('serviceitem_id');
             $table->foreign('serviceitems_id')->references('id')->on('serviceitems');
             $table->datetime('service_date')->nullable();

@@ -11,6 +11,7 @@ class Appointmenttime extends Model
 
     protected $fillable = [
         'id',
+        'user_id',
         'master_id',
         'serviceitem_id',
         'service_date',
@@ -18,6 +19,14 @@ class Appointmenttime extends Model
         'status',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
+    public function schedulerecord()
+    {
+        return $this->hasMany(Schedulerecord::class,'appointmenttime_id');
+    }
 
 }
