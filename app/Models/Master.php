@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class master extends Model
+class Master extends Model
 {
     use HasFactory;
 
@@ -22,5 +22,9 @@ class master extends Model
     public function User()
     {
         return $this->hasMany(User::class, 'user_id');
+    }
+    public function masters()
+    {
+        return $this->belongsToMany(Serviceitem::class, 'item_master_relationship', 'service_item_id', 'master_id');
     }
 }

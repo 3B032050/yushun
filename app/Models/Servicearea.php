@@ -14,6 +14,9 @@ class Servicearea extends Model
         'area',
         'status',
     ];
-
+    public function service_items()
+    {
+        return $this->belongsToMany(Serviceitem::class, 'area_item_relationship', 'service_item_id', 'service_area_id');
+    }
 
 }

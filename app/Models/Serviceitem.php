@@ -15,4 +15,12 @@ class Serviceitem extends Model
         'service_item_description',
         'service_area_id',
     ];
+    public function service_areas()
+    {
+        return $this->belongsToMany(Servicearea::class, 'area_item_relationship', 'service_area_id', 'service_item_id');
+    }
+    public function masters()
+    {
+        return $this->belongsToMany(Masters::class, 'item_master_relationship', 'master_id', 'service_item_id');
+    }
 }
