@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('borrowingrecords', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('master_id');
-            $table->foreign('masters_id')->references('id')->on('masters');
+            //$table->foreign('masters_id')->references('id')->on('masters');
             $table->unsignedBigInteger('equipment_id');
-            $table->foreign('equipment_id')->references('id')->on('equipment');
+           // $table->foreign('equipment_id')->references('id')->on('equipment');
             $table->string('status');
             $table->datetime('borrowing_date')->nullable();
             $table->timestamps();
