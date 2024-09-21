@@ -21,13 +21,13 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-        <style>
-            .ma-shan-zheng-regular {
-                font-family: "Ma Shan Zheng", cursive;
-                font-weight: 400;
-                font-style: normal;
-            }
-        </style>
+{{--        <style>--}}
+{{--            .ma-shan-zheng-regular {--}}
+{{--                font-family: "Ma Shan Zheng", cursive;--}}
+{{--                font-weight: 200;--}}
+{{--                font-style: normal;--}}
+{{--            }--}}
+{{--        </style>--}}
 
 {{--        <!-- Bootstrap JS（包含 Popper.js） -->--}}
 
@@ -45,11 +45,11 @@
     </head>
     <body>
         @include('layouts.partials.navigation')
-        <div style="padding-left: 150px; background-color: #EEEDEC;" class="py-1">
-            @yield('page-path')
-        </div>
+{{--        <div style="padding-left: 150px; background-color: #EEEDEC;" class="py-1">--}}
+{{--            @yield('page-path')--}}
+{{--        </div>--}}
         @yield('content')
-        @include('layouts.partials.footer')
+{{--        @include('layouts.partials.footer')--}}
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
