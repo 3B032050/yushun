@@ -70,7 +70,8 @@
                 align-items: center;
                 appearance: none;
                 background-color: #fcfcfd;
-                border-radius: 4px;
+                border-radius: 25px;
+                margin: 10px;
                 border-width: 0;
                 box-shadow:
                     rgba(45, 35, 66, 0.2) 0 2px 4px,
@@ -94,7 +95,7 @@
                 user-select: none;
                 -webkit-user-select: none;
                 touch-action: manipulation;
-                white-space: nowrap;
+                white-space: normal;
                 will-change: box-shadow, transform;
                 font-size: 18px;
             }

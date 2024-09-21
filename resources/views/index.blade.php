@@ -5,7 +5,7 @@
 @section('content')
     <div class="container text-center my-5">
         <div class="row justify-content-center">
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-sharp fa-solid fa-clipboard fa-3x"></i>
@@ -15,7 +15,7 @@
                     </div>
                 </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fas fa-calendar-days fa-3x"></i>
@@ -25,7 +25,7 @@
                     </div>
                 </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-regular fa-calendar-plus fa-3x"></i>
@@ -35,7 +35,7 @@
                     </div>
                 </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-solid fa-chart-area fa-3x"></i>
@@ -45,9 +45,7 @@
                     </div>
                 </button>
             </div>
-        </div>
-        <div class="row justify-content-center mt-4">
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-solid fa-list-check fa-3x"></i>
@@ -57,7 +55,7 @@
                     </div>
                 </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
@@ -67,7 +65,7 @@
                     </div>
                 </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
@@ -77,7 +75,7 @@
                     </div>
                 </button>
             </div>
-            <div class="col-md-2">
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-solid fa-phone-volume fa-3x"></i>
