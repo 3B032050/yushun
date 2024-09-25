@@ -29,7 +29,7 @@ Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterControl
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
 Route::group(['middleware' => 'master'], function() {
-    Route::get('/', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
+    Route::get('masters/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
 
     Route::prefix('masters')->name('masters.')->group(function () {
 

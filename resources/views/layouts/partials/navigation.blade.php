@@ -10,11 +10,20 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     @guest('master')
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('masters_login') }}" style="color:black">{{ __('師傅登入') }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('masters_register') }}" style="color:black">{{ __('師傅註冊') }}</a>
+                        <li class="nav-item dropdown">
+                            <div class="dropdown">
+                                <button class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                    <span class="d-none d-md-inline">師傅端</span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li>
+                                        <a class="nav-link" href="{{ route('masters_login') }}" style="color:black">{{ __('師傅登入') }}</a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link" href="{{ route('masters_register') }}" style="color:black">{{ __('師傅註冊') }}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     @else
                         <li class="nav-item dropdown">
