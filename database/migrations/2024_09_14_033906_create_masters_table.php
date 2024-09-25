@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->unique();
+            $table->string('password');
             $table->string('email');
             $table->string('position');
             $table->unsignedBigInteger('service_item_id')->nullable();

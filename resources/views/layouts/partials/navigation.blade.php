@@ -10,6 +10,23 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
                     @guest
+                        <ul class="nav-item">
+                            <li class="nav-item dropdown">
+                                <div class="dropdown">
+                                    <button class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                        <span class="d-none d-md-inline">師傅端</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                            <li>
+                                                <a class="dropdown-item" href="{{ route('masters.masters_register') }}">成為師傅</a>
+                                            </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('masters.masters_login') }}">師傅登入</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
                         @if (Route::has('login'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}" style="color:black">{{ __('登入') }}</a>

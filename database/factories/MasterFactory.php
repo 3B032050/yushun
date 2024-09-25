@@ -17,7 +17,7 @@ class MasterFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'position' => 1,
         ];
     }
 }
