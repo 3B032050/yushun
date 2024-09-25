@@ -19,3 +19,10 @@ Route::get('/', function () {
 //Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
 Auth::routes();
+
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/',[App\Http\Controllers\UserController::class,'index'])->name('index');
+    Route::get('/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("users.edit");
+    Route::patch('{user}/update',[App\Http\Controllers\UserController::class,'update'])->name('users.update');
+});
