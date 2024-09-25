@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        return view('users.edit', ['user' => $user]);
+        return view('users.personal_information.edit', ['user' => $user]);
     }
 
     public function update(Request $request)
@@ -40,6 +40,6 @@ class UserController extends Controller
             'address' => $request->input('address'),
         ]);
 
-        return redirect()->route('users.edit')->with('success', '個人資料更新成功');
+        return redirect()->route('users.personal_information.edit')->with('success', '個人資料更新成功');
     }
 }

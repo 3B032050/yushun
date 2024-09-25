@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('masters.layouts.master')
 
 @section('title', '豫順清潔')
 
@@ -56,14 +56,14 @@
                 </button>
             </div>
             <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
+                <a href="{{ route('masters.personal_information.edit') }}" class="button-name w-100 text-decoration-none">
                     <div>
                         <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                     </div>
                     <div>
                         <h3>個人資料</h3>
                     </div>
-                </button>
+                </a>
             </div>
             <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">

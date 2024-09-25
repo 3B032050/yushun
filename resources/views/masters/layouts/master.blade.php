@@ -46,7 +46,7 @@
 
     </head>
     <body>
-        @include('layouts.partials.navigation')
+        @include('masters.layouts.partials.navigation')
 {{--        <div style="padding-left: 150px; background-color: #EEEDEC;" class="py-1">--}}
 {{--            @yield('page-path')--}}
 {{--        </div>--}}

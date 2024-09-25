@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\master;
 use App\Http\Requests\StoremasterRequest;
 use App\Http\Requests\UpdatemasterRequest;
+use Illuminate\Support\Facades\Auth;
 
 class MasterController extends Controller
 {
@@ -50,9 +51,11 @@ class MasterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(master $master)
+    public function edit(Master $master)
     {
-        //
+        $master = Auth::guard('master')->user();
+
+        return view('masters.personal_information.edit', ['master' => $master]);
     }
 
     /**
@@ -61,6 +64,21 @@ class MasterController extends Controller
     public function update(UpdatemasterRequest $request, master $master)
     {
         //
+        $master = Auth::guard('master')->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $master->id,
+            'phone' => 'required|numeric|digits:10',
+        ]);
+
+        $master->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+        ]);
+
+        return redirect()->route('masters.personal_information.edit')->with('success', '個人資料更新成功');
     }
 
     /**
