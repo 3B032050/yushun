@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class MasterRegisterController extends Controller
 {
     protected $redirectTo = '/masters/index';
-    use RegistersUsers;
+
     /**
      * Create a new controller instance.
      *

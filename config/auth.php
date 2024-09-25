@@ -35,16 +35,6 @@ return [
     |
     */
 
-    'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
-        ],
-        'master' => [
-            'driver' => 'session',
-            'provider' => 'masters',
-        ],
-    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -63,6 +53,18 @@ return [
     |
     */
 
+    'guards' => [
+        'web' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'master' => [
+            'driver' => 'session',
+            'provider' => 'masters',
+        ],
+    ],
+
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
@@ -74,6 +76,7 @@ return [
             'model' => App\Models\Master::class,
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------

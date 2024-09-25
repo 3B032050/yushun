@@ -16,7 +16,13 @@ class MasterController extends Controller
         //
         return view('masters.index');
     }
-
+    protected function authenticated(Request $request, $user)
+    {
+        if (Auth::guard('master')->check()) {
+            return redirect()->intended(route('masters.index'));
+        }
+        return redirect()->route('masters_login');
+    }
     /**
      * Show the form for creating a new resource.
      */

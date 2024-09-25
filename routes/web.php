@@ -13,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-//Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+//Route::get('/', function () {
+//    return view('index');
+//});
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
 Auth::routes();
 // Master login routes
@@ -29,9 +29,9 @@ Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterControl
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
 Route::group(['middleware' => 'master'], function() {
-    Route::get('masters/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
-
+    Route::get('masters/index', [\App\Http\Controllers\MasterController::class, 'index'])->name('masters.index');
     Route::prefix('masters')->name('masters.')->group(function () {
+        Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
 
 //        Route::get('/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('auth.masters_login');
 //        Route::post('/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'login']);

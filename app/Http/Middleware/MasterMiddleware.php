@@ -15,10 +15,10 @@ class MasterMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user() && $request->user()->isMaster()) {
-            return $next($request); // 繼續處理請求
+        if ($request->user('master') && $request->user('master')->isMaster()) {
+            return $next($request);
         }
 
-        return redirect('/');
+        return redirect('masters/index');
     }
 }

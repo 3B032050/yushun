@@ -68,12 +68,12 @@
     </div>
 </nav>
 <style>
-.bg-custom {
-background-color: #EEEDEC;
-}
-.navbar {
-height: 80px;
-border-bottom: 2px solid #b4b6b6;
-}
+    .bg-custom {
+        background-color: #EEEDEC;
+    }
+    .navbar {
+        height: 80px;
+        border-bottom: 2px solid #b4b6b6;
+    }
 </style>
 

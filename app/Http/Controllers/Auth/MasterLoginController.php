@@ -20,7 +20,7 @@ class MasterLoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+
 
     /**
      * Where to redirect users after login.

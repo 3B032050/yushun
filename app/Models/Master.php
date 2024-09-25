@@ -21,7 +21,10 @@ class Master extends Authenticatable // 修改這裡
     ];
 
     protected $hidden = ['password', 'remember_token'];
-
+    public function isMaster()
+    {
+        return true;
+    }
     public function serviceitem()
     {
         return $this->belongsToMany(Serviceitem::class, 'item_master_relationship', 'service_item_id', 'master_id');
