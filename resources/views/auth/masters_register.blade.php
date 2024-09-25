@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('師傅註冊') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('auth.master_register') }}">
+                    <form method="POST" action="{{ route('masters.master_register') }}">
                         @csrf
 
                         <div class="row mb-3">

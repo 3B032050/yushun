@@ -17,9 +17,9 @@
                                         <span class="d-none d-md-inline">師傅端</span>
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                            <li>
-                                                <a class="dropdown-item" href="{{ route('masters.masters_register') }}">成為師傅</a>
-                                            </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{{ route('masters.masters_register') }}">成為師傅</a>
+                                        </li>
                                         <li>
                                             <a class="dropdown-item" href="{{ route('masters.masters_login') }}">師傅登入</a>
                                         </li>

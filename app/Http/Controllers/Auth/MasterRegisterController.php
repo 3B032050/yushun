@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 class MasterRegisterController extends Controller
 {
     protected $redirectTo = '/masters/index';
-
+    use RegistersUsers;
     /**
      * Create a new controller instance.
      *
@@ -30,7 +30,7 @@ class MasterRegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('auth.master_register');
+        return view('auth.masters_register');
     }
     protected function validator(array $data)
     {

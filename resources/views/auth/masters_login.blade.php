@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('師傅登入') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('auth.masters_login') }}">
+                    <form method="POST" action="{{ route('masters.masters_login') }}">
                         @csrf
 
                         <div class="row mb-3">
