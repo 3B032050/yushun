@@ -28,18 +28,8 @@ Route::post('masters/logout', [\App\Http\Controllers\Auth\MasterLoginController:
 Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('masters_register');
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
-Route::group(['middleware' => 'master'], function() {
-    Route::get('masters/index', [\App\Http\Controllers\MasterController::class, 'index'])->name('masters.index');
-    Route::prefix('masters')->name('masters.')->group(function () {
-        Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
-
-//        Route::get('/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('auth.masters_login');
-//        Route::post('/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'login']);
-//
-//
-//        Route::get('/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('auth.masters_register');
-//        Route::post('/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
-    });
+Route::prefix('masters')->name('masters.')->middleware('master')->group(function () {
+    Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
 });
 
 
