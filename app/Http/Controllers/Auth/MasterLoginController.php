@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class MasterLoginController extends Controller
 {
@@ -39,21 +41,41 @@ class MasterLoginController extends Controller
     }
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+        $this->middleware('guest:master')->except('logout');
     }
+
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => 'required|string|email',
-            'password' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'required|string',
         ]);
 
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
+        // 將電話號碼作為密碼來驗證
+        if (Auth::guard('master')->attempt(['email' => $request->email, 'password' => $request->phone])) {
+            return redirect()->intended(route('masters.index'));
         }
 
-        return $this->sendFailedLoginResponse($request);
+        return redirect()->back()->withInput($request->only('email', 'remember'));
     }
+
+    public function logout()
+    {
+        Auth::guard('master')->logout();
+        return redirect('/');
+    }
+//    public function login(Request $request)
+//    {
+//        $this->validate($request, [
+//            'email' => 'required|string|email',
+//            'password' => 'required|string',
+//        ]);
+//
+//        if ($this->attemptLogin($request)) {
+//            return $this->sendLoginResponse($request);
+//        }
+//
+//        return $this->sendFailedLoginResponse($request);
+//    }
 
 }

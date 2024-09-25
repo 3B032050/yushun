@@ -1,6 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
+    <br>
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -8,7 +9,7 @@
                 <div class="card-header">{{ __('師傅註冊') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('masters.master_register') }}">
+                    <form method="POST" action="{{ route('masters_register') }}">
                         @csrf
 
                         <div class="row mb-3">

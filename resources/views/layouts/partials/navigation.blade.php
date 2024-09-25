@@ -9,24 +9,31 @@
         <div class="row justify-content-center">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav">
+                    @guest('master')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('masters_login') }}" style="color:black">{{ __('師傅登入') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('masters_register') }}" style="color:black">{{ __('師傅註冊') }}</a>
+                        </li>
+                    @else
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">師傅：{{ Auth::guard('master')->user()->name }}</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('masters_logout') }}"
+                                       onclick="event.preventDefault();
+                       document.getElementById('logout-form-master').submit();" style="color:black">{{ __('登出') }}</a>
+                                </li>
+                                <form id="logout-form-master" action="{{ route('masters_logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </ul>
+                        </li>
+                    @endguest
+                </ul>
+                <ul class="navbar-nav">
                     @guest
-                        <ul class="nav-item">
-                            <li class="nav-item dropdown">
-                                <div class="dropdown">
-                                    <button class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
-                                        <span class="d-none d-md-inline">師傅端</span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('masters.masters_register') }}">成為師傅</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="{{ route('masters.masters_login') }}">師傅登入</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
                         @if (Route::has('login'))
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}" style="color:black">{{ __('登入') }}</a>
