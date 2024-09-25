@@ -22,6 +22,7 @@ Auth::routes();
 
 
 
+
 Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('master_login');
@@ -30,4 +31,10 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('master_register');
         Route::post('/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
     });
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/',[App\Http\Controllers\UserController::class,'index'])->name('index');
+    Route::get('/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("users.edit");
+    Route::patch('{user}/update',[App\Http\Controllers\UserController::class,'update'])->name('users.update');
+
 });
