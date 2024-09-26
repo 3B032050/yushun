@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/users/index';
 
     /**
      * Create a new controller instance.
@@ -74,5 +74,10 @@ class RegisterController extends Controller
 
             'password' => Hash::make($data['phone']),
         ]);
+    }
+
+    protected function redirectTo()
+    {
+        return '/users/index';  // 確保註冊後重定向到 /users/index
     }
 }
