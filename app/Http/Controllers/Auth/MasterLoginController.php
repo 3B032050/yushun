@@ -27,7 +27,15 @@ class MasterLoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/masters/index';
+    protected function redirectTo()
+    {
+        // 檢查是否為師傅
+        if (Auth::guard('master')->check()) {
+            return route('masters.index');
+        }
+
+        return '/home';
+    }
 
     /**
      * Create a new controller instance.
@@ -53,7 +61,7 @@ class MasterLoginController extends Controller
 
         // 將電話號碼作為密碼來驗證
         if (Auth::guard('master')->attempt(['email' => $request->email, 'password' => $request->phone])) {
-            return view('masters.index');
+            return redirect()->route('masters.index');
         }
 
         return redirect()->back()->withInput($request->only('email', 'remember'));

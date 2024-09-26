@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 class Master extends Authenticatable // 修改這裡
 {
     use Notifiable;
-
+    use HasFactory;
     protected $fillable = [
         'name',
         'phone',

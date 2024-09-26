@@ -36,7 +36,7 @@ Route::prefix('masters')->name('masters.')->middleware('master')->group(function
 
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('index');
+    Route::get('users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::get('/personal_information/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("users.personal_information.edit");
     Route::patch('/personal_information/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('users.personal_information.update');
 

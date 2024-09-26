@@ -47,7 +47,7 @@ class MasterRegisterController extends Controller
             'email' => $request->email,
             'phone' => $request->phone,
             'password' => Hash::make($request->phone),
-            'position'=>'0',
+            'position'=>'1',
         ]);
 
         return redirect()->route('masters_login');

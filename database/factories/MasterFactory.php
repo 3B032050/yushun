@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-
+use App\Models\Master;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\master>
  */
@@ -14,10 +14,12 @@ class MasterFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $model = Master::class;
     public function definition(): array
     {
         return [
-            'position' => 1,
+            'position' => 0,
         ];
     }
+
 }
