@@ -30,8 +30,8 @@ Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterContro
 
 Route::prefix('masters')->name('masters.')->middleware('master')->group(function () {
     Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
-    Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("masters.personal_information.edit");
-    Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('masters.personal_information.update');
+    Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
+    Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
 });
 
 

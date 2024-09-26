@@ -68,7 +68,7 @@ class MasterController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $master->id,
+            'email' => 'required|email|max:255'.$master->id,
             'phone' => 'required|numeric|digits:10',
         ]);
 
