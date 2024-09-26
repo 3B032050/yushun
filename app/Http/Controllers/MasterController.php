@@ -17,6 +17,7 @@ class MasterController extends Controller
         //
         return view('masters.index');
     }
+
     protected function authenticated(Request $request, $user)
     {
         if (Auth::guard('master')->check()) {
@@ -68,7 +69,7 @@ class MasterController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255'.$master->id,
+            'email' => 'required|email|max:255|unique:email,' . $master->id,
             'phone' => 'required|numeric|digits:10',
         ]);
 

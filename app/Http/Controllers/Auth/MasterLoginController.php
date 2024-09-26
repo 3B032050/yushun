@@ -53,7 +53,7 @@ class MasterLoginController extends Controller
 
         // 將電話號碼作為密碼來驗證
         if (Auth::guard('master')->attempt(['email' => $request->email, 'password' => $request->phone])) {
-            return redirect()->intended(route('masters.index'));
+            return view('masters.index');
         }
 
         return redirect()->back()->withInput($request->only('email', 'remember'));
