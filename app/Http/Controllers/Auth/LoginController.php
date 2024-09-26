@@ -28,12 +28,7 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-        // 檢查是否為普通用戶
-        if (Auth::guard('web')->check()) {
             return '/users/index';
-        }
-
-        return '/home';
     }
 
     /**

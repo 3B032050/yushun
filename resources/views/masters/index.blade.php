@@ -36,7 +36,7 @@
                 </button>
             </div>
             <div class="col-4 col-md-3 mb-2">
-                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === 0)
+                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '0')
                     <button class="button-name w-100" role="button">
                         <div>
                             <i class="fa-solid fa-chart-area fa-3x"></i>
@@ -48,7 +48,7 @@
                 @endif
             </div>
             <div class="col-4 col-md-3 mb-2">
-                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === 0)
+                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '0')
                     <button class="button-name w-100" role="button">
                         <div>
                             <i class="fa-solid fa-list-check fa-3x"></i>
