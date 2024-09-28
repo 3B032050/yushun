@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Auth\GoogleController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,6 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
 Auth::routes();
+
+//google第三方登入
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 // Master login routes
 Route::get('masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('masters_login');
 Route::post('masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'login']);
