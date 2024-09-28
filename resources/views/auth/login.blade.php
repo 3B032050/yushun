@@ -57,7 +57,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('登入') }}
                                 </button>
-
+                                <a href="{{ route('google.login') }}" class="btn btn-danger">
+                                    <i class="fa-brands fa-google"></i> {{ __('使用 Google 登入') }}
+                                </a>
 {{--                                @if (Route::has('password.request'))--}}
 {{--                                    <a class="btn btn-link" href="{{ route('password.request') }}">--}}
 {{--                                        {{ __('Forgot Your Password?') }}--}}
@@ -65,6 +67,13 @@
 {{--                                @endif--}}
                             </div>
                         </div>
+{{--                        <div class="row mb-3">--}}
+{{--                            <div class="col-md-8 offset-md-4">--}}
+{{--                                <a href="{{ route('google.login') }}" class="btn btn-danger">--}}
+{{--                                    <i class="fa-brands fa-google"></i> {{ __('使用 Google 登入') }}--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </form>
                 </div>
             </div>
