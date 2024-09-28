@@ -36,28 +36,34 @@
                 </button>
             </div>
             <div class="col-4 col-md-3 mb-2">
-                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '0')
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-solid fa-chart-area fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>設定服務地區</h3>
-                        </div>
-                    </button>
-                @endif
+                <button class="button-name w-100" role="button">
+                    <div>
+                        <i class="fa-solid fa-chart-area fa-3x"></i>
+                    </div>
+                    <div>
+                        <h3>設定服務地區</h3>
+                    </div>
+                </button>
             </div>
             <div class="col-4 col-md-3 mb-2">
-                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '0')
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-solid fa-list-check fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>設定服務項目</h3>
-                        </div>
-                    </button>
-                @endif
+{{--                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '0')--}}
+{{--                    <button class="button-name w-100" role="button">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-solid fa-list-check fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>設定服務項目</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                @endif--}}
+                <button class="button-name w-100" role="button">
+                    <div>
+                        <i class="fa-solid fa-list-check fa-3x"></i>
+                    </div>
+                    <div>
+                        <h3>設定服務項目</h3>
+                    </div>
+                </button>
             </div>
             <div class="col-4 col-md-3 mb-2">
                 <a href="{{ route('masters.personal_information.edit') }}" class="button-name w-100 text-decoration-none">

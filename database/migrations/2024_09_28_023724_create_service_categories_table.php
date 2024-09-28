@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('scheduledetails', function (Blueprint $table) {
+        Schema::create('service_categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('schedulerecord_id');
-           // $table->foreign('schedulerecord_id')->references('id')->on('schedulerecords');
-            $table->string('status')->default(0);
-            $table->integer('price');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('scheduledetails');
+        Schema::dropIfExists('service_categories');
     }
 };

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\ServiceCategory;
 use App\Models\User;
-use App\Models\BorrowingRecord;
 use Illuminate\Auth\Access\Response;
 
-class BorrowingrecordPolicy
+class ServiceCategoryPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class BorrowingrecordPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, BorrowingRecord $borrowingrecord): bool
+    public function view(User $user, ServiceCategory $serviceCategory): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class BorrowingrecordPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, BorrowingRecord $borrowingrecord): bool
+    public function update(User $user, ServiceCategory $serviceCategory): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class BorrowingrecordPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, BorrowingRecord $borrowingrecord): bool
+    public function delete(User $user, ServiceCategory $serviceCategory): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class BorrowingrecordPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, BorrowingRecord $borrowingrecord): bool
+    public function restore(User $user, ServiceCategory $serviceCategory): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class BorrowingrecordPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, BorrowingRecord $borrowingrecord): bool
+    public function forceDelete(User $user, ServiceCategory $serviceCategory): bool
     {
         //
     }

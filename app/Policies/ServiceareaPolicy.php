@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\servicearea;
+use App\Models\ServiceArea;
 use Illuminate\Auth\Access\Response;
 
 class ServiceareaPolicy
@@ -19,7 +19,7 @@ class ServiceareaPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, servicearea $servicearea): bool
+    public function view(User $user, ServiceArea $servicearea): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class ServiceareaPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, servicearea $servicearea): bool
+    public function update(User $user, ServiceArea $servicearea): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class ServiceareaPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, servicearea $servicearea): bool
+    public function delete(User $user, ServiceArea $servicearea): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class ServiceareaPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, servicearea $servicearea): bool
+    public function restore(User $user, ServiceArea $servicearea): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class ServiceareaPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, servicearea $servicearea): bool
+    public function forceDelete(User $user, ServiceArea $servicearea): bool
     {
         //
     }

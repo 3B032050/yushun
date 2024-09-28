@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\serviceitem;
+use App\Models\ServiceItem;
 use Illuminate\Auth\Access\Response;
 
 class ServiceitemPolicy
@@ -19,7 +19,7 @@ class ServiceitemPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, serviceitem $serviceitem): bool
+    public function view(User $user, ServiceItem $serviceitem): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class ServiceitemPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, serviceitem $serviceitem): bool
+    public function update(User $user, ServiceItem $serviceitem): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class ServiceitemPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, serviceitem $serviceitem): bool
+    public function delete(User $user, ServiceItem $serviceitem): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class ServiceitemPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, serviceitem $serviceitem): bool
+    public function restore(User $user, ServiceItem $serviceitem): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class ServiceitemPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, serviceitem $serviceitem): bool
+    public function forceDelete(User $user, ServiceItem $serviceitem): bool
     {
         //
     }

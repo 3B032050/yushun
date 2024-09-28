@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('email');
             $table->string('position');
             $table->unsignedBigInteger('service_item_id')->nullable();
-            //$table->foreign('service_item_id')->references('id')->on('serviceitems');
+            //$table->foreign('service_item_id')->references('id')->on('service_items');
            $table->unsignedBigInteger('service_area_id')->nullable();
-          //$table->foreign('service_area_id')->references('id')->on('serviceareas');
+          //$table->foreign('service_area_id')->references('id')->on('service_areas');
             $table->timestamps();
         });
     }

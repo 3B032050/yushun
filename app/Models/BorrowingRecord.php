@@ -5,19 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Scheduledetail extends Model
+class BorrowingRecord extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'id',
-        'schedulerecord_id',
+        'master_id',
+        'equipment_id',
         'status',
-        'price',
+        'borrowing_date',
     ];
-
-    public function schedulerecord()
-    {
-        return $this->hasOne(Schedulerecord::class);
-    }
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Schedulerecord extends Model
+class ScheduleRecord extends Model
 {
     use HasFactory;
 
@@ -13,7 +13,7 @@ class Schedulerecord extends Model
         'id',
         'master_id',
         'user_id',
-        'appointmenttime_id',
+        'appointment_time_id',
         'price',
         'time_period',
         'payment_date',
@@ -22,10 +22,10 @@ class Schedulerecord extends Model
 
     public function scheduledetail()
     {
-        return $this->hasOne(Scheduledetail::class);
+        return $this->hasOne(ScheduleDetail::class);
     }
     public function appointmenttime()
     {
-        return $this->belongsTo(Appointmenttime::class);
+        return $this->belongsTo(AppointmentTime::class);
     }
 }

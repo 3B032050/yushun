@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\schedulerecord;
-use App\Http\Requests\StoreschedulerecordRequest;
-use App\Http\Requests\UpdateschedulerecordRequest;
+use App\Models\AppointmentTime;
+use App\Http\Requests\StoreappointmenttimeRequest;
+use App\Http\Requests\UpdateappointmenttimeRequest;
 
-class SchedulerecordController extends Controller
+class AppointmentTimeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class SchedulerecordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreschedulerecordRequest $request)
+    public function store(StoreappointmenttimeRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class SchedulerecordController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(schedulerecord $schedulerecord)
+    public function show(AppointmentTime $appointmenttime)
     {
         //
     }
@@ -43,7 +43,7 @@ class SchedulerecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(schedulerecord $schedulerecord)
+    public function edit(AppointmentTime $appointmenttime)
     {
         //
     }
@@ -51,7 +51,7 @@ class SchedulerecordController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateschedulerecordRequest $request, schedulerecord $schedulerecord)
+    public function update(UpdateappointmenttimeRequest $request, AppointmentTime $appointmenttime)
     {
         //
     }
@@ -59,7 +59,7 @@ class SchedulerecordController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(schedulerecord $schedulerecord)
+    public function destroy(AppointmentTime $appointmenttime)
     {
         //
     }
