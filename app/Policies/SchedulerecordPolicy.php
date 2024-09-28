@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\schedulerecord;
+use App\Models\ScheduleRecord;
 use Illuminate\Auth\Access\Response;
 
 class SchedulerecordPolicy
@@ -19,7 +19,7 @@ class SchedulerecordPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, schedulerecord $schedulerecord): bool
+    public function view(User $user, ScheduleRecord $schedulerecord): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class SchedulerecordPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, schedulerecord $schedulerecord): bool
+    public function update(User $user, ScheduleRecord $schedulerecord): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class SchedulerecordPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, schedulerecord $schedulerecord): bool
+    public function delete(User $user, ScheduleRecord $schedulerecord): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class SchedulerecordPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, schedulerecord $schedulerecord): bool
+    public function restore(User $user, ScheduleRecord $schedulerecord): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class SchedulerecordPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, schedulerecord $schedulerecord): bool
+    public function forceDelete(User $user, ScheduleRecord $schedulerecord): bool
     {
         //
     }

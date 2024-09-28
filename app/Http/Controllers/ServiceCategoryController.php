@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\borrowingrecord;
-use App\Http\Requests\StoreborrowingrecordRequest;
-use App\Http\Requests\UpdateborrowingrecordRequest;
+use App\Models\ServiceCategory;
+use App\Http\Requests\StoreServiceCategoryRequest;
+use App\Http\Requests\UpdateServiceCategoryRequest;
 
-class BorrowingrecordController extends Controller
+class ServiceCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class BorrowingrecordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreborrowingrecordRequest $request)
+    public function store(StoreServiceCategoryRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class BorrowingrecordController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(borrowingrecord $borrowingrecord)
+    public function show(ServiceCategory $serviceCategory)
     {
         //
     }
@@ -43,7 +43,7 @@ class BorrowingrecordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(borrowingrecord $borrowingrecord)
+    public function edit(ServiceCategory $serviceCategory)
     {
         //
     }
@@ -51,7 +51,7 @@ class BorrowingrecordController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateborrowingrecordRequest $request, borrowingrecord $borrowingrecord)
+    public function update(UpdateServiceCategoryRequest $request, ServiceCategory $serviceCategory)
     {
         //
     }
@@ -59,7 +59,7 @@ class BorrowingrecordController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(borrowingrecord $borrowingrecord)
+    public function destroy(ServiceCategory $serviceCategory)
     {
         //
     }

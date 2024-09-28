@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\scheduledetail;
-use App\Http\Requests\StorescheduledetailRequest;
-use App\Http\Requests\UpdatescheduledetailRequest;
+use App\Models\ServiceArea;
+use App\Http\Requests\StoreserviceareaRequest;
+use App\Http\Requests\UpdateserviceareaRequest;
 
-class ScheduledetailController extends Controller
+class ServiceAreaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ScheduledetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorescheduledetailRequest $request)
+    public function store(StoreserviceareaRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ScheduledetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(scheduledetail $scheduledetail)
+    public function show(ServiceArea $servicearea)
     {
         //
     }
@@ -43,7 +43,7 @@ class ScheduledetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(scheduledetail $scheduledetail)
+    public function edit(ServiceArea $servicearea)
     {
         //
     }
@@ -51,7 +51,7 @@ class ScheduledetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatescheduledetailRequest $request, scheduledetail $scheduledetail)
+    public function update(UpdateserviceareaRequest $request, ServiceArea $servicearea)
     {
         //
     }
@@ -59,7 +59,7 @@ class ScheduledetailController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(scheduledetail $scheduledetail)
+    public function destroy(ServiceArea $servicearea)
     {
         //
     }

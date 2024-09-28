@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\servicearea;
-use App\Http\Requests\StoreserviceareaRequest;
-use App\Http\Requests\UpdateserviceareaRequest;
+use App\Models\ScheduleRecord;
+use App\Http\Requests\StoreschedulerecordRequest;
+use App\Http\Requests\UpdateschedulerecordRequest;
 
-class ServiceareaController extends Controller
+class ScheduleRecordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ServiceareaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreserviceareaRequest $request)
+    public function store(StoreschedulerecordRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ServiceareaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(servicearea $servicearea)
+    public function show(ScheduleRecord $schedulerecord)
     {
         //
     }
@@ -43,7 +43,7 @@ class ServiceareaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(servicearea $servicearea)
+    public function edit(ScheduleRecord $schedulerecord)
     {
         //
     }
@@ -51,7 +51,7 @@ class ServiceareaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceareaRequest $request, servicearea $servicearea)
+    public function update(UpdateschedulerecordRequest $request, ScheduleRecord $schedulerecord)
     {
         //
     }
@@ -59,7 +59,7 @@ class ServiceareaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(servicearea $servicearea)
+    public function destroy(ScheduleRecord $schedulerecord)
     {
         //
     }

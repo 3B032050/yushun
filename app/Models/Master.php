@@ -27,11 +27,11 @@ class Master extends Authenticatable // 修改這裡
     }
     public function serviceitem()
     {
-        return $this->belongsToMany(Serviceitem::class, 'item_master_relationship', 'service_item_id', 'master_id');
+        return $this->belongsToMany(ServiceItem::class, 'item_master_relationship', 'service_item_id', 'master_id');
     }
 
     public function appointmenttime()
     {
-        return $this->belongsToMany(Appointmenttime::class, 'master_appointment_relationship', 'appointmenttime_id', 'master_id');
+        return $this->belongsToMany(AppointmentTime::class, 'master_appointment_relationship', 'appointment_time_id', 'master_id');
     }
 }

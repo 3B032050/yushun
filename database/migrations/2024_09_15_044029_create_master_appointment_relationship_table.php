@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('appointment_id')->nullable();
             $table->unsignedBigInteger('master_id')->nullable();
-            $table->foreign('appointment_id')->references('id')->on('appointmenttimes');
+            $table->foreign('appointment_id')->references('id')->on('appointment_times');
             $table->foreign('master_id')->references('id')->on('masters');
             $table->timestamps();
         });

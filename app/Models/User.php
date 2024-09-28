@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     public function appointmenttime()
     {
-        return $this->hasMany(Appointmenttime::class, 'user_id');
+        return $this->hasMany(AppointmentTime::class, 'user_id');
     }
     /**
      * The attributes that should be hidden for serialization.

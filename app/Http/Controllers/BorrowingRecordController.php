@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\serviceitem;
-use App\Http\Requests\StoreserviceitemRequest;
-use App\Http\Requests\UpdateserviceitemRequest;
+use App\Models\BorrowingRecord;
+use App\Http\Requests\StoreborrowingrecordRequest;
+use App\Http\Requests\UpdateborrowingrecordRequest;
 
-class ServiceitemController extends Controller
+class BorrowingRecordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class ServiceitemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreserviceitemRequest $request)
+    public function store(StoreborrowingrecordRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class ServiceitemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(serviceitem $serviceitem)
+    public function show(BorrowingRecord $borrowingrecord)
     {
         //
     }
@@ -43,7 +43,7 @@ class ServiceitemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(serviceitem $serviceitem)
+    public function edit(BorrowingRecord $borrowingrecord)
     {
         //
     }
@@ -51,7 +51,7 @@ class ServiceitemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceitemRequest $request, serviceitem $serviceitem)
+    public function update(UpdateborrowingrecordRequest $request, BorrowingRecord $borrowingrecord)
     {
         //
     }
@@ -59,7 +59,7 @@ class ServiceitemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(serviceitem $serviceitem)
+    public function destroy(BorrowingRecord $borrowingrecord)
     {
         //
     }

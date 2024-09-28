@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointmenttimes', function (Blueprint $table) {
+        Schema::create('appointment_times', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('master_id');
             //$table->foreign('master_id')->references('id')->on('masters');
             $table->unsignedBigInteger('user_id');
             //$table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('serviceitem_id');
-           //$table->foreign('serviceitems_id')->references('id')->on('serviceitems');
+            $table->unsignedBigInteger('service_item_id');
+           //$table->foreign('service_items_id')->references('id')->on('service_items');
             $table->datetime('service_date')->nullable();
             $table->datetime('time_period')->nullable();
             $table->string('status')->default(0);
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointmenttimes');
+        Schema::dropIfExists('appointment_times');
     }
 };

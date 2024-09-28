@@ -11,12 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('item_master_relationship', function (Blueprint $table) {
+        Schema::create('service_items', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description');
             $table->unsignedBigInteger('service_area_id')->nullable();
-            $table->unsignedBigInteger('master_id')->nullable();
-            $table->foreign('service_area_id')->references('id')->on('service_areas');
-            $table->foreign('master_id')->references('id')->on('masters');
+            $table->unsignedBigInteger('service_category_id')->nullable();
+            //$table->foreign('service_area_id')->references('id')->on('service_areas');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('item_master_relationship');
+        Schema::dropIfExists('service_items');
     }
 };

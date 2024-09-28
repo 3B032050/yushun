@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\appointmenttime;
-use App\Http\Requests\StoreappointmenttimeRequest;
-use App\Http\Requests\UpdateappointmenttimeRequest;
+use App\Models\ServiceItem;
+use App\Http\Requests\StoreserviceitemRequest;
+use App\Http\Requests\UpdateserviceitemRequest;
 
-class AppointmenttimeController extends Controller
+class ServiceItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class AppointmenttimeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreappointmenttimeRequest $request)
+    public function store(StoreserviceitemRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class AppointmenttimeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(appointmenttime $appointmenttime)
+    public function show(ServiceItem $serviceitem)
     {
         //
     }
@@ -43,7 +43,7 @@ class AppointmenttimeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(appointmenttime $appointmenttime)
+    public function edit(ServiceItem $serviceitem)
     {
         //
     }
@@ -51,7 +51,7 @@ class AppointmenttimeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateappointmenttimeRequest $request, appointmenttime $appointmenttime)
+    public function update(UpdateserviceitemRequest $request, ServiceItem $serviceitem)
     {
         //
     }
@@ -59,7 +59,7 @@ class AppointmenttimeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(appointmenttime $appointmenttime)
+    public function destroy(ServiceItem $serviceitem)
     {
         //
     }

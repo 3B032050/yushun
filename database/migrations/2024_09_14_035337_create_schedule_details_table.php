@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('serviceareas', function (Blueprint $table) {
+        Schema::create('schedule_details', function (Blueprint $table) {
             $table->id();
-            $table->string('area');
-            $table->unsignedBigInteger('status');
-
+            $table->unsignedBigInteger('schedule_record_id');
+           // $table->foreign('schedule_record_id')->references('id')->on('schedule_records');
+            $table->string('status')->default(0);
+            $table->integer('price');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('serviceareas');
+        Schema::dropIfExists('schedule_details');
     }
 };
