@@ -11,7 +11,8 @@ class ServiceArea extends Model
 
     protected $fillable = [
         'id',
-        'area',
+        'major_area',
+        'minor_area',
         'status',
     ];
     public function service_items()

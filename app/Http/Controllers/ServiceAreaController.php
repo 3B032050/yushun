@@ -5,31 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\ServiceArea;
 use App\Http\Requests\StoreserviceareaRequest;
 use App\Http\Requests\UpdateserviceareaRequest;
+use Illuminate\Http\Request;
 
 class ServiceAreaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = ServiceArea::query();
+
+        if ($request->filled('search')) {
+            $query->where('major_area', 'like', '%' . $request->search . '%')
+                ->orWhere('minor_area', 'like', '%' . $request->search . '%');
+        }
+
+        $serviceAreas = $query->paginate(10);
+
+        return view('admins.service_areas.index', compact('serviceAreas'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'major_area' => 'required|string',
+            'minor_area' => 'required|string',
+        ]);
+
+        ServiceArea::create([
+            'major_area' => $request->major_area,
+            'minor_area' => $request->minor_area,
+            'status' => 1, // 預設狀態
+        ]);
+
+        return redirect()->back()->with('success', '服務地區新增成功');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreserviceareaRequest $request)
+    public function create()
     {
-        //
+        return view('admins.service_areas.create');
     }
 
     /**
@@ -61,6 +79,11 @@ class ServiceAreaController extends Controller
      */
     public function destroy(ServiceArea $servicearea)
     {
-        //
+        $servicearea = ServiceArea::where('id', $servicearea->id)->first();
+        if ($servicearea) {
+            $servicearea->delete();
+        }
+        $servicearea->delete();
+        return redirect()->route('admins.service_areas.index');
     }
 }

@@ -3,6 +3,7 @@
 @section('title', '豫順清潔')
 
 @section('content')
+    <div class="container text-center my-5">
     <div class="container my-5">
         <div class="row justify-content-start">
             @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '1')
@@ -118,7 +119,7 @@
                     </button>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <a href="#" class="button-name w-100 text-decoration-none">
+                    <a href="{{ route('admins.service_areas.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                         </div>
@@ -158,6 +159,7 @@
                     </button>
                 </div>
             @endif
+
         </div>
     </div>
 @endsection
