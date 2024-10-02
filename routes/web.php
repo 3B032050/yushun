@@ -31,18 +31,19 @@ Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterControl
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
 Route::group(['middleware' => 'master'], function() {
-
-});
-
-Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
         Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
     });
 
-    Route::prefix('masters')->name('admins.')->group(function () {
+    Route::prefix('admins')->name('admins.')->group(function () {
         Route::get('/equipment/index', [App\Http\Controllers\AdminEquipmentController::class, 'index'])->name('equipment.index');
+        Route::get('/equipment/create',[App\Http\Controllers\AdminEquipmentController::class,'create'])->name('equipment.create');
+        Route::post('/equipment/store', [App\Http\Controllers\AdminEquipmentController::class, 'store'])->name("equipment.store");
+        Route::get('/equipment/edit/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'edit'])->name('equipment.edit');
+        Route::patch('/equipment/update/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'update'])->name('equipment.update');
+        Route::delete('/equipment/destroy/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'destroy'])->name('equipment.destroy');
     });
 
 });

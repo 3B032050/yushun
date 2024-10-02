@@ -56,6 +56,12 @@ return [
             'throw' => false,
         ],
 
+        'equipments' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/equipments'),
+            'url' => env('APP_URL') . '/storage/equipments',
+            'visibility' => 'public',
+        ],
     ],
 
     /*
