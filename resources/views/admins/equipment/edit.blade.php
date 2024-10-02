@@ -1,10 +1,17 @@
-@extends('layouts.master')
+@extends('masters.layouts.master')
 
 @section('title', '新增設備')
 
 @section('content')
     <section id="location"><br>
         <div class="container">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                    <a href="{{ route('admins.equipment.index') }}" class="custom-link">設備管理</a> >
+                    編輯設備
+                </p>
+            </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">

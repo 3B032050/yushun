@@ -1,11 +1,16 @@
 @extends('masters.layouts.master')
 
-@section('title', '幻燈片設定')
+@section('title', '設備管理')
 
 @section('content')
     <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                設備管理
+            </p>
+        </div>
         <h1 class="mt-4 text-center">設備管理</h1>
-
     </div>
 
     <div class="table-responsive d-flex justify-content-center">
