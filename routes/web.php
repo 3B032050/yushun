@@ -30,7 +30,11 @@ Route::post('masters/logout', [\App\Http\Controllers\Auth\MasterLoginController:
 Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('masters_register');
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
-Route::prefix('masters')->name('masters.')->middleware('master')->group(function () {
+Route::group(['middleware' => 'master'], function() {
+
+});
+
+Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
