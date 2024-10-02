@@ -19,17 +19,25 @@ class ServiceAreaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'major_area' => 'required|string',
+            'minor_area' => 'required|string',
+        ]);
+
+        ServiceArea::create([
+            'major_area' => $request->major_area,
+            'minor_area' => $request->minor_area,
+            'status' => 1, // 預設狀態
+        ]);
+
+        return redirect()->back()->with('success', '服務地區新增成功');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreserviceareaRequest $request)
+    public function create()
     {
-        //
+        return view('masters.admins.service_areas.create');
     }
 
     /**

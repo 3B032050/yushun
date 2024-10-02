@@ -36,7 +36,6 @@
                 </button>
             </div>
             <div class="col-4 col-md-3 mb-2">
-                <a href="{{ route('masters.admins.service_areas.create') }}" class="w-100">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-solid fa-chart-area fa-3x"></i>

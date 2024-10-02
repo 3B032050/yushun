@@ -39,7 +39,7 @@ class GoogleController extends Controller
                 'avatar' => $googleUser->avatar,
             ]
         );
-        
+
         // 登入該用戶
         Auth::login($user);
 
