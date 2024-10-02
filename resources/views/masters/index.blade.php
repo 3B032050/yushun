@@ -98,14 +98,14 @@
                     </button>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
+                    <a href="{{ route('admins.equipment.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-regular fa-calendar-plus fa-3x"></i>
                         </div>
                         <div>
                             <h3>設備管理</h3>
                         </div>
-                    </button>
+                    </a>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
                     <button class="button-name w-100" role="button">
@@ -118,7 +118,7 @@
                     </button>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <a href="{{ route('masters.personal_information.edit') }}" class="button-name w-100 text-decoration-none">
+                    <a href="#" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                         </div>
