@@ -24,21 +24,28 @@ Auth::routes();
 //google第三方登入
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
-// Master login routes
+
 Route::get('masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('masters_login');
 Route::post('masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'login']);
 Route::post('masters/logout', [\App\Http\Controllers\Auth\MasterLoginController::class, 'logout'])->name('masters_logout');
-
-// Master register routes
 Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('masters_register');
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
-Route::prefix('masters')->name('masters.')->middleware('master')->group(function () {
-    Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
-    Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
-    Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
-    Route::get('service_areas/create', [ServiceAreaController::class, 'create'])->name('service_areas.create');
-    Route::post('service_areas', [ServiceAreaController::class, 'store'])->name('service_areas.store');
+
+
+Route::group(['middleware' => 'master'], function() {
+    Route::prefix('masters')->name('masters.')->group(function () {
+        Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
+        Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
+        Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
+    });
+
+    Route::prefix('admins')->name('admins.')->group(function () {
+        Route::get('/equipment/index', [App\Http\Controllers\AdminEquipmentController::class, 'index'])->name('equipment.index');
+        Route::get('service_areas/create', [ServiceAreaController::class, 'create'])->name('service_areas.create');
+        Route::post('service_areas', [ServiceAreaController::class, 'store'])->name('service_areas.store');
+    });
+
 
 });
 

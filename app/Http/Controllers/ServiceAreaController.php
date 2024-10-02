@@ -37,7 +37,7 @@ class ServiceAreaController extends Controller
 
     public function create()
     {
-        return view('masters.admins.service_areas.create');
+        return view('admins.service_areas.create');
     }
 
     /**

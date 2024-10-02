@@ -6,7 +6,7 @@
     <div class="container">
         <h2>新增服務地區</h2>
 
-        <form action="{{ route('masters.admins.service_areas.store') }}" method="POST">
+        <form action="{{ route('admins.service_areas.store') }}" method="POST">
             @csrf
 
             <div class="form-group">
