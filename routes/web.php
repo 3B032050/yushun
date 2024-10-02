@@ -42,8 +42,14 @@ Route::group(['middleware' => 'master'], function() {
 
     Route::prefix('admins')->name('admins.')->group(function () {
         Route::get('/equipment/index', [App\Http\Controllers\AdminEquipmentController::class, 'index'])->name('equipment.index');
+
+        //服務地區
+        Route::get('service_areas/index', [ServiceAreaController::class, 'index'])->name('service_areas.index');
         Route::get('service_areas/create', [ServiceAreaController::class, 'create'])->name('service_areas.create');
         Route::post('service_areas', [ServiceAreaController::class, 'store'])->name('service_areas.store');
+        Route::get('/service_areas/{service_areas}/edit', [ServiceAreaController::class, 'edit'])->name("service_areas.edit");
+        Route::patch('/service_areas/{service_areas}/update',[ServiceAreaController::class,'update'])->name('service_areasupdate');
+        Route::patch('/service_areas/{service_areas}/destroy', [ServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
     });
 
 

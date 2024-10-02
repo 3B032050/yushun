@@ -5,15 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\ServiceArea;
 use App\Http\Requests\StoreserviceareaRequest;
 use App\Http\Requests\UpdateserviceareaRequest;
+use Illuminate\Http\Request;
 
 class ServiceAreaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $query = ServiceArea::query();
+
+        if ($request->filled('search')) {
+            $query->where('major_area', 'like', '%' . $request->search . '%')
+                ->orWhere('minor_area', 'like', '%' . $request->search . '%');
+        }
+
+        $serviceAreas = $query->paginate(10);
+
+        return view('admins.service_areas.index', compact('serviceAreas'));
     }
 
     /**
@@ -69,6 +79,11 @@ class ServiceAreaController extends Controller
      */
     public function destroy(ServiceArea $servicearea)
     {
-        //
+        $servicearea = ServiceArea::where('id', $servicearea->id)->first();
+        if ($servicearea) {
+            $servicearea->delete();
+        }
+        $servicearea->delete();
+        return redirect()->route('admins.service_areas.index');
     }
 }

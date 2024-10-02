@@ -3,98 +3,61 @@
 @section('title', '豫順清潔')
 
 @section('content')
-    <div class="container text-center my-5">
-        <div class="row justify-content-center">
-            <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fa-sharp fa-solid fa-clipboard fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>我的訂單</h3>
-                    </div>
-                </button>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fas fa-calendar-days fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>接案行事曆</h3>
-                    </div>
-                </button>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fa-regular fa-calendar-plus fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>設定接案時段</h3>
-                    </div>
-                </button>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fa-solid fa-chart-area fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>設定服務地區</h3>
-                    </div>
-                </button>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-{{--                @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '0')--}}
-{{--                    <button class="button-name w-100" role="button">--}}
-{{--                        <div>--}}
-{{--                            <i class="fa-solid fa-list-check fa-3x"></i>--}}
-{{--                        </div>--}}
-{{--                        <div>--}}
-{{--                            <h3>設定服務項目</h3>--}}
-{{--                        </div>--}}
-{{--                    </button>--}}
-{{--                @endif--}}
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fa-solid fa-list-check fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>設定服務項目</h3>
-                    </div>
-                </button>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-                <a href="{{ route('masters.personal_information.edit') }}" class="button-name w-100 text-decoration-none">
-                    <div>
-                        <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>個人資料</h3>
-                    </div>
-                </a>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>對帳單</h3>
-                    </div>
-                </button>
-            </div>
-            <div class="col-4 col-md-3 mb-2">
-                <button class="button-name w-100" role="button">
-                    <div>
-                        <i class="fa-solid fa-phone-volume fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>聯繫客服</h3>
-                    </div>
-                </button>
-            </div>
+    <div style="margin-top: 10px;">
+        <p style="font-size: 1.8em;">
+            <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+            服務地區
+        </p>
+    </div>
+    <div class="container px-4 px-lg-5 mt-2 mb-4">
+        <form method="GET" action="{{ route('admins.service_areas.index') }}">
+            <input type="text" class="form-control" name="search" placeholder="搜尋服務地區" value="{{ request('search') }}">
+            <button type="submit">搜尋</button>
+            <a href="{{ route('admins.service_areas.index') }}" class="btn btn-secondary">取消搜尋</a>
+        </form>
+    </div>
+    <div class="container">
+        <h1>服務區域列表</h1>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>主要區域</th>
+                <th>次要區域</th>
+                <th>狀態</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if ($serviceAreas->isEmpty())
+                <tr>
+                    <td colspan="4">沒有找到符合條件的服務地區。</td>
+                </tr>
+            @else
+                @foreach ($serviceAreas as $area)
+                    <tr>
+                        <td>{{ $area->major_area }}</td>
+                        <td>{{ $area->minor_area }}</td>
+                        <td>{{ $area->status }}</td>
+                        <td>
+                            <!-- 編輯和刪除按鈕 -->
+                            <a href="{{ route('admins.service_areas.edit', $area->id) }}" class="btn btn-warning">編輯</a>
+                            <form action="{{ route('admins.service_areas.destroy', $area->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這個項目嗎？')">刪除</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+            </tbody>
+        </table>
+    </div>
+    <div>
+        每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，當前在第 <strong>{{ $serviceAreas->currentPage() }}</strong> 頁，共有 <strong>{{ $serviceAreas->total() }}</strong> 筆資料。
+        <div class="mt-3">
+            {{ $serviceAreas->links() }} <!-- 分頁連結 -->
         </div>
     </div>
+
 @endsection
