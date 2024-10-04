@@ -12,7 +12,7 @@ class Equipment extends Model
 
     protected $fillable = [
         'id',
-        'equipment_name',
+        'name',
         'quantity',
         'photo',
     ];

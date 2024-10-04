@@ -64,7 +64,15 @@
                 text-decoration:none;
             }
         </style>
-
+        <style>
+            .custom-link {
+                color: black; /* 預設顏色 */
+                text-decoration: none; /* 移除下劃線 */
+            }
+            .custom-link:hover {
+                color: #3498db; /* 滑鼠懸停時的顏色，這裡使用藍色 */
+            }
+        </style>
         <style>
             .button-name {
                 align-items: center;

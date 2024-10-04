@@ -31,8 +31,6 @@ Route::post('masters/logout', [\App\Http\Controllers\Auth\MasterLoginController:
 Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('masters_register');
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
-
-
 Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
@@ -41,7 +39,13 @@ Route::group(['middleware' => 'master'], function() {
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {
+        //設備管理
         Route::get('/equipment/index', [App\Http\Controllers\AdminEquipmentController::class, 'index'])->name('equipment.index');
+        Route::get('/equipment/create',[App\Http\Controllers\AdminEquipmentController::class,'create'])->name('equipment.create');
+        Route::post('/equipment/store', [App\Http\Controllers\AdminEquipmentController::class, 'store'])->name("equipment.store");
+        Route::get('/equipment/edit/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'edit'])->name('equipment.edit');
+        Route::patch('/equipment/update/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'update'])->name('equipment.update');
+        Route::delete('/equipment/destroy/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'destroy'])->name('equipment.destroy');
 
         //服務地區
         Route::get('service_areas/index', [ServiceAreaController::class, 'index'])->name('service_areas.index');
@@ -51,8 +55,6 @@ Route::group(['middleware' => 'master'], function() {
         Route::patch('/service_areas/{service_area}/update',[ServiceAreaController::class,'update'])->name('service_areas.update');
         Route::patch('/service_areas/{service_areas}/destroy', [ServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
     });
-
-
 });
 
 
