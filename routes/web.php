@@ -47,8 +47,8 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('service_areas/index', [ServiceAreaController::class, 'index'])->name('service_areas.index');
         Route::get('service_areas/create', [ServiceAreaController::class, 'create'])->name('service_areas.create');
         Route::post('service_areas', [ServiceAreaController::class, 'store'])->name('service_areas.store');
-        Route::get('/service_areas/{service_areas}/edit', [ServiceAreaController::class, 'edit'])->name("service_areas.edit");
-        Route::patch('/service_areas/{service_areas}/update',[ServiceAreaController::class,'update'])->name('service_areasupdate');
+        Route::get('/service_areas/{service_area}/edit', [ServiceAreaController::class, 'edit'])->name("service_areas.edit");
+        Route::patch('/service_areas/{service_area}/update',[ServiceAreaController::class,'update'])->name('service_areas.update');
         Route::patch('/service_areas/{service_areas}/destroy', [ServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
     });
 

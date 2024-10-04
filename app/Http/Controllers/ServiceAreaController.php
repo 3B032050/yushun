@@ -42,7 +42,7 @@ class ServiceAreaController extends Controller
             'status' => 1, // 預設狀態
         ]);
 
-        return redirect()->back()->with('success', '服務地區新增成功');
+        return redirect()->route('admins.service_areas.index');
     }
 
     public function create()
@@ -61,17 +61,32 @@ class ServiceAreaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ServiceArea $servicearea)
+    public function edit(ServiceArea $service_area)
     {
-        //
+        $data = [
+            'service_area'=> $service_area,
+        ];
+        return view('admins.service_areas.edit',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceareaRequest $request, ServiceArea $servicearea)
+    public function update(UpdateserviceareaRequest $request, ServiceArea $service_area)
     {
-        //
+        $this->validate($request,[
+            'major_area' => 'required|max:50',
+            'minor_area' => 'required',
+        ]);
+        // 更新 servicearea 資料
+        $service_area->major_area = $request->input('major_area');
+        $service_area->minor_area = $request->input('minor_area');
+
+        // 儲存更新後的資料
+        $service_area->save();
+
+        // 成功後重新導向並顯示訊息
+        return redirect()->route('admins.service_areas.index')->with('success', '服務區域更新成功！');
     }
 
     /**

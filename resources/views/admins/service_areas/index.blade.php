@@ -16,6 +16,9 @@
             <a href="{{ route('admins.service_areas.index') }}" class="btn btn-secondary">取消搜尋</a>
         </form>
     </div>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
+    </div>
     <div class="container">
         <h1>服務區域列表</h1>
         <table class="table">
