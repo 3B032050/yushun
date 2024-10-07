@@ -13,7 +13,11 @@ class AdminServiceItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = AdminServiceItem::all();
+
+        $data = ['items' => $items];
+
+        return view('admins.service_items.index',$data);
     }
 
     /**
@@ -21,7 +25,7 @@ class AdminServiceItemController extends Controller
      */
     public function create()
     {
-        //
+        return view('admins.service_items.create');
     }
 
     /**
@@ -29,13 +33,20 @@ class AdminServiceItemController extends Controller
      */
     public function store(StoreserviceitemRequest $request)
     {
-        //
+        $item = new AdminServiceItem;
+
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->save();
+
+        // 4. 返回設備列表，並顯示成功訊息
+        return redirect()->route('admins.service_items.index')->with('success', '項目已成功新增');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(AdminServiceItem $serviceitem)
+    public function show(AdminServiceItem $service_item)
     {
         //
     }
@@ -43,24 +54,35 @@ class AdminServiceItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AdminServiceItem $serviceitem)
+    public function edit(AdminServiceItem $service_item)
     {
-        //
+        $data = [
+            'service_item'=> $service_item,
+        ];
+
+        return view('admins.service_items.edit',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceitemRequest $request, AdminServiceItem $serviceitem)
+    public function update(UpdateserviceitemRequest $request, AdminServiceItem $service_item)
     {
-        //
+
+        $service_item->name = $request->name;
+        $service_item->description = $request->description;
+        $service_item->save();
+
+        return redirect()->route('admins.service_items.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AdminServiceItem $serviceitem)
+    public function destroy(AdminServiceItem $service_item)
     {
-        //
+        $service_item->delete();
+
+        return redirect()->route('admins.service_items.index');
     }
 }
