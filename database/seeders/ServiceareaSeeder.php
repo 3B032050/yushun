@@ -123,7 +123,7 @@ class ServiceareaSeeder extends Seeder
 
         foreach ($areas as $majorArea => $minorAreas) {
             foreach ($minorAreas as $minorArea) {
-                DB::table('service_areas')->insert([
+                DB::table('admin_service_areas')->insert([
                     'major_area' => $majorArea,
                     'minor_area' => $minorArea,
                     'status' => 1, // 預設狀態為 1
