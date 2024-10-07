@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('service_areas', function (Blueprint $table) {
+        Schema::create('admin_service_areas', function (Blueprint $table) {
             $table->id();
             $table->string('major_area');
             $table->string('minor_area');

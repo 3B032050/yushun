@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ServiceArea extends Model
+class AdminServiceArea extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class ServiceArea extends Model
         'minor_area',
         'status',
     ];
-    public function service_items()
+    public function master_service_area()
     {
         return $this->belongsToMany(ServiceItem::class, 'area_item_relationship', 'service_item_id', 'service_area_id');
     }

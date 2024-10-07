@@ -18,7 +18,7 @@ class ServiceItem extends Model
     ];
     public function service_areas()
     {
-        return $this->belongsToMany(ServiceArea::class, 'area_item_relationship', 'service_area_id', 'service_item_id');
+        return $this->belongsToMany(AdminServiceArea::class, 'area_item_relationship', 'service_area_id', 'service_item_id');
     }
     public function masters()
     {

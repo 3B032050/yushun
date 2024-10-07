@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ServiceArea;
+use App\Models\AdminServiceArea;
 use App\Http\Requests\StoreserviceareaRequest;
 use App\Http\Requests\UpdateserviceareaRequest;
 use Illuminate\Http\Request;
 
-class ServiceAreaController extends Controller
+class AdminServiceAreaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $query = ServiceArea::query();
+        $query = AdminServiceArea::query();
 
         if ($request->filled('search')) {
             $query->where('major_area', 'like', '%' . $request->search . '%')
@@ -36,7 +36,7 @@ class ServiceAreaController extends Controller
             'minor_area' => 'required|string',
         ]);
 
-        ServiceArea::create([
+        AdminServiceArea::create([
             'major_area' => $request->major_area,
             'minor_area' => $request->minor_area,
             'status' => 1, // 預設狀態
@@ -53,7 +53,7 @@ class ServiceAreaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ServiceArea $servicearea)
+    public function show(AdminServiceArea $servicearea)
     {
         //
     }
@@ -61,7 +61,7 @@ class ServiceAreaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ServiceArea $service_area)
+    public function edit(AdminServiceArea $service_area)
     {
         $data = [
             'service_area'=> $service_area,
@@ -72,7 +72,7 @@ class ServiceAreaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceareaRequest $request, ServiceArea $service_area)
+    public function update(UpdateserviceareaRequest $request, AdminServiceArea $service_area)
     {
         $this->validate($request,[
             'major_area' => 'required|max:50',
@@ -92,9 +92,9 @@ class ServiceAreaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ServiceArea $servicearea)
+    public function destroy(AdminServiceArea $servicearea)
     {
-        $servicearea = ServiceArea::where('id', $servicearea->id)->first();
+        $servicearea = AdminServiceArea::where('id', $servicearea->id)->first();
         if ($servicearea) {
             $servicearea->delete();
         }
