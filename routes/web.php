@@ -61,6 +61,14 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/service_areas/{service_area}/edit', [AdminServiceAreaController::class, 'edit'])->name("service_areas.edit");
         Route::patch('/service_areas/{service_area}/update',[AdminServiceAreaController::class,'update'])->name('service_areas.update');
         Route::patch('/service_areas/{service_areas}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+
+        //服務項目
+        Route::get('/service_items/index', [App\Http\Controllers\AdminServiceItemController::class, 'index'])->name('service_items.index');
+        Route::get('/service_items/create',[App\Http\Controllers\AdminServiceItemController::class,'create'])->name('service_items.create');
+        Route::post('/service_items/store', [App\Http\Controllers\AdminServiceItemController::class, 'store'])->name("service_items.store");
+        Route::get('/service_items/edit/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'edit'])->name('service_items.edit');
+        Route::patch('/service_items/update/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'update'])->name('service_items.update');
+        Route::delete('/service_items/destroy/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'destroy'])->name('service_items.destroy');
     });
 });
 
