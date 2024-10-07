@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AdminServiceItem;
-use App\Http\Requests\StoreserviceitemRequest;
-use App\Http\Requests\UpdateserviceitemRequest;
+use App\Models\MasterServiceItem;
+use App\Http\Requests\StoreMasterServiceItemRequest;
+use App\Http\Requests\UpdateMasterServiceItemRequest;
 
-class AdminServiceItemController extends Controller
+class MasterServiceItemController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class AdminServiceItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreserviceitemRequest $request)
+    public function store(StoreMasterServiceItemRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class AdminServiceItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AdminServiceItem $serviceitem)
+    public function show(MasterServiceItem $masterServiceItem)
     {
         //
     }
@@ -43,7 +43,7 @@ class AdminServiceItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AdminServiceItem $serviceitem)
+    public function edit(MasterServiceItem $masterServiceItem)
     {
         //
     }
@@ -51,7 +51,7 @@ class AdminServiceItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceitemRequest $request, AdminServiceItem $serviceitem)
+    public function update(UpdateMasterServiceItemRequest $request, MasterServiceItem $masterServiceItem)
     {
         //
     }
@@ -59,7 +59,7 @@ class AdminServiceItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AdminServiceItem $serviceitem)
+    public function destroy(MasterServiceItem $masterServiceItem)
     {
         //
     }

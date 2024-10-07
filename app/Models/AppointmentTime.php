@@ -13,7 +13,6 @@ class AppointmentTime extends Model
         'id',
         'user_id',
         'master_id',
-        'service_item_id',
         'service_date',
         'time_period',
         'status',
