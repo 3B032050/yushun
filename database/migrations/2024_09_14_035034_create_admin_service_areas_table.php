@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('service_areas');
+        Schema::dropIfExists('admin_service_areas');
     }
 };

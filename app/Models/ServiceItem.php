@@ -14,13 +14,13 @@ class ServiceItem extends Model
         'name',
         'description',
     ];
-    public function service_areas()
-    {
-        return $this->belongsToMany(AdminServiceArea::class, 'area_item_relationship', 'service_area_id', 'service_item_id');
-    }
-    public function masters()
-    {
-        return $this->belongsToMany(Master::class, 'item_master_relationship', 'master_id', 'service_item_id');
-    }
+//    public function service_areas()
+//    {
+//        return $this->belongsToMany(AdminServiceArea::class, 'area_item_relationship', 'service_area_id', 'service_item_id');
+//    }
+//    public function masters()
+//    {
+//        return $this->belongsToMany(Master::class, 'item_master_relationship', 'master_id', 'service_item_id');
+//    }
 
 }
