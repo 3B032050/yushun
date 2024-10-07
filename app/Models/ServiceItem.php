@@ -13,8 +13,6 @@ class ServiceItem extends Model
         'id',
         'name',
         'description',
-        'service_area_id',
-        'service_category_id',
     ];
     public function service_areas()
     {
@@ -23,11 +21,6 @@ class ServiceItem extends Model
     public function masters()
     {
         return $this->belongsToMany(Master::class, 'item_master_relationship', 'master_id', 'service_item_id');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(ServiceCategory::class, 'service_category_id');
     }
 
 }

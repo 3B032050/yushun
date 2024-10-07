@@ -13,9 +13,4 @@ class ServiceCategory extends Model
         'id',
         'name',
     ];
-
-    public function item()
-    {
-        return $this->hasMany(ServiceItem::class,'service_category_id');
-    }
 }

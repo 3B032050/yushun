@@ -6,7 +6,7 @@ use App\Models\ServiceItem;
 use App\Http\Requests\StoreserviceitemRequest;
 use App\Http\Requests\UpdateserviceitemRequest;
 
-class ServiceItemController extends Controller
+class AdminServiceItemController extends Controller
 {
     /**
      * Display a listing of the resource.
