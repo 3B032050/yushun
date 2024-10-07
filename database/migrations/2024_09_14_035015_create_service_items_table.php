@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->unsignedBigInteger('service_area_id')->nullable();
-            $table->unsignedBigInteger('service_category_id')->nullable();
-            //$table->foreign('service_area_id')->references('id')->on('service_areas');
             $table->timestamps();
         });
     }
