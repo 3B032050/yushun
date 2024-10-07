@@ -38,14 +38,14 @@
                     </button>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
+                    <a href="{{ route('masters.service_areas.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-solid fa-chart-area fa-3x"></i>
                         </div>
                         <div>
-                            <h3>設定服務地區</h3>
+                            <h3>設定可服務地區</h3>
                         </div>
-                    </button>
+                    </a>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
                     <a href="{{ route('masters.personal_information.edit') }}" class="button-name w-100 text-decoration-none">
@@ -148,16 +148,7 @@
                         </div>
                     </button>
                 </div>
-                <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-solid fa-phone-volume fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>聯繫客服</h3>
-                        </div>
-                    </button>
-                </div>
+
             @endif
 
         </div>

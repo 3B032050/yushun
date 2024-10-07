@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class MasterServiceItem extends Model
 {
     use HasFactory;
+
 }

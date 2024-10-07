@@ -16,8 +16,6 @@ class Master extends Authenticatable // 修改這裡
         'email',
         'password',
         'position',
-        'service_item_id',
-        'service_area_id',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -25,13 +23,17 @@ class Master extends Authenticatable // 修改這裡
     {
         return true;
     }
-    public function serviceitem()
+    public function serviceAreas()
     {
-        return $this->belongsToMany(AdminServiceItem::class, 'item_master_relationship', 'service_item_id', 'master_id');
+        return $this->hasMany(MasterServiceArea::class);
     }
-
-    public function appointmenttime()
-    {
-        return $this->belongsToMany(AppointmentTime::class, 'master_appointment_relationship', 'appointment_time_id', 'master_id');
-    }
+//    public function serviceitem()
+//    {
+//        return $this->belongsToMany(AdminServiceItem::class, 'item_master_relationship', 'service_item_id', 'master_id');
+//    }
+//
+//    public function appointmenttime()
+//    {
+//        return $this->belongsToMany(AppointmentTime::class, 'master_appointment_relationship', 'appointment_time_id', 'master_id');
+//    }
 }

@@ -11,7 +11,7 @@ class StoreMasterServiceAreaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return True;
     }
 
     /**
@@ -22,7 +22,8 @@ class StoreMasterServiceAreaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'service_area' => 'required|array', // 需要是一個數組
+            'service_area.*' => 'exists:admin_service_areas,id', // 每個值必須存在於 admin_service_areas 表中
         ];
     }
 }

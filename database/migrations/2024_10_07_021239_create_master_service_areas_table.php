@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('master_service_areas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('service_area_id')->nullable();
+            $table->unsignedBigInteger('admin_service_area_id')->nullable();
             $table->unsignedBigInteger('master_id')->nullable();
-            $table->foreign('service_area_id')->references('id')->on('admin_service_areas');
+            $table->foreign('admin_service_area_id')->references('id')->on('admin_service_areas') ->onDelete('cascade');
             $table->foreign('master_id')->references('id')->on('masters');
             $table->timestamps();
         });

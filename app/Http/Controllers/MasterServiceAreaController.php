@@ -1,19 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Master;
+use App\Models\AdminServiceArea;
 use App\Models\MasterServiceArea;
 use App\Http\Requests\StoreMasterServiceAreaRequest;
 use App\Http\Requests\UpdateMasterServiceAreaRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MasterServiceAreaController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $serviceAreas =MasterServiceArea::with('adminServiceAreas')->get();
+
+        $data = ['serviceAreas' => $serviceAreas];
+        dd($serviceAreas);
+        return view('masters.service_areas.index',$data);
     }
 
     /**
@@ -21,7 +28,8 @@ class MasterServiceAreaController extends Controller
      */
     public function create()
     {
-        //
+        $serviceAreas = AdminServiceArea::all();
+        return view('Masters.service_areas.create', compact('serviceAreas'));
     }
 
     /**
@@ -29,7 +37,16 @@ class MasterServiceAreaController extends Controller
      */
     public function store(StoreMasterServiceAreaRequest $request)
     {
-        //
+
+        $masterId = Auth::id();
+        foreach ($request->service_area as $adminServiceAreaId) {
+            \App\Models\MasterServiceArea::create([
+                'master_id' => $masterId,
+                'admin_service_area_id' => $adminServiceAreaId,
+            ]);
+        }
+
+        return redirect()->route('masters.service_areas.index');
     }
 
     /**
@@ -61,6 +78,11 @@ class MasterServiceAreaController extends Controller
      */
     public function destroy(MasterServiceArea $masterServiceArea)
     {
-        //
+        $servicearea = MasterServiceArea::where('id', $masterServiceArea->id)->first();
+        if ($servicearea) {
+            $servicearea->delete();
+        }
+        $servicearea->delete();
+        return redirect()->route('masters.service_areas.index');
     }
 }

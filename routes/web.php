@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminServiceAreaController;
+use App\Http\Controllers\MasterServiceAreaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 /*
@@ -36,6 +37,12 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
         Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
+
+        //可服務地區
+        Route::get('service_areas/index', [MasterServiceAreaController::class, 'index'])->name('service_areas.index');
+        Route::get('service_areas/create', [MasterServiceAreaController::class, 'create'])->name('service_areas.create');
+        Route::post('service_areas', [MasterServiceArea::class, 'store'])->name('service_areas.store');
+        Route::patch('/service_areas/{service_areas}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {

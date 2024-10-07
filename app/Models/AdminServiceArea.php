@@ -15,6 +15,11 @@ class AdminServiceArea extends Model
         'minor_area',
         'status',
     ];
+    public function masterServiceAreas()
+    {
+        return $this->belongsToMany(\App\Models\MasterServiceArea::class, 'admin_master_service_area');
+    }
+
 
 
 }
