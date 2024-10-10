@@ -23,10 +23,10 @@ class Master extends Authenticatable // 修改這裡
     {
         return true;
     }
-    public function serviceAreas()
-    {
-        return $this->hasMany(MasterServiceArea::class);
-    }
+//    public function serviceAreas()
+//    {
+//        return $this->hasMany(MasterServiceArea::class, 'master_id');
+//    }
 //    public function serviceitem()
 //    {
 //        return $this->belongsToMany(AdminServiceItem::class, 'item_master_relationship', 'service_item_id', 'master_id');

@@ -14,12 +14,15 @@ class MasterServiceArea extends Model
         'admin_service_area_id',
         'master_id',
     ];
-    public function master()
+//    public function master()
+//    {
+//        return $this->belongsTo(Master::class, 'master_id');
+//    }
+    // MasterServiceArea 模型
+    public function adminarea()
     {
-        return $this->belongsTo(Master::class);
+        return $this->belongsToMany(AdminServiceArea::class, 'admin_master_area_relationship', 'master_service_area_id', 'admin_service_area_id');
     }
-    public function adminServiceAreas()
-    {
-        return $this->belongsToMany(AdminServiceArea::class, 'admin_master_service_area');
-    }
+
+
 }

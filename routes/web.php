@@ -39,10 +39,11 @@ Route::group(['middleware' => 'master'], function() {
         Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
 
         //可服務地區
+        Route::get('service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
         Route::get('service_areas/index', [MasterServiceAreaController::class, 'index'])->name('service_areas.index');
         Route::get('service_areas/create', [MasterServiceAreaController::class, 'create'])->name('service_areas.create');
-        Route::post('service_areas', [MasterServiceArea::class, 'store'])->name('service_areas.store');
-        Route::patch('/service_areas/{service_areas}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+        Route::post('service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
+        Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {
@@ -60,7 +61,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::post('service_areas', [AdminServiceAreaController::class, 'store'])->name('service_areas.store');
         Route::get('/service_areas/{service_area}/edit', [AdminServiceAreaController::class, 'edit'])->name("service_areas.edit");
         Route::patch('/service_areas/{service_area}/update',[AdminServiceAreaController::class,'update'])->name('service_areas.update');
-        Route::patch('/service_areas/{service_areas}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+        Route::delete('/service_areas/{service_areas}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
         //服務項目
         Route::get('/service_items/index', [App\Http\Controllers\AdminServiceItemController::class, 'index'])->name('service_items.index');
