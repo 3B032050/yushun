@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\AdminServiceItem;
 use App\Models\Master;
 use App\Models\AdminServiceArea;
 use App\Models\MasterServiceArea;
@@ -15,18 +16,42 @@ class MasterServiceAreaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-//        $masterServiceAreas = MasterServiceArea::all();
-//        foreach ($masterServiceAreas as $area) {
-//            echo "ID: " . $area->id . "\n"; // 顯示所有 ID
-//        }
+        $masterId = Auth::guard('master')->id();
+        $serviceAreas = MasterServiceArea::where('master_id', $masterId)->get();
 
-        $serviceAreas = MasterServiceArea::all();
+        if ($serviceAreas->isEmpty()) {
+            return redirect()->route('masters.service_areas.create_item');
+        }
 
         $data = ['serviceAreas' => $serviceAreas];
-        //dd($serviceAreas);
-        return view('masters.service_areas.index',$data);
+        return view('masters.service_areas.index', $data);
+    }
+
+    public function storeServiceSelection(Request $request)
+    {
+        $request->validate([
+            'service_item_id' => 'required',
+        ]);
+
+        session(['service_item_id' => $request->service_item_id]);
+
+        return redirect()->route('masters.service_areas.create');
+    }
+
+    public function create_item()
+    {
+        $masterId = Auth::guard('master')->id();
+
+        $serviceItems = AdminServiceItem::whereNotIn('id', function ($query) use ($masterId) {
+            $query->select('admin_service_item_id')
+                ->from('master_service_areas')
+                ->where('master_id', $masterId);
+        })->get();
+
+        $data = ['serviceItems' => $serviceItems];
+        return view('Masters.service_areas.create_item', $data);
     }
 
     /**
@@ -44,25 +69,37 @@ class MasterServiceAreaController extends Controller
     public function store(StoreMasterServiceAreaRequest $request)
     {
         $masterId = Auth::guard('master')->id();
+        $serviceItemId = session('service_item_id');
 
         foreach ($request->service_area as $adminServiceAreaId) {
-            if (MasterServiceArea::where('admin_service_area_id', $adminServiceAreaId)
-                ->exists()) {
-                return redirect()->route('masters.service_areas.index')->with('error', '資料已經存在');
-            }
-            else{
-                $masterServiceArea = MasterServiceArea::firstOrCreate([
-                    'master_id' => $masterId,
-                    'admin_service_area_id' => $adminServiceAreaId,
-                ]);
+            $existingRecord = MasterServiceArea::where('master_id', $masterId)
+                ->where('admin_service_area_id', $adminServiceAreaId)
+                ->exists();
 
+            if ($existingRecord) {
+                return redirect()->route('masters.service_areas.index')
+                    ->with('error', '資料已經存在');
             }
-            // 使用 Eloquent 关系插入到关系表
-            $masterServiceArea->adminarea()->attach($adminServiceAreaId);
+
+            $masterServiceArea = MasterServiceArea::create([
+                'master_id' => $masterId,
+                'admin_service_area_id' => $adminServiceAreaId,
+                'admin_service_item_id' => $serviceItemId,
+            ]);
+            $masterServiceArea->adminarea()->attach([
+                $adminServiceAreaId => ['admin_service_item_id' => $serviceItemId],
+            ]);
+//            $masterServiceArea->adminarea()->attach($adminServiceAreaId);
+//            $masterServiceArea->adminitem()->attach($serviceItemId);
         }
 
-        return redirect()->route('masters.service_areas.index');
+        session()->forget('service_item_id');
+
+        return redirect()->route('masters.service_areas.index')
+            ->with('success', '服務地區已成功新增');
     }
+
+
 
 
     /**

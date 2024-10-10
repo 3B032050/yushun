@@ -16,10 +16,12 @@ return new class extends Migration
 
             $table->unsignedBigInteger('admin_service_area_id');
             $table->unsignedBigInteger('master_service_area_id');
+            $table->unsignedBigInteger('admin_service_item_id');
 
 
             $table->foreign('admin_service_area_id')->references('id')->on('admin_service_areas')->onDelete('cascade');
             $table->foreign('master_service_area_id')->references('id')->on('master_service_areas')->onDelete('cascade');
+            $table->foreign('admin_service_item_id')->references('id')->on('admin_service_items')->onDelete('cascade');
 
 
             $table->timestamps();
