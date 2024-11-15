@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\AdminServiceItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ServiceitemSeeder extends Seeder
 {
@@ -12,6 +14,16 @@ class ServiceitemSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $items = [
+            ['name' => "環境清潔", 'description' => "客廳、臥室、廁所、廚房..."],
+            ['name' => "家具清潔", 'description' => "桌子、椅子、櫃子、沙發..."],
+            ['name' => "家電清潔", 'description' => "冷氣、電扇、電視、電燈..."],
+        ];
+
+        foreach ($items as $item) {
+            DB::table('admin_service_items')->insert([
+                $item
+            ]);
+        }
     }
 }

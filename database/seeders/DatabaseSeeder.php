@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\AdminServiceArea;
+use App\Models\AdminServiceItem;
 use Illuminate\Database\Seeder;
 use App\Models\Master;
 use Illuminate\Support\Facades\DB;
@@ -23,5 +25,11 @@ class DatabaseSeeder extends Seeder
             'position' => 0,
         ]);
         $this->call(ServiceAreaSeeder::class);
+
+        $this->call(ServiceitemSeeder::class);
+
+
+
+
     }
 }

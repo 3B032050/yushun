@@ -14,13 +14,9 @@ class AdminServiceItem extends Model
         'name',
         'description',
     ];
-//    public function service_areas()
-//    {
-//        return $this->belongsToMany(AdminServiceArea::class, 'area_item_relationship', 'service_area_id', 'service_item_id');
-//    }
-//    public function masters()
-//    {
-//        return $this->belongsToMany(Master::class, 'item_master_relationship', 'master_id', 'service_item_id');
-//    }
+    public function masterearea()
+    {
+        return $this->belongsToMany(MasterServiceArea::class, 'admin_master_area_relationship', 'admin_service_item_id', 'master_service_area_id');
+    }
 
 }

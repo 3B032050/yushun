@@ -16,6 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('admin_service_area_id')->nullable();
             $table->unsignedBigInteger('master_id')->nullable();
             $table->foreign('admin_service_area_id')->references('id')->on('admin_service_areas') ->onDelete('cascade');
+            $table->unsignedBigInteger('admin_service_item_id')->nullable();
+            $table->foreign('admin_service_item_id')->references('id')->on('admin_service_items') ->onDelete('cascade');
             $table->foreign('master_id')->references('id')->on('masters') ->onDelete('cascade');
             $table->timestamps();
         });

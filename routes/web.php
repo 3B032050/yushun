@@ -45,6 +45,10 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('service_areas/create', [MasterServiceAreaController::class, 'create'])->name('service_areas.create');
         Route::post('service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
         Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+
+        Route::get('service_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
+        Route::get('service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
+
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {
