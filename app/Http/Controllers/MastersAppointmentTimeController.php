@@ -6,7 +6,7 @@ use App\Models\AppointmentTime;
 use App\Http\Requests\StoreappointmenttimeRequest;
 use App\Http\Requests\UpdateappointmenttimeRequest;
 
-class AppointmentTimeController extends Controller
+class MastersAppointmentTimeController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -27,9 +27,16 @@
                     </li>
                 @elseif (Auth::guard('master')->check())
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
-                            師傅：{{ Auth::guard('master')->user()->name }}
-                        </a>
+                        @if(Auth::guard('master')->user()->position == '0')
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                管理員：{{ Auth::guard('master')->user()->name }}
+                            </a>
+                        @elseif(Auth::guard('master')->user()->position == '1')
+                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                師傅：{{ Auth::guard('master')->user()->name }}
+                            </a>
+                        @endif
+
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item" href="{{ route('masters_logout') }}"

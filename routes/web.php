@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminServiceAreaController;
+use App\Http\Controllers\MastersAppointmentTimeController;
 use App\Http\Controllers\MasterServiceAreaController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
@@ -49,6 +50,11 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('service_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
         Route::get('service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
 
+        //可預約時段
+        Route::get('appointmenttime/index', [\App\Http\Controllers\MastersAppointmentTimeController::class, 'index'])->name('appointmenttime.index');
+        Route::get('appointmenttime/create', [MastersAppointmentTimeController::class, 'create'])->name('appointmenttime.create');
+        Route::post('appointmenttime', [MastersAppointmentTimeController::class, 'store'])->name('appointmenttime.store');
+        Route::delete('/appointmenttime/{appointmenttime}/destroy', [MastersAppointmentTimeController::class, 'destroy'])->name("appointmenttime.destroy");
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {

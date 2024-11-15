@@ -28,14 +28,14 @@
                     </button>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
+                    <a href="{{ route('masters.appointmenttime.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-regular fa-calendar-plus fa-3x"></i>
                         </div>
                         <div>
-                            <h3>設定接案時段</h3>
+                            <h3>設定預約時段</h3>
                         </div>
-                    </button>
+                    </a>>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
                     <a href="{{ route('masters.service_areas.index') }}" class="button-name w-100 text-decoration-none">
