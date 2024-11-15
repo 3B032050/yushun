@@ -41,14 +41,19 @@ class MasterRegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:masters',
             'phone' => ['required', 'string', 'max:15'],
         ]);
-
-        Master::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->phone),
-            'position'=>'1',
-        ]);
+        if (Master::where('phone', $request->phone)->exists()) {
+            return redirect()->back()->with('error', '此電話號碼已經存在');
+        }
+        else
+        {
+            Master::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->phone),
+                'position'=>'1'
+            ]);
+        };
 
         return redirect()->route('masters_login');
     }

@@ -1,6 +1,11 @@
 @extends('layouts.master')
 
 @section('content')
+    @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
     <br>
 <div class="container">
     <div class="row justify-content-center">
