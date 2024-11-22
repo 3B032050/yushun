@@ -23,6 +23,7 @@ class Master extends Authenticatable // 修改這裡
     {
         return true;
     }
+
 //    public function serviceAreas()
 //    {
 //        return $this->hasMany(MasterServiceArea::class, 'master_id');
@@ -36,4 +37,11 @@ class Master extends Authenticatable // 修改這裡
     {
         return $this->belongsToMany(AppointmentTime::class, 'master_appointment_relationship', 'appointment_time_id', 'master_id');
     }
+
+
+    public function rentuniforms()
+    {
+        return $this->hasMany(RentUniform::class, 'master_id');
+    }
+
 }

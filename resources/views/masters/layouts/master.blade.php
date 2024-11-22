@@ -79,8 +79,7 @@
             a {
                 text-decoration:none;
             }
-        </style>
-        <style>
+
             .custom-link {
                 color: black; /* 預設顏色 */
                 text-decoration: none; /* 移除下劃線 */
@@ -88,8 +87,7 @@
             .custom-link:hover {
                 color: #3498db; /* 滑鼠懸停時的顏色，這裡使用藍色 */
             }
-        </style>
-        <style>
+
             .button-name {
                 align-items: center;
                 appearance: none;
@@ -149,6 +147,56 @@
                 transform: translateY(2px);
             }
 
+            /* 單個按鈕 */
+            .uniform-btn {
+                background: #f8f9fa;
+                border: 2px solid #ddd;
+                border-radius: 10px;
+                box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.2), -4px -4px 8px rgba(255, 255, 255, 0.8);
+                padding: 10px;
+                /*width: 320px; !* 調小按鈕寬度 *!*/
+                /*height: 350px; !* 調小按鈕高度 *!*/
+                transition: transform 0.2s, box-shadow 0.2s;
+            }
+
+            .uniform-btn:hover {
+                transform: translateY(-5px);
+                box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.9);
+            }
+
+            .uniform-btn:active {
+                transform: translateY(2px);
+                box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2), -2px -2px 4px rgba(255, 255, 255, 0.7);
+            }
+
+            /* 圖片樣式 */
+            .uniform-image {
+                max-width: 100%;
+                max-height: 100%;
+                border-radius: 5px;
+            }
+
+            /* 統一文字顏色與樣式 */
+            .uniform-btn h5 {
+                color: #333;
+                margin-top: 10px;
+                font-weight: bold;
+            }
+
+            .table-responsive {
+                max-width: 85%; /* 限制表格最大寬度 */
+                margin: auto;   /* 讓表格置中 */
+            }
+
+            .table th, .table td {
+                vertical-align: middle; /* 垂直置中 */
+                text-align: center;     /* 文字水平置中 */
+            }
+
+            .table img {
+                display: block;
+                margin: auto; /* 讓圖片在單元格內置中 */
+            }
         </style>
         @stack('scripts')
     </body>

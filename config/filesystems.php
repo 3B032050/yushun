@@ -62,6 +62,13 @@ return [
             'url' => env('APP_URL') . '/storage/equipments',
             'visibility' => 'public',
         ],
+
+        'uniforms' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/uniforms'),
+            'url' => env('APP_URL') . '/storage/uniforms',
+            'visibility' => 'public',
+        ],
     ],
 
     /*

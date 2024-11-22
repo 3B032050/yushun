@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('uniforms', function (Blueprint $table) {
+        Schema::create('rent_uniforms', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('master_id');
+            $table->unsignedBigInteger('uniform_id');
+            $table->string('size');
+            $table->integer('quantity');
+            $table->integer('status');
             $table->timestamps();
         });
     }
@@ -22,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('uniforms');
+        Schema::dropIfExists('rent_uniforms');
     }
 };
