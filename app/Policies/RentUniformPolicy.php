@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\AdminUniform;
+use App\Models\RentUniform;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class UniformPolicy
+class RentUniformPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class UniformPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, AdminUniform $uniform): bool
+    public function view(User $user, RentUniform $uniform): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class UniformPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, AdminUniform $uniform): bool
+    public function update(User $user, RentUniform $uniform): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class UniformPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, AdminUniform $uniform): bool
+    public function delete(User $user, RentUniform $uniform): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class UniformPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, AdminUniform $uniform): bool
+    public function restore(User $user, RentUniform $uniform): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class UniformPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, AdminUniform $uniform): bool
+    public function forceDelete(User $user, RentUniform $uniform): bool
     {
         //
     }

@@ -38,7 +38,7 @@ Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
-        Route::patch('/personal_information/{user}/update', [App\Http\Controllers\MasterController::class, 'update'])->name('personal_information.update');
+        Route::patch('}/update/{user', [App\Http\Controllers\MasterController::class, 'update'])->name('update');
 
         //可服務地區
         Route::get('service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
@@ -55,6 +55,14 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('appointmenttime/create', [MastersAppointmentTimeController::class, 'create'])->name('appointmenttime.create');
         Route::post('appointmenttime', [MastersAppointmentTimeController::class, 'store'])->name('appointmenttime.store');
         Route::delete('/appointmenttime/{appointmenttime}/destroy', [MastersAppointmentTimeController::class, 'destroy'])->name("appointmenttime.destroy");
+
+        //租借制服
+        Route::get('rent_uniforms/index', [\App\Http\Controllers\MasterRentUniformController::class, 'index'])->name('rent_uniforms.index');
+        Route::get('rent_uniforms/create/{uniform}', [\App\Http\Controllers\MasterRentUniformController::class, 'create'])->name('rent_uniforms.create');
+        Route::post('rent_uniforms/store', [\App\Http\Controllers\MasterRentUniformController::class, 'store'])->name('rent_uniforms.store');
+        Route::get('rent_uniforms/history', [\App\Http\Controllers\MasterRentUniformController::class, 'history'])->name('rent_uniforms.history');
+        Route::post('/rentals/{rental}/return', [\App\Http\Controllers\MasterRentUniformController::class, 'return'])->name('rent_uniforms.return');
+
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {
@@ -81,6 +89,14 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/service_items/edit/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'edit'])->name('service_items.edit');
         Route::patch('/service_items/update/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'update'])->name('service_items.update');
         Route::delete('/service_items/destroy/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'destroy'])->name('service_items.destroy');
+
+        //制服管理
+        Route::get('/uniforms/index', [App\Http\Controllers\AdminUniformController::class, 'index'])->name('uniforms.index');
+        Route::get('/uniforms/create',[App\Http\Controllers\AdminUniformController::class,'create'])->name('uniforms.create');
+        Route::post('/uniforms/store', [App\Http\Controllers\AdminUniformController::class, 'store'])->name("uniforms.store");
+        Route::get('/uniforms/edit/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'edit'])->name('uniforms.edit');
+        Route::patch('/uniforms/update/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'update'])->name('uniforms.update');
+        Route::delete('/uniforms/destroy/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'destroy'])->name('uniforms.destroy');
     });
 });
 

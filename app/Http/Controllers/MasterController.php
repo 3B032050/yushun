@@ -64,13 +64,12 @@ class MasterController extends Controller
      */
     public function update(UpdatemasterRequest $request, master $master)
     {
-        //
         $master = Auth::guard('master')->user();
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:email,' . $master->id,
-            'phone' => 'required|numeric|digits:10',
+            'email' => 'required|email|max:255|unique:masters,email,' . $master->id . ',id',
+            'phone' => 'required|digits:10',
         ]);
 
         $master->update([
