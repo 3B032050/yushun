@@ -14,7 +14,8 @@ class AppointmentTime extends Model
         'user_id',
         'master_id',
         'service_date',
-        'time_period',
+        'start_time',
+        'end_time',
         'status',
     ];
 

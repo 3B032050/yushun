@@ -67,10 +67,14 @@ class MasterLoginController extends Controller
         return redirect()->back()->withInput($request->only('email', 'remember'));
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::guard('master')->logout();
-        return redirect('/');
+        Auth::guard('master')->logout(); // 使用對應的 guard 進行登出
+
+        $request->session()->invalidate(); // 清除 session 資料
+        $request->session()->regenerateToken(); // 重新生成 CSRF token
+
+        return redirect()->route('masters_login'); // 重定向到登入頁面
     }
 //    public function login(Request $request)
 //    {

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\AdminServiceArea;
 use App\Models\AdminServiceItem;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Master;
 use Illuminate\Support\Facades\DB;
@@ -23,6 +24,20 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin123'),
             'phone' => 'admin123',
             'position' => 0,
+        ]);
+        $master = Master::factory()->create([
+            'name' => 'master',
+            'email' => 'master@gmail.com',
+            'password' => bcrypt('master123'),
+            'phone' => 'master123',
+            'position' => 1,
+        ]);
+        $user = User::factory()->create([
+            'name' => 'user',
+            'email' => 'user@gmail.com',
+            'password' => bcrypt('user123'),
+            'phone' => 'user123',
+            'address'=>'111',
         ]);
         $this->call(ServiceAreaSeeder::class);
 

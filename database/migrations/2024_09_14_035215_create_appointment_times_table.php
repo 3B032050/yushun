@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('master_id');
             //$table->foreign('master_id')->references('id')->on('masters');
-            $table->unsignedBigInteger('user_id');
-            //$table->foreign('user_id')->references('id')->on('users');
-            $table->datetime('service_date')->nullable();
-            $table->datetime('time_period')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->date('service_date')->nullable();
+            //$table->enum('period_time', ['AM', 'PM'])->nullable();
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();
         });

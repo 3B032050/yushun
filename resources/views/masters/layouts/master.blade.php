@@ -7,6 +7,7 @@
 {{--        <meta http-equiv="Pragma" content="no-cache">--}}
 {{--        <meta http-equiv="Expires" content="0">--}}
         <title>@yield('title')</title>
+        @stack('styles')
         <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
         <link rel="icon" type="image/x-icon" href="{{asset('assets/favicon.ico')}}" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
@@ -28,6 +29,16 @@
 {{--        </style>--}}
 
 {{--        <!-- Bootstrap JS（包含 Popper.js） -->--}}
+{{--        <!-- FullCalendar JS -->--}}
+{{--        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/main.min.css" rel="stylesheet">--}}
+{{--        <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/main.min.js"></script>--}}
+{{--        <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.7/main.min.js"></script>--}}
+{{--        <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/interaction@6.1.7/main.min.js"></script>--}}
+
+        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/main.min.css" rel="stylesheet">
+        <script src="{{ asset('js/index.global.min.js') }}"></script>
+        <script src="{{ asset('js/index.global.js') }}"></script>
+
 
         <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
         <script src="library/bootstrap-5/bootstrap.bundle.min.js"></script>
@@ -52,6 +63,11 @@
 {{--        </div>--}}
         @yield('content')
 {{--        @include('layouts.partials.footer')--}}
+        <!-- 引入 Flatpickr 样式 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+        <!-- 引入 Flatpickr JS -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -134,5 +150,6 @@
             }
 
         </style>
+        @stack('scripts')
     </body>
 </html>
