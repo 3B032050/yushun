@@ -55,7 +55,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('appointmenttime/create', [MastersAppointmentTimeController::class, 'create'])->name('appointmenttime.create');
         Route::post('appointmenttime', [MastersAppointmentTimeController::class, 'store'])->name('appointmenttime.store');
         Route::get('/appointmenttime/edit/{appointmenttime}', [App\Http\Controllers\MastersAppointmentTimeController::class, 'edit'])->name('appointmenttime.edit');
-        Route::patch('/appointmenttime/{appointmenttime}/update', [MastersAppointmentTimeController::class, 'update'])->name('appointmenttime.update');
+        Route::patch('/appointmenttime/{appointmenttime}/update', [App\Http\Controllers\MastersAppointmentTimeController::class, 'update'])->name('appointmenttime.update');
         Route::delete('/appointmenttime/{appointmenttime}/destroy', [MastersAppointmentTimeController::class, 'destroy'])->name("appointmenttime.destroy");
 
         //租借制服

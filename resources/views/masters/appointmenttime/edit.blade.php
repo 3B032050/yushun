@@ -34,12 +34,12 @@
 
                 <div class="form-group mb-3">
                     <label for="start_time">開始時間</label>
-                    <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" required>
+                    <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1" required>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="end_time">結束時間</label>
-                    <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" required>
+                    <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1" required>
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">更新時段</button>
