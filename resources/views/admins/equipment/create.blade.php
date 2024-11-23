@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('新增設備') }}</div>
+                    <div class="card-header text-center">{{ __('新增設備') }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('admins.equipment.store') }}" enctype="multipart/form-data">
@@ -93,6 +93,7 @@
             font-weight: bold;
         }
     </style>
+
     <script>
         function previewImage(input) {
             var preview = document.getElementById('image-preview');

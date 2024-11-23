@@ -10,10 +10,12 @@
                 個人資料
             </p>
         </div>
+
+        <!-- 使用 Bootstrap 的 row 和 col 來置中表單 -->
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('個人資料') }}</div>
+                    <div class="card-header text-center">{{ __('個人資料') }}</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('masters.update',$master->id) }}">
@@ -62,20 +64,6 @@
                                 </div>
                             </div>
 
-{{--                                <div class="row mb-3">--}}
-{{--                                    <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('地址 / Address') }}</label>--}}
-
-{{--                                    <div class="col-md-6">--}}
-{{--                                        <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ $user->address }}" autocomplete="current-address" placeholder="選填">--}}
-
-{{--                                        @error('address')--}}
-{{--                                        <span class="invalid-feedback" role="alert">--}}
-{{--                                            <strong>{{ $message }}</strong>--}}
-{{--                                        </span>--}}
-{{--                                        @enderror--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
@@ -89,11 +77,18 @@
             </div>
         </div>
     </div>
+
     <style>
         .required {
             color: red;
             margin-left: 5px;
             font-weight: bold;
+        }
+
+        /* 調整卡片的寬度，使其在不同螢幕大小下能自動調整 */
+        .card {
+            max-width: 600px; /* 最大寬度設定 */
+            margin: 0 auto;   /* 使卡片在螢幕中居中 */
         }
     </style>
 @endsection

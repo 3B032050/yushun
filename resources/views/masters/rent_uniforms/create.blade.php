@@ -16,6 +16,7 @@
                 選擇尺寸與數量
             </p>
         </div>
+
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -76,3 +77,20 @@
         </div>
     </div>
 @endsection
+
+<style>
+    /* 讓表單在各種螢幕大小下都能居中 */
+    .card {
+        max-width: 800px; /* 限制卡片最大寬度 */
+        margin: 0 auto;   /* 讓卡片居中 */
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    /* 自訂輸入框、下拉選單等元素的樣式 */
+    .form-control {
+        width: 100%;  /* 保持寬度填滿父元素 */
+    }
+</style>

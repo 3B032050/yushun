@@ -20,12 +20,13 @@ class MasterFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
+            'name' => fake()->name(),  // 使用 fake() 來生成隨機姓名
+            'email' => fake()->unique()->safeEmail(),  // 使用 fake() 來生成唯一的安全郵件
             'password' => Hash::make('password'),  // 使用 bcrypt 或 Hash::make
-            'phone' => $this->faker->phoneNumber,
-            'position' => $this->faker->randomElement([0, 1]), // 0代表admin，1代表master
+            'phone' => fake()->phoneNumber(),  // 使用 fake() 來生成隨機電話號碼
+            'position' => fake()->randomElement([0, 1]), // 0代表admin，1代表master
         ];
     }
+
 
 }

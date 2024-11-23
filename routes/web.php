@@ -48,7 +48,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
         Route::get('service_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
-        Route::get('service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
+        Route::post('service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
 
         //可預約時段
         Route::get('appointmenttime/index', [\App\Http\Controllers\MastersAppointmentTimeController::class, 'index'])->name('appointmenttime.index');
