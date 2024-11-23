@@ -14,13 +14,15 @@
         </div>
     @endif
 
-    <!-- 設置標題和路徑 -->
-    <div style="margin-top: 10px;">
-        <p style="font-size: 1.8em;">
-            <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-            可預約時段
-        </p>
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                可預約時段
+            </p>
+        </div>
     </div>
+
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-success btn-sm" href="{{ route('masters.appointmenttime.create') }}">新增可預約時段</a>
     </div>

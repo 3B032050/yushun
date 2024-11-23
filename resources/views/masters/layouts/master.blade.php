@@ -197,7 +197,39 @@
                 display: block;
                 margin: auto; /* 讓圖片在單元格內置中 */
             }
+
+            /* 自訂按鈕樣式 */
+            .uniform-btn {
+                background-color: #fff;
+                border: none;
+                padding: 0;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
+                transition: transform 0.2s ease-in-out;
+            }
+
+            /* 按鈕懸停效果 */
+            .uniform-btn:hover {
+                transform: scale(1.05);
+            }
+
+            /* 控制制服圖片大小 */
+            .uniform-image {
+                max-height: 200px;
+                width: auto;
+            }
+
+            .table-responsive {
+                max-width: 85%; /* 限制表格最大寬度 */
+                margin: auto;   /* 讓表格置中 */
+            }
+
+            .table th, .table td {
+                vertical-align: middle; /* 垂直置中 */
+                text-align: center;     /* 文字水平置中 */
+            }
         </style>
+
         @stack('scripts')
     </body>
 </html>

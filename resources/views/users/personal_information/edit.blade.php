@@ -3,6 +3,15 @@
 @section('title','個人資料')
 
 @section('content')
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                個人資料
+            </p>
+        </div>
+    </div>
+
     <section id="location"><br>
         <div class="container">
             <div class="row justify-content-center">

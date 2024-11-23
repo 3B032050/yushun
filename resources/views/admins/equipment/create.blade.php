@@ -3,7 +3,7 @@
 @section('title', '新增設備')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid px-4">
         <div style="margin-top: 10px;">
             <p style="font-size: 1.8em;">
                 <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
@@ -11,6 +11,7 @@
                 新增設備
             </p>
         </div>
+    </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -84,7 +85,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <style>
         .required {

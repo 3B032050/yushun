@@ -3,11 +3,14 @@
 @section('title', '豫順清潔')
 
 @section('content')
-    <div style="margin-top: 10px;">
-        <p style="font-size: 1.8em;">
-            <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-            服務地區
-        </p>
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                服務地區
+            </p>
+        </div>
+        <h1 class="mt-4 text-center">服務地區</h1>
     </div>
 
     <div class="container px-4 px-lg-5 mt-2 mb-4">
@@ -18,12 +21,11 @@
         </form>
     </div>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-        <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
-    </div>
-
     <div class="container">
-        <h1 class="text-center mb-4">服務區域列表</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1 class="text-center mb-0">服務區域列表</h1>
+            <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
+        </div>
 
         <table class="table table-striped table-bordered">
             <thead>
@@ -58,11 +60,12 @@
             @endif
             </tbody>
         </table>
-    </div>
 
-    <div class="d-flex justify-content-between align-items-center">
-        <span>每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，當前在第 <strong>{{ $serviceAreas->currentPage() }}</strong> 頁，共有 <strong>{{ $serviceAreas->total() }}</strong> 筆資料。</span>
-        <div class="mt-3">
+        <div class="d-flex justify-content-center align-items-center mt-3">
+            <span>每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，當前在第 <strong>{{ $serviceAreas->currentPage() }}</strong> 頁，共有 <strong>{{ $serviceAreas->total() }}</strong> 筆資料。</span>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
             {{ $serviceAreas->links() }} <!-- 分頁連結 -->
         </div>
     </div>

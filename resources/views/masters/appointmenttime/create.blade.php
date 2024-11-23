@@ -13,12 +13,17 @@
             {{ session('success') }}
         </div>
     @endif
-    <div style="margin-top: 10px;">
-        <p style="font-size: 1.8em;">
-            <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-            新增可預約時段
-        </p>
+
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">可預約時段</a> &gt;
+                新增可預約時段
+            </p>
+        </div>
     </div>
+
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">

@@ -3,6 +3,16 @@
 @section('title', '豫順清潔')
 
 @section('content')
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                <a href="{{ route('masters.service_areas.index') }}" class="custom-link">可服務地區</a> >
+                編輯服務項目
+            </p>
+        </div>
+    </div>
+
     <div class="container">
         <div class="row justify-content-center" style="text-align: center;">
             <div class="col-md-8">

@@ -61,16 +61,4 @@
             </tbody>
         </table>
     </div>
-
-    <style>
-        .table-responsive {
-            max-width: 85%; /* 限制表格最大寬度 */
-            margin: auto;   /* 讓表格置中 */
-        }
-
-        .table th, .table td {
-            vertical-align: middle; /* 垂直置中 */
-            text-align: center;     /* 文字水平置中 */
-        }
-    </style>
 @endsection

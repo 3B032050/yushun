@@ -3,7 +3,17 @@
 @section('title', '豫順清潔')
 
 @section('content')
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                <a href="{{ route('admins.service_areas.index') }}" class="custom-link">服務地區管理</a> >
+                編輯服務地區
+            </p>
+        </div>
+    </div>
+
+    <div class="container d-flex justify-content-center align-items-center">
         <div class="col-md-6 col-12">
             <h2 class="text-center mb-4">編輯服務地區</h2>
 

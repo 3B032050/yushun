@@ -3,13 +3,14 @@
 @section('title','個人資料')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid px-4">
         <div style="margin-top: 10px;">
             <p style="font-size: 1.8em;">
                 <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
                 個人資料
             </p>
         </div>
+    </div>
 
         <!-- 使用 Bootstrap 的 row 和 col 來置中表單 -->
         <div class="row justify-content-center">
@@ -76,7 +77,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <style>
         .required {
