@@ -15,11 +15,9 @@ class AdminUniformController extends Controller
      */
     public function index()
     {
-        $uniforms = AdminUniform::all();
         $rent_uniforms = RentUniform::all();
 
-        $data = ['uniforms' => $uniforms,
-                'rent_uniforms' => $rent_uniforms];
+        $data = ['rent_uniforms' => $rent_uniforms];
 
         return view('admins.uniforms.index',$data);
     }

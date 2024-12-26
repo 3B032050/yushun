@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\master;
 use App\Http\Requests\StoremasterRequest;
 use App\Http\Requests\UpdatemasterRequest;
+use App\Models\RentUniform;
 use Illuminate\Support\Facades\Auth;
 
 class MasterController extends Controller
@@ -14,8 +15,11 @@ class MasterController extends Controller
      */
     public function index()
     {
-        //
-        return view('masters.index');
+        $master = Auth::guard('master')->user();
+
+        $rental = RentUniform::where('master_id', $master->id)->first();;
+        $data = ['rental' => $rental];
+        return view('masters.index',$data);
     }
 
     protected function authenticated(Request $request, $user)

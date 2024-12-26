@@ -69,31 +69,46 @@
                 </div>
 
                 <div class="col-6 col-md-3 mb-2">
-                    <button type="button" class="button-name w-100 text-decoration-none" data-bs-toggle="modal" data-bs-target="#rentUniformModal">
-                        <div>
-                            <i class="fa-sharp fa-solid fa-shirt fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>租借制服</h3>
-                        </div>
-                    </button>
-                </div>
-                <div class="modal fade" id="rentUniformModal" tabindex="-1" aria-labelledby="rentUniformModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="rentUniformModalLabel">租借制服</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                <div class="d-grid gap-2 col-8 mx-auto">
-                                    <a href="{{ route('masters.rent_uniforms.history') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center" style="height: 90px"><h4>查看租借紀錄</h4></a>
-                                    <a href="{{ route('masters.rent_uniforms.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="height: 90px"><h4>租借制服</h4></a>
-                                </div>
-                            </div>
-                        </div>
+                    @if(!$rental)
+                        <a href="{{ route('masters.rent_uniforms.index') }}" class="button-name w-100 text-decoration-none">
+
+                    @else
+                        <a href="{{ route('masters.rent_uniforms.history') }}" class="button-name w-100 text-decoration-none">
+                    @endif
+                    <div>
+                        <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                     </div>
+                    <div>
+                        <h3>制服</h3>
+                    </div></a>
                 </div>
+
+{{--                <div class="col-6 col-md-3 mb-2">--}}
+{{--                    <button type="button" class="button-name w-100 text-decoration-none" data-bs-toggle="modal" data-bs-target="#rentUniformModal">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-sharp fa-solid fa-shirt fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>制服</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+{{--                <div class="modal fade" id="rentUniformModal" tabindex="-1" aria-labelledby="rentUniformModalLabel" aria-hidden="true">--}}
+{{--                    <div class="modal-dialog modal-dialog-centered">--}}
+{{--                        <div class="modal-content">--}}
+{{--                            <div class="modal-header">--}}
+{{--                                <h5 class="modal-title" id="rentUniformModalLabel">選擇尺寸</h5>--}}
+{{--                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>--}}
+{{--                            </div>--}}
+{{--                            <div class="modal-body text-center">--}}
+{{--                                <div class="d-grid gap-2 col-8 mx-auto">--}}
+{{--                                    <a href="{{ route('masters.rent_uniforms.history') }}" class="btn btn-outline-secondary d-flex align-items-center justify-content-center" style="height: 90px"><h4>查看租借紀錄</h4></a>--}}
+{{--                                    <a href="{{ route('masters.rent_uniforms.index') }}" class="btn btn-secondary d-flex align-items-center justify-content-center" style="height: 90px"><h4>租借制服</h4></a>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
 
                 <div class="col-6 col-md-3 mb-2">
                     <button class="button-name w-100" role="button">
@@ -162,7 +177,7 @@
                             <i class="fa-sharp fa-solid fa-shirt fa-3x"></i>
                         </div>
                         <div>
-                            <h3>租借制服</h3>
+                            <h3>制服</h3>
                         </div>
                     </a>
                 </div>

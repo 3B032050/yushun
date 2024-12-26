@@ -39,32 +39,21 @@ class MasterRentUniformController extends Controller
      */
     public function store(StoreUniformRequest $request)
     {
-        $uniform = AdminUniform::findOrFail($request->uniform_id);
-        $size = $request->size;
-
         $request->validate([
-            'uniform_id' => 'required|exists:admin_uniforms,id',
             'size' => 'required|in:S,M,L,XL,XXL',
             'quantity' => 'required|integer|min:1',
         ]);
 
-        if ($request->quantity > $uniform->$size) {
-            return back()->with('error', '該尺寸庫存不足，請減少數量或選擇其他尺寸！');
-        }
 
         $master = Auth::guard('master')->user();
 
         RentUniform::create([
             'master_id' => $master->id,
-            'uniform_id' => $request->input('uniform_id'),
             'size' => $request->input('size'),
             'quantity' => $request->input('quantity'),
-            'status' => 1, //待處理
         ]);
 
-        $uniform->decrement($size, $request->quantity);
-
-        return redirect()->route('masters.rent_uniforms.index')->with('success', '租借成功，等待審核！');
+        return redirect()->route('masters.rent_uniforms.history');
     }
 
 
@@ -75,12 +64,9 @@ class MasterRentUniformController extends Controller
     {
         $master = Auth::guard('master')->user();
 
-        $rentals = RentUniform::where('master_id', $master->id)
-            ->with('uniform')
-            ->orderBy('created_at', 'desc')
-            ->get();
-
-        return view('masters.rent_uniforms.history', compact('rentals'));
+        $rental = RentUniform::where('master_id', $master->id)->first();;
+        $data = ['rental' => $rental];
+        return view('masters.rent_uniforms.history',$data);
     }
 
     /**
