@@ -22,7 +22,12 @@ class StoreschedulerecordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'appointment_time_id' => 'required|exists:appointments,id',
+            'price' => 'required|integer|min:0',
+            'time_period' => 'nullable|date_format:Y-m-d H:i:s',
+            'payment_date' => 'nullable|date_format:Y-m-d H:i:s',
+            'service_date' => 'nullable|date_format:Y-m-d',
+            'is_recurring' => 'nullable|boolean',
         ];
     }
 }

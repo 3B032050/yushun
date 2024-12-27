@@ -66,6 +66,16 @@
                 </a>
             </div>
             <div class="col-4 col-md-3 mb-2">
+                <a href="{{ route('users.sechedule.index') }}" class="button-name w-100 text-decoration-none">
+                    <div>
+                        <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
+                    </div>
+                    <div>
+                        <h3>預約排程</h3>
+                    </div>
+                </a>
+            </div>
+            <div class="col-4 col-md-3 mb-2">
                 <button class="button-name w-100" role="button">
                     <div>
                         <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>

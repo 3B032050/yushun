@@ -24,10 +24,10 @@ class Master extends Authenticatable // 修改這裡
         return true;
     }
 
-//    public function serviceAreas()
-//    {
-//        return $this->hasMany(MasterServiceArea::class, 'master_id');
-//    }
+    public function serviceAreas()
+    {
+        return $this->hasMany(MasterServiceArea::class, 'master_id');
+    }
 //    public function serviceitem()
 //    {
 //        return $this->belongsToMany(AdminServiceItem::class, 'item_master_relationship', 'service_item_id', 'master_id');
@@ -42,6 +42,10 @@ class Master extends Authenticatable // 修改這裡
     public function rentuniforms()
     {
         return $this->hasMany(RentUniform::class, 'master_id');
+    }
+    public function ScheduleRecord()
+    {
+        return $this->hasMany(ScheduleRecord::class); // 假設師傅有多個項目
     }
 
 }

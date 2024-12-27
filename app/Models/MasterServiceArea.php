@@ -15,10 +15,10 @@ class MasterServiceArea extends Model
         'admin_service_item_id',
         'master_id',
     ];
-//    public function master()
-//    {
-//        return $this->belongsTo(Master::class, 'master_id');
-//    }
+    public function master()
+    {
+        return $this->belongsTo(Master::class, 'master_id');
+    }
     // MasterServiceArea 模型
     public function adminarea()
     {

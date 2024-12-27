@@ -11,13 +11,16 @@ class ScheduleRecord extends Model
 
     protected $fillable = [
         'id',
+        //'master_service_area_id',
         'master_id',
         'user_id',
         'appointment_time_id',
-        'price',
+        //'price',
         'time_period',
         'payment_date',
         'service_date',
+        'is_recurring',
+        'status',
     ];
 
     public function scheduledetail()
@@ -27,5 +30,9 @@ class ScheduleRecord extends Model
     public function appointmenttime()
     {
         return $this->belongsTo(AppointmentTime::class);
+    }
+    public function master()
+    {
+        return $this->belongsTo(Master::class);
     }
 }

@@ -14,17 +14,21 @@ return new class extends Migration
         Schema::create('schedule_records', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('master_id');
-            //$table->foreign('master_id')->references('id')->on('masters');
             $table->unsignedBigInteger('user_id');
-            //$table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('appointment_time_id');
-            //$table->foreign('appointmenttime_id')->references('id')->on('appointmenttime_id');
-            $table->integer('price');
             $table->datetime('time_period')->nullable();
             $table->datetime('payment_date')->nullable();
             $table->datetime('service_date')->nullable();
+            $table->boolean('is_recurring')->default(false);
+            $table->string('status');
             $table->timestamps();
+
+            // 外鍵約束
+            $table->foreign('master_id')->references('id')->on('masters')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('appointment_time_id')->references('id')->on('appointment_times')->onDelete('cascade');
         });
+
     }
 
     /**
