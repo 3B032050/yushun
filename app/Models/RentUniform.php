@@ -12,18 +12,12 @@ class RentUniform extends Model
     protected $fillable = [
         'id',
         'master_id',
-        'uniform_id',
         'size',
         'quantity',
-        'status',
     ];
 
     public function master()
     {
         return $this->belongsTo(Master::class);
-    }
-    public function uniform()
-    {
-        return $this->belongsTo(AdminUniform::class);
     }
 }

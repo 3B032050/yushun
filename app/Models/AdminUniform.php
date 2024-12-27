@@ -19,9 +19,4 @@ class AdminUniform extends Model
         'XL',
         'XXL',
     ];
-
-    public function rentuniforms()
-    {
-        return $this->hasMany(RentUniform::class, 'uniform_id');
-    }
 }

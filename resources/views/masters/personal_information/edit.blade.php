@@ -72,7 +72,68 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </form><hr>
+
+                        @if(!$rental)
+                            <form method="POST" action="{{ route('masters.rent_uniforms.store') }}">
+                                @csrf
+
+                                <div class="form-group mb-3 text-center">
+                                    <select name="size" id="size" class="form-control">
+                                        <option value="S">
+                                            S
+                                        </option>
+                                        <option value="M" >
+                                            M
+                                        </option>
+                                        <option value="L" >
+                                            L
+                                        </option>
+                                        <option value="XL" >
+                                            XL
+                                        </option>
+                                        <option value="XXL" >
+                                            XXL
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <label for="quantity">數量</label>
+                                    <input type="number" name="quantity" id="quantity"
+                                           class="form-control"
+                                           min="1" placeholder="請輸入數量">
+                                </div>
+
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-primary">確認</button>
+                                </div>
+                            </form>
+                        @else
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <div class="card">
+                                        <div class="card-header text-center">已選擇制服尺寸</div>
+                                        <div class="card-body">
+                                            <table class="table table-striped text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">尺寸</th>
+                                                    <th scope="col">數量</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td class="align-middle">{{ $rental->size }}</td>
+                                                    <td class="align-middle">{{ $rental->quantity }}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

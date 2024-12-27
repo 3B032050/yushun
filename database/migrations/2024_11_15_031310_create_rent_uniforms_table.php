@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('rent_uniforms', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('master_id');
-            $table->unsignedBigInteger('uniform_id');
             $table->string('size');
             $table->integer('quantity');
-            $table->integer('status');
             $table->timestamps();
         });
     }
