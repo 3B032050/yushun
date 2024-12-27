@@ -106,11 +106,11 @@ Route::group(['middleware' => 'master'], function() {
 Route::group(['middleware' => 'auth'], function() {
     Route::get('users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
     Route::prefix('users')->name('users.')->group(function () {
-        Route::get('schedule/index', [App\Http\Controllers\ScheduleRecordController::class, 'index'])->name('users.schedule.index');
-        Route::get('schedule/check', [App\Http\Controllers\ScheduleRecordController::class, 'check'])->name('users.schedule.check');
-        Route::get('schedule/create', [App\Http\Controllers\ScheduleRecordController::class, 'create'])->name('users.schedule.create');
-        Route::post('schedule/store', [App\Http\Controllers\ScheduleRecordController::class, 'store'])->name("users.schedule.store");
-        Route::get('personal_information/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("users.personal_information.edit");
-        Route::patch('personal_information/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('users.personal_information.update');
+        Route::get('schedule/index', [App\Http\Controllers\ScheduleRecordController::class, 'index'])->name('schedule.index');
+        Route::get('schedule/check', [App\Http\Controllers\ScheduleRecordController::class, 'check'])->name('schedule.check');
+        Route::get('schedule/create', [App\Http\Controllers\ScheduleRecordController::class, 'create'])->name('schedule.create');
+        Route::post('schedule/store', [App\Http\Controllers\ScheduleRecordController::class, 'store'])->name("schedule.store");
+        Route::get('personal_information/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("personal_information.edit");
+        Route::patch('personal_information/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('personal_information.update');
     });
 });
