@@ -15,11 +15,7 @@ class MasterController extends Controller
      */
     public function index()
     {
-        $master = Auth::guard('master')->user();
-
-        $rental = RentUniform::where('master_id', $master->id)->first();;
-        $data = ['rental' => $rental];
-        return view('masters.index',$data);
+        return view('masters.index');
     }
 
     protected function authenticated(Request $request, $user)
@@ -60,7 +56,11 @@ class MasterController extends Controller
     {
         $master = Auth::guard('master')->user();
 
-        return view('masters.personal_information.edit', ['master' => $master]);
+        $rental = RentUniform::where('master_id', $master->id)->first();;
+        $data = ['rental' => $rental,
+            'master' => $master];
+
+        return view('masters.personal_information.edit',$data);
     }
 
     /**

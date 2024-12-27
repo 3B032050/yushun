@@ -68,20 +68,16 @@
                     </button>
                 </div>
 
-                <div class="col-6 col-md-3 mb-2">
-                    @if(!$rental)
-                        <a href="{{ route('masters.rent_uniforms.index') }}" class="button-name w-100 text-decoration-none">
-
-                    @else
-                        <a href="{{ route('masters.rent_uniforms.history') }}" class="button-name w-100 text-decoration-none">
-                    @endif
-                    <div>
-                        <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
-                    </div>
-                    <div>
-                        <h3>制服</h3>
-                    </div></a>
-                </div>
+{{--                <div class="col-6 col-md-3 mb-2">--}}
+{{--                    <button class="button-name w-100" role="button">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>排程</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
 
 {{--                <div class="col-6 col-md-3 mb-2">--}}
 {{--                    <button type="button" class="button-name w-100 text-decoration-none" data-bs-toggle="modal" data-bs-target="#rentUniformModal">--}}
@@ -177,7 +173,7 @@
                             <i class="fa-sharp fa-solid fa-shirt fa-3x"></i>
                         </div>
                         <div>
-                            <h3>制服</h3>
+                            <h3>制服管理</h3>
                         </div>
                     </a>
                 </div>
