@@ -30,7 +30,7 @@ class AppointmentTime extends Model
     }
     public function master()
     {
-        return $this->belongsToMany(Master::class, 'master_appointment_relationship', 'master_id', 'appointment_time_id');
+        return $this->belongsTo(Master::class, 'master_id');
     }
 
 }

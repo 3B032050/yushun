@@ -7,6 +7,7 @@ use App\Models\MasterServiceArea;
 use App\Models\ScheduleRecord;
 use App\Http\Requests\StoreschedulerecordRequest;
 use App\Http\Requests\UpdateschedulerecordRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ScheduleRecordController extends Controller
@@ -15,7 +16,7 @@ class ScheduleRecordController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    { $userId = Auth::guard('user')->id();
+    { $userId = Auth::user();
 
         $schedules = ScheduleRecord::where('user_id', $userId)->get();
 
@@ -28,10 +29,46 @@ class ScheduleRecordController extends Controller
      */
     public function create()
     {
-        $masterServiceAreas = MasterServiceArea::with('adminarea')->get();
-        $appointmenttimes = AppointmentTime::all();
+
+        $appointmenttimes = AppointmentTime::with('master.serviceAreas')->get();
+
+        //dd($masters);
+        //dd($appointmenttimes);
         return view('users.schedule.create', compact('appointmenttimes'));
 
+    }
+    public function available(Request $request)
+    {
+        $date = $request->query('date');
+        $masterId = $request->query('master_id');
+        $serviceAreaId = $request->query('service_area');
+
+        // 確保傳入的參數存在
+        if (!$date || !$masterId || !$serviceAreaId) {
+            return response()->json(['message' => '請提供日期、師傅與服務地區'], 400);
+        }
+
+        // 查找該日期、師傅和服務區域的可用時段
+        $appointmentTimes = AppointmentTime::with('master', 'serviceArea')
+            ->where('service_date', $date)
+            ->where('master_id', $masterId)
+            ->where('service_area_id', $serviceAreaId)
+            ->get();
+
+        if ($appointmentTimes->isEmpty()) {
+            return response()->json(['message' => '該日期沒有可用的時段'], 404);
+        }
+
+        // 返回可預約的時段
+        $times = $appointmentTimes->map(function ($appointmentTime) {
+            return [
+                'id' => $appointmentTime->id,
+                'start_time' => $appointmentTime->start_time,
+                'end_time' => $appointmentTime->end_time,
+            ];
+        });
+
+        return response()->json($times);
     }
 
     /**
@@ -39,7 +76,7 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
-        $userId = Auth::guard('user')->id();
+        $userId = Auth::user();
         // 驗證後的資料
         $validatedData = $request->validated();
 

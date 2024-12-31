@@ -18,78 +18,44 @@
         <div style="margin-top: 10px;">
             <p style="font-size: 1.8em;">
                 <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">預約時段</a> &gt;
+                <a href="{{ route('users.schedule.index') }}" class="custom-link">預約時段</a> &gt;
                 新增預約時段
             </p>
         </div>
     </div>
 
-{{--    <div class="container">--}}
-{{--        <div class="row justify-content-center">--}}
-{{--            <div class="col-md-6">--}}
-{{--                <h2 class="text-center">新增可預約時段</h2>--}}
-
-{{--                <form action="{{ route('masters.appointmenttime.store') }}" method="POST" role="form" enctype="multipart/form-data">--}}
-{{--                    @csrf--}}
-{{--                    @method('POST')--}}
-
-{{--                    <!-- 選擇服務日期 -->--}}
-{{--                    <div class="mb-3">--}}
-{{--                        <label for="service_date" class="form-label">選擇服務日期:</label>--}}
-{{--                        <input type="date" id="service_date" name="service_date" min="{{ date('Y-m-d') }}" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required class="form-control">--}}
-{{--                    </div>--}}
-
-{{--                    <!-- 選擇開始時間 -->--}}
-{{--                    <div class="mb-3">--}}
-{{--                        <label for="start_time" class="form-label">選擇開始時間:</label>--}}
-{{--                        <input type="time" id="start_time" name="start_time" value="{{ \Carbon\Carbon::now()->setTimezone('Asia/Taipei')->format('H:i') }}" required class="form-control">--}}
-{{--                    </div>--}}
-
-{{--                    <!-- 選擇結束時間 -->--}}
-{{--                    <div class="mb-3">--}}
-{{--                        <label for="end_time" class="form-label">選擇結束時間:</label>--}}
-{{--                        <input type="time" id="end_time" name="end_time" value="{{  \Carbon\Carbon::now()->setTimezone('Asia/Taipei')->addMinutes(180)->format('H:i') }}" required class="form-control">--}}
-{{--                    </div>--}}
-
-{{--                    <button type="submit" class="btn btn-primary w-100">提交</button>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>--}}
-{{--    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
-{{--    <script>--}}
-{{--        // 使用 jQuery 初始化 flatpickr 用於選擇日期--}}
-{{--        $(document).ready(function() {--}}
-{{--            // 初始化 flatpickr 日期選擇器--}}
-{{--            $('#date').flatpickr({--}}
-{{--                dateFormat: "Y-m-d H:i",--}}
-{{--                minDate: "today",     // 只允許選擇今天以後的日期--}}
-{{--            });--}}
-{{--        });--}}
-{{--    </script>--}}
     <!-- 彈出視窗 -->
-    <div id="schedule-modal" style="display: none;">
+    <div id="schedule-modal" class="hidden">
         <h4>新增時段預約</h4>
         <p>選擇的日期：<span id="modal-date"></span></p>
-        <form id="schedule-form" action="{{ route('masters.appointmenttime.store') }}" method="POST">
+        <form id="schedule-form" action="{{ route('users.schedule.store') }}" method="POST">
             @csrf
             <input type="hidden" id="selected_date" name="service_date">
+
+            <!-- 師傅選擇 -->
             <div class="form-group">
                 <label for="master_id">選擇師傅</label>
                 <select id="master_id" name="master_id" class="form-control" required>
                     <option value="">請選擇師傅</option>
-                    @foreach($masters as $master)
-                        <option value="{{ $master->id }}">{{ $master->name }}</option>
-                    @endforeach
                 </select>
             </div>
+
+            <!-- 服務地區選擇 -->
             <div class="form-group">
                 <label for="service_area">選擇服務地區</label>
                 <select id="service_area" name="service_area" class="form-control" required>
                     <option value="">請先選擇師傅</option>
                 </select>
             </div>
+
+            <div class="form-group">
+                <label for="available_times">可預約時段</label>
+                <select id="available_times" class="form-control">
+                    <option value="">請選擇可預約時段</option>
+                </select>
+            </div>
+
+            <!-- 開始與結束時間 -->
             <div class="form-group">
                 <label for="start_time">開始時間</label>
                 <input type="time" id="start_time" name="start_time" class="form-control" required>
@@ -107,114 +73,182 @@
         <button id="modal-close" class="btn btn-secondary">取消</button>
     </div>
 
+    <div id="calendar"></div>
+@endsection
 
-    @push('scripts')
-        <!-- 引入 FullCalendar 中文语言包 -->
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/locales/zh-tw.js"></script>
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/locales/zh-tw.js"></script>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var calendarEl = document.getElementById('calendar');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const modal = document.getElementById('schedule-modal');
+            const modalDate = document.getElementById('modal-date');
+            const selectedDateInput = document.getElementById('selected_date');
+            const serviceAreaSelect = document.getElementById('service_area');
+            const masterSelect = document.getElementById('master_id');
+            const availableTimesSelect = document.getElementById('available_times');
 
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    locale: 'zh-tw',
-                    headerToolbar: {
-                        left: 'prev,next today',
-                        center: 'title',
-                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            let selectedMasterId = null;  // 新增變數存儲選中的師傅ID
+            let selectedDate = null;  // 新增變數存儲選中的日期
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: 'zh-tw',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                        @foreach($appointmenttimes as $appointmenttime)
+                    {
+                        title: '{{ $appointmenttime->master ? $appointmenttime->master->name : "暫無師傅" }}',
+                        start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
+                        end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
+                        color: '{{ $appointmenttime->status == 1 ? "#28a745" : "#dc3545" }}',
+                        id: '{{ $appointmenttime->id }}',
                     },
-                    events: [
-                            @foreach($appointmenttimes as $appointmenttime)
-                        {
-                            title: '{{ $appointmenttime->master ? $appointmenttime->master->name : "暫無師傅" }}',
-                            start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
-                            end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
-                            color: '{{ $appointmenttime->status == 1 ? "#28a745" : "#dc3545" }}',
-                            id: '{{ $appointmenttime->id }}',
-                        },
-                        @endforeach
-                    ],
-                    dateClick: function(info) {
-                        var modal = document.getElementById('schedule-modal');
-                        var modalDate = document.getElementById('modal-date');
-                        var selectedDateInput = document.getElementById('selected_date');
-                        var serviceAreaSelect = document.getElementById('service_area');
-                        var masterSelect = document.getElementById('master_id');
+                    @endforeach
+                ],
+                dateClick: function (info) {
+                    selectedDate = info.dateStr;
+                    modalDate.textContent = new Date(selectedDate).toLocaleDateString('zh-TW', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    selectedDateInput.value = selectedDate;
 
-                        // 設置選中的日期
-                        modalDate.textContent = info.dateStr;
-                        selectedDateInput.value = info.dateStr;
+                    masterSelect.innerHTML = '<option value="">加載中...</option>';
+                    masterSelect.disabled = true;
 
-                        // 當選擇師傅時動態加載服務地區
-                        masterSelect.addEventListener('change', function() {
-                            var masterId = this.value;
-                            serviceAreaSelect.innerHTML = '<option value="">加載中...</option>';
-
-                            if (masterId) {
-                                fetch(`/api/masters/${masterId}/service-areas`)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        serviceAreaSelect.innerHTML = '<option value="">請選擇服務地區</option>';
-                                        data.forEach(area => {
-                                            serviceAreaSelect.innerHTML += `<option value="${area.id}">${area.name}</option>`;
-                                        });
-                                    })
-                                    .catch(error => {
-                                        console.error('Error fetching service areas:', error);
-                                        serviceAreaSelect.innerHTML = '<option value="">無法加載服務地區</option>';
-                                    });
+                    fetch(`{{ url('users/schedule/available') }}?date=${selectedDate}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.message) {
+                                masterSelect.innerHTML = `<option value="">${data.message}</option>`;
                             } else {
-                                serviceAreaSelect.innerHTML = '<option value="">請先選擇師傅</option>';
+                                masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
+                                data.forEach(master => {
+                                    const option = document.createElement('option');
+                                    option.value = master.id;
+                                    option.textContent = master.name;
+                                    masterSelect.appendChild(option);
+                                });
+                                masterSelect.disabled = false;
                             }
+                        })
+                        .catch(error => {
+                            masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
+                            console.error('Error:', error);
                         });
 
-                        // 顯示模態框
-                        modal.style.display = 'block';
-                    }
-                });
-
-                calendar.render();
-
-                // 關閉彈窗
-                document.getElementById('modal-close').addEventListener('click', function() {
-                    document.getElementById('schedule-modal').style.display = 'none';
-                });
-
-                // 提交表單
-                document.getElementById('modal-confirm').addEventListener('click', function() {
-                    document.getElementById('schedule-form').submit();
-                });
+                    modal.classList.remove('hidden');
+                }
             });
 
-        </script>
-    @endpush
-    @push('styles')
-        <style>
-            #schedule-modal {
-                display: none;
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                z-index: 1000;
-                width: 300px;
-            }
-            #schedule-modal h4 {
-                margin-bottom: 20px;
-            }
-            .form-group {
-                margin-bottom: 15px;
-            }
-            .btn {
-                margin-top: 10px;
-            }
-        </style>
-    @endpush
+            calendar.render();
 
-@endsection
+            // 當選擇師傅時，更新選中的 masterId
+            masterSelect.addEventListener('change', function () {
+                selectedMasterId = this.value;
+                const selectedDate = selectedDateInput.value;
+                serviceAreaSelect.innerHTML = '<option value="">加載中...</option>';
+
+                if (selectedMasterId) {
+                    fetch(`{{ url('users/schedule/available') }}/${selectedMasterId}?date=${selectedDate}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            serviceAreaSelect.innerHTML = '<option value="">請選擇服務地區</option>';
+                            data.forEach(area => {
+                                const option = document.createElement('option');
+                                option.value = area.id;
+                                option.textContent = area.name;
+                                serviceAreaSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            serviceAreaSelect.innerHTML = '<option value="">無法加載服務地區</option>';
+                        });
+                } else {
+                    serviceAreaSelect.innerHTML = '<option value="">請先選擇師傅</option>';
+                }
+            });
+
+            // 當選擇服務區域時，更新可預約時段
+            serviceAreaSelect.addEventListener('change', function () {
+                const serviceAreaId = this.value;
+                availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
+
+                if (serviceAreaId && selectedMasterId) {
+                    fetch(`{{ url('users/schedule/available') }}/${selectedMasterId}?date=${selectedDate}&service_area=${serviceAreaId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
+                            data.forEach(time => {
+                                const option = document.createElement('option');
+                                option.value = time.id;
+                                option.textContent = `${time.start_time} - ${time.end_time}`;
+                                availableTimesSelect.appendChild(option);
+                            });
+                        })
+                        .catch(error => {
+                            availableTimesSelect.innerHTML = '<option value="">無法加載可預約時段</option>';
+                        });
+                } else {
+                    availableTimesSelect.innerHTML = '<option value="">請先選擇服務地區</option>';
+                }
+            });
+
+            document.getElementById('modal-close').addEventListener('click', function () {
+                modal.classList.add('hidden');
+            });
+
+            document.getElementById('modal-confirm').addEventListener('click', function () {
+                document.getElementById('schedule-form').submit();
+            });
+        });
+
+    </script>
+
+    @push('styles')
+    <style>
+        #schedule-modal.hidden {
+            display: none;
+        }
+
+        #schedule-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            width: 90%;
+            max-width: 300px;
+        }
+
+        #schedule-modal h4 {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
+            height: 600px;
+        }
+    </style>
+@endpush

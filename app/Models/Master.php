@@ -35,7 +35,7 @@ class Master extends Authenticatable // 修改這裡
 //
     public function appointmenttime()
     {
-        return $this->belongsToMany(AppointmentTime::class, 'master_appointment_relationship', 'appointment_time_id', 'master_id');
+        return $this->hasOne(AppointmentTime::class, 'master_id');
     }
 
 
