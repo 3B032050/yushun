@@ -68,8 +68,9 @@
                 <input type="number" id="price" name="price" class="form-control" required>
             </div>
         </form>
-        <button id="modal-confirm" class="btn btn-primary">確認新增</button>
-        <button id="modal-close" class="btn btn-secondary">取消</button>
+        <button id="confirm-schedule" class="btn btn-primary">確認</button>
+        <button class="btn btn-secondary close-modal">取消</button>
+
     </div>
 
     <div id="calendar"></div>
@@ -83,13 +84,38 @@
         document.addEventListener('DOMContentLoaded', function () {
             const calendarEl = document.getElementById('calendar');
             const modal = document.getElementById('schedule-modal');
+            const closeModalButtons = document.querySelectorAll('.close-modal');
             const modalDate = document.getElementById('modal-date');
             const selectedDateInput = document.getElementById('selected_date');
             const serviceAreaSelect = document.getElementById('service_area');
             const masterSelect = document.getElementById('master_id');
             const availableTimesSelect = document.getElementById('available_times');
-
+            const confirmButton = document.getElementById('confirm-schedule');
+            const scheduleForm = document.getElementById('schedule-form');
             let selectedDate = null;
+
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    modal.classList.add('hidden');
+                });
+            });
+            confirmButton.addEventListener('click', function () {
+                const selectedDate = document.getElementById('selected_date').value;
+                const masterId = document.getElementById('master_id').value;
+                const serviceAreaId = document.getElementById('service_area').value;
+                const startTime = document.getElementById('start_time').value;
+                const endTime = document.getElementById('end_time').value;
+                const price = document.getElementById('price').value;
+
+                // 確保所有必填字段都有值
+                if (!selectedDate || !masterId || !serviceAreaId || !startTime || !endTime || !price) {
+                    alert('請確保所有選項都已填寫完整');
+                    return;
+                }
+
+                // 提交表單
+                scheduleForm.submit();
+            });
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -101,14 +127,13 @@
                 },
                 events: [
                         @foreach($appointmenttimes as $appointmenttime)
-                    {
-                        title: '{{ $appointmenttime->master ? $appointmenttime->master->name : "暫無師傅" }}',
-                        start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
-                        end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
-                        color: '{{ $appointmenttime->status == 1 ? "#28a745" : "#dc3545" }}',
-                        id: '{{ $appointmenttime->id }}',
-                    },
-                    @endforeach
+                        {
+                            title: '{{ $appointmenttime->master ? $appointmenttime->master->name : "暫無師傅" }}',
+                            color: '{{ $appointmenttime->master ? ($appointmenttime->status == 1 ? "#28a745" : "#dc3545") : "#dc3545" }}',
+                            textColor: '{{ $appointmenttime->master ? "#ffffff" : "#dc3545" }}',  // 如果沒有師傅，顯示紅色文字
+                            id: '{{ $appointmenttime->id }}',
+                        },
+                        @endforeach
                 ],
                 dateClick: function (info) {
                     selectedDate = info.dateStr;
