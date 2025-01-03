@@ -37,39 +37,92 @@ class ScheduleRecordController extends Controller
         return view('users.schedule.create', compact('appointmenttimes'));
 
     }
-    public function available(Request $request)
+//    public function (Request $request)
+//    {
+//        $date = $request->query('date');
+//        $masterId = $request->query('master_id');
+//        $serviceAreaId = $request->query('service_area');
+//
+//        // 確保傳入的參數存在
+//        if (!$date || !$masterId || !$serviceAreaId) {
+//            return response()->json(['message' => '請提供日期、師傅與服務地區'], 400);
+//        }
+//        //dd($date);
+//        // 查找該日期、師傅和服務區域的可用時段
+//        $appointmentTimes = AppointmentTime::with('master', 'serviceArea')
+//            ->where('service_date', $date)
+//            ->where('master_id', $masterId)
+//            ->where('service_area_id', $serviceAreaId)
+//            ->get();
+//
+//        if ($appointmentTimes->isEmpty()) {
+//            return response()->json(['message' => '該日期沒有可用的時段'], 404);
+//        }
+//
+//        // 返回可預約的時段
+//        $times = $appointmentTimes->map(function ($appointmentTime) {
+//            return [
+//                'id' => $appointmentTime->id,
+//                'start_time' => $appointmentTime->start_time,
+//                'end_time' => $appointmentTime->end_time,
+//            ];
+//        });
+//
+//        return response()->json($times);
+//    }
+    public function available_masters(Request $request)
     {
         $date = $request->query('date');
-        $masterId = $request->query('master_id');
-        $serviceAreaId = $request->query('service_area');
 
-        // 確保傳入的參數存在
-        if (!$date || !$masterId || !$serviceAreaId) {
-            return response()->json(['message' => '請提供日期、師傅與服務地區'], 400);
+        if (!$date) {
+            return response()->json(['message' => '請提供日期'], 400);
         }
 
-        // 查找該日期、師傅和服務區域的可用時段
-        $appointmentTimes = AppointmentTime::with('master', 'serviceArea')
+        $appointmentTimes = AppointmentTime::with('master')
             ->where('service_date', $date)
-            ->where('master_id', $masterId)
-            ->where('service_area_id', $serviceAreaId)
             ->get();
 
         if ($appointmentTimes->isEmpty()) {
-            return response()->json(['message' => '該日期沒有可用的時段'], 404);
+            return response()->json(['message' => '該日期沒有可用的師傅'], 404);
         }
 
-        // 返回可預約的時段
-        $times = $appointmentTimes->map(function ($appointmentTime) {
+        $masters = $appointmentTimes->map(function ($appointmentTime) {
             return [
-                'id' => $appointmentTime->id,
-                'start_time' => $appointmentTime->start_time,
-                'end_time' => $appointmentTime->end_time,
+                'id' => $appointmentTime->master->id,
+                'name' => $appointmentTime->master->name,
+            ];
+        })->unique();
+
+        return response()->json($masters);
+    }
+
+    public function available_times(Request $request, $masterId)
+    {
+        $date = $request->query('date');
+
+        if (!$date) {
+            return response()->json(['message' => '請提供日期'], 400);
+        }
+
+        $appointmentTimes = AppointmentTime::where('master_id', $masterId)
+            ->where('service_date', $date)
+            ->get();
+
+        if ($appointmentTimes->isEmpty()) {
+            return response()->json(['message' => '該日期沒有可預約時段'], 404);
+        }
+
+        $times = $appointmentTimes->map(function ($time) {
+            return [
+                'id' => $time->id,
+                'start_time' => $time->start_time,
+                'end_time' => $time->end_time,
             ];
         });
 
         return response()->json($times);
     }
+
 
     /**
      * Store a newly created resource in storage.

@@ -40,18 +40,17 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="available_times">可預約時段</label>
+                <select id="available_times" class="form-control">
+                    <option value="">請選擇可預約時段</option>
+                </select>
+            </div>
             <!-- 服務地區選擇 -->
             <div class="form-group">
                 <label for="service_area">選擇服務地區</label>
                 <select id="service_area" name="service_area" class="form-control" required>
                     <option value="">請先選擇師傅</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="available_times">可預約時段</label>
-                <select id="available_times" class="form-control">
-                    <option value="">請選擇可預約時段</option>
                 </select>
             </div>
 
@@ -90,8 +89,7 @@
             const masterSelect = document.getElementById('master_id');
             const availableTimesSelect = document.getElementById('available_times');
 
-            let selectedMasterId = null;  // 新增變數存儲選中的師傅ID
-            let selectedDate = null;  // 新增變數存儲選中的日期
+            let selectedDate = null;
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -124,7 +122,8 @@
                     masterSelect.innerHTML = '<option value="">加載中...</option>';
                     masterSelect.disabled = true;
 
-                    fetch(`{{ url('users/schedule/available') }}?date=${selectedDate}`)
+                    // 加載可用師傅
+                    fetch(`{{ url('users/schedule/available_masters') }}?date=${selectedDate}`)
                         .then(response => response.json())
                         .then(data => {
                             if (data.message) {
@@ -145,47 +144,50 @@
                             console.error('Error:', error);
                         });
 
-                    modal.classList.remove('hidden');
+                    modal.classList.remove('hidden'); // 顯示模態框
                 }
             });
 
             calendar.render();
 
-            // 當選擇師傅時，更新選中的 masterId
+            // 當選擇師傅後加載服務地區
             masterSelect.addEventListener('change', function () {
-                selectedMasterId = this.value;
-                const selectedDate = selectedDateInput.value;
-                serviceAreaSelect.innerHTML = '<option value="">加載中...</option>';
+                const masterId = this.value;
+                availableTimesSelect.innerHTML = '<option value="">請先選擇服務地區</option>';
+                if (!masterId) return;
 
-                if (selectedMasterId) {
-                    fetch(`{{ url('users/schedule/available') }}/${selectedMasterId}?date=${selectedDate}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            serviceAreaSelect.innerHTML = '<option value="">請選擇服務地區</option>';
-                            data.forEach(area => {
-                                const option = document.createElement('option');
-                                option.value = area.id;
-                                option.textContent = area.name;
-                                serviceAreaSelect.appendChild(option);
-                            });
-                        })
-                        .catch(error => {
-                            serviceAreaSelect.innerHTML = '<option value="">無法加載服務地區</option>';
+                serviceAreaSelect.innerHTML = '<option value="">加載中...</option>';
+                fetch(`{{ url('users/schedule/service_areas') }}?master_id=${masterId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        serviceAreaSelect.innerHTML = '<option value="">請選擇服務地區</option>';
+                        data.forEach(area => {
+                            const option = document.createElement('option');
+                            option.value = area.id;
+                            option.textContent = area.name;
+                            serviceAreaSelect.appendChild(option);
                         });
-                } else {
-                    serviceAreaSelect.innerHTML = '<option value="">請先選擇師傅</option>';
-                }
+                    })
+                    .catch(error => {
+                        serviceAreaSelect.innerHTML = '<option value="">無法加載服務地區</option>';
+                        console.error('Error:', error);
+                    });
             });
 
-            // 當選擇服務區域時，更新可預約時段
+            // 當選擇服務地區後加載可用時段
             serviceAreaSelect.addEventListener('change', function () {
                 const serviceAreaId = this.value;
-                availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
+                const masterId = masterSelect.value;
 
-                if (serviceAreaId && selectedMasterId) {
-                    fetch(`{{ url('users/schedule/available') }}/${selectedMasterId}?date=${selectedDate}&service_area=${serviceAreaId}`)
-                        .then(response => response.json())
-                        .then(data => {
+                if (!serviceAreaId || !masterId || !selectedDate) return;
+
+                availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
+                fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}&service_area=${serviceAreaId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.message) {
+                            availableTimesSelect.innerHTML = `<option value="">${data.message}</option>`;
+                        } else {
                             availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
                             data.forEach(time => {
                                 const option = document.createElement('option');
@@ -193,24 +195,14 @@
                                 option.textContent = `${time.start_time} - ${time.end_time}`;
                                 availableTimesSelect.appendChild(option);
                             });
-                        })
-                        .catch(error => {
-                            availableTimesSelect.innerHTML = '<option value="">無法加載可預約時段</option>';
-                        });
-                } else {
-                    availableTimesSelect.innerHTML = '<option value="">請先選擇服務地區</option>';
-                }
-            });
-
-            document.getElementById('modal-close').addEventListener('click', function () {
-                modal.classList.add('hidden');
-            });
-
-            document.getElementById('modal-confirm').addEventListener('click', function () {
-                document.getElementById('schedule-form').submit();
+                        }
+                    })
+                    .catch(error => {
+                        availableTimesSelect.innerHTML = '<option value="">無法加載可預約時段</option>';
+                        console.error('Error:', error);
+                    });
             });
         });
-
     </script>
 
     @push('styles')
