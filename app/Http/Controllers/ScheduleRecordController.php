@@ -96,27 +96,29 @@ class ScheduleRecordController extends Controller
         return response()->json($masters);
     }
 
-    public function available_times(Request $request, $masterId)
+    public function available_times(Request $request)
     {
         $date = $request->query('date');
+        $masterId = $request->query('master_id');
 
-        if (!$date) {
-            return response()->json(['message' => '請提供日期'], 400);
+        if (!$date || !$masterId) {
+            return response()->json(['message' => '缺少日期或師傅資訊'], 400);
         }
 
-        $appointmentTimes = AppointmentTime::where('master_id', $masterId)
-            ->where('service_date', $date)
+        // 查詢該師傅於該日期的所有預約時段
+        $appointmentTimes = AppointmentTime::where('service_date', $date)
+            ->where('master_id', $masterId)
             ->get();
 
         if ($appointmentTimes->isEmpty()) {
-            return response()->json(['message' => '該日期沒有可預約時段'], 404);
+            return response()->json(['message' => '該師傅當日無可預約時段'], 404);
         }
 
-        $times = $appointmentTimes->map(function ($time) {
+        $times = $appointmentTimes->map(function ($appointmentTime) {
             return [
-                'id' => $time->id,
-                'start_time' => $time->start_time,
-                'end_time' => $time->end_time,
+                'id' => $appointmentTime->id,
+                'start_time' => $appointmentTime->start_time,
+                'end_time' => $appointmentTime->end_time,
             ];
         });
 

@@ -150,39 +150,14 @@
 
             calendar.render();
 
-            // 當選擇師傅後加載服務地區
+            // 當選擇師傅後加載可用時段
             masterSelect.addEventListener('change', function () {
                 const masterId = this.value;
-                availableTimesSelect.innerHTML = '<option value="">請先選擇服務地區</option>';
+                availableTimesSelect.innerHTML = '<option value="">請先選擇時段</option>';
                 if (!masterId) return;
 
-                serviceAreaSelect.innerHTML = '<option value="">加載中...</option>';
-                fetch(`{{ url('users/schedule/service_areas') }}?master_id=${masterId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        serviceAreaSelect.innerHTML = '<option value="">請選擇服務地區</option>';
-                        data.forEach(area => {
-                            const option = document.createElement('option');
-                            option.value = area.id;
-                            option.textContent = area.name;
-                            serviceAreaSelect.appendChild(option);
-                        });
-                    })
-                    .catch(error => {
-                        serviceAreaSelect.innerHTML = '<option value="">無法加載服務地區</option>';
-                        console.error('Error:', error);
-                    });
-            });
-
-            // 當選擇服務地區後加載可用時段
-            serviceAreaSelect.addEventListener('change', function () {
-                const serviceAreaId = this.value;
-                const masterId = masterSelect.value;
-
-                if (!serviceAreaId || !masterId || !selectedDate) return;
-
                 availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
-                fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}&service_area=${serviceAreaId}`)
+                fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.message) {
@@ -198,7 +173,31 @@
                         }
                     })
                     .catch(error => {
-                        availableTimesSelect.innerHTML = '<option value="">無法加載可預約時段</option>';
+                        availableTimesSelect.innerHTML = '<option value="">無法加載時段</option>';
+                        console.error('Error:', error);
+                    });
+            });
+
+            // 當選擇時段後加載服務地區
+            availableTimesSelect.addEventListener('change', function () {
+                const timeId = this.value;
+                const masterId = masterSelect.value;
+                if (!timeId || !masterId) return;
+
+                serviceAreaSelect.innerHTML = '<option value="">加載中...</option>';
+                fetch(`{{ url('users/schedule/service_areas') }}?master_id=${masterId}&time_id=${timeId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        serviceAreaSelect.innerHTML = '<option value="">請選擇服務地區</option>';
+                        data.forEach(area => {
+                            const option = document.createElement('option');
+                            option.value = area.id;
+                            option.textContent = area.name;
+                            serviceAreaSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => {
+                        serviceAreaSelect.innerHTML = '<option value="">無法加載服務地區</option>';
                         console.error('Error:', error);
                     });
             });
