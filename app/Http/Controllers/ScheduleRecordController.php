@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminServiceItem;
 use App\Models\AppointmentTime;
 use App\Models\MasterServiceArea;
 use App\Models\ScheduleRecord;
@@ -31,10 +32,12 @@ class ScheduleRecordController extends Controller
     {
 
         $appointmenttimes = AppointmentTime::with('master.serviceAreas')->get();
+        $items = AdminServiceItem::all();
 
-        //dd($masters);
-        //dd($appointmenttimes);
-        return view('users.schedule.create', compact('appointmenttimes'));
+        $data = ['appointmenttimes' => $appointmenttimes,
+            'items' => $items];
+
+        return view('users.schedule.create', $data);
 
     }
 //    public function (Request $request)
@@ -80,6 +83,10 @@ class ScheduleRecordController extends Controller
 
         $appointmentTimes = AppointmentTime::with('master')
             ->where('service_date', $date)
+            ->whereHas('master.serviceAreas', function ($query) use ($request) {
+                $serviceId = $request->query('service_id');
+                $query->where('admin_service_item_id', $serviceId);
+            })
             ->get();
 
         if ($appointmentTimes->isEmpty()) {
@@ -95,6 +102,8 @@ class ScheduleRecordController extends Controller
 
         return response()->json($masters);
     }
+
+
 
     public function available_times(Request $request)
     {
