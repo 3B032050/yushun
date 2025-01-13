@@ -145,46 +145,59 @@
                 masterSelect.innerHTML = '<option value="">加載中...</option>';
                 masterSelect.disabled = true;
 
-                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}`)
+                availableTimesSelect.innerHTML = '<option value="">請先選擇師傅</option>';
+                availableTimesSelect.disabled = true;
 
+                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}`)
                     .then(response => response.json())
                     .then(data => {
                         console.log('Data received:', data);
-                        if (data.length === 0) {
-                            // 如果沒有師傅資料，顯示「無師傅資料」
-                            masterSelect.innerHTML = '<option value="">無師傅資料</option>';
-                        } else {
+
+                        if (data.status === 'empty') {
+                            // 後端返回沒有師傅的訊息
+                            masterSelect.innerHTML = '<option value="">該師傅當日無可預約時段</option>';
+                            masterSelect.disabled = true;
+                        } else if (data.status === 'success' && data.data.length > 0) {
                             // 有師傅資料時，顯示師傅選項
                             masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
-                            data.forEach(master => {
+                            data.data.forEach(master => {
                                 const option = document.createElement('option');
                                 option.value = master.id;
                                 option.textContent = master.name;
                                 masterSelect.appendChild(option);
                             });
+                            masterSelect.disabled = false;
+                        } else {
+                            // 其他錯誤情況
+                            masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
+                            masterSelect.disabled = true;
                         }
-                        masterSelect.disabled = false;
                     })
                     .catch(error => {
                         masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
+                        masterSelect.disabled = true;
                         console.error('Error:', error);
                     });
             });
             masterSelect.addEventListener('change', function () {
                 const masterId = this.value;
                 availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
+                availableTimesSelect.disabled = true;  // 每次變更時先鎖定
+
                 if (!masterId) return;
 
                 fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}`)
                     .then(response => response.json())
                     .then(data => {
                         availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
+
                         if (data.length === 0) {
                             // 如果沒有可預約時段，顯示「無可預約時段」
                             const option = document.createElement('option');
                             option.value = "";
                             option.textContent = "無可預約時段";
                             availableTimesSelect.appendChild(option);
+                            availableTimesSelect.disabled = true;  // 無資料時保持禁用
                         } else {
                             // 有可預約時段時，顯示時段選項
                             data.forEach(time => {
@@ -193,10 +206,12 @@
                                 option.textContent = `${time.start_time} - ${time.end_time}`;
                                 availableTimesSelect.appendChild(option);
                             });
+                            availableTimesSelect.disabled = false;  // 有資料時啟用
                         }
                     })
                     .catch(error => {
                         availableTimesSelect.innerHTML = '<option value="">無法加載時段</option>';
+                        availableTimesSelect.disabled = true;  // 發生錯誤時禁用
                         console.error('Error:', error);
                     });
             });

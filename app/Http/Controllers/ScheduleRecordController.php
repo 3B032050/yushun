@@ -79,11 +79,11 @@ class ScheduleRecordController extends Controller
         $serviceId = $request->query('service_id');
 
         if (!$date) {
-            return response()->json(['message' => '請提供日期'], 400);
+            return response()->json(['status' => 'error', 'message' => '請提供日期']);
         }
 
         if (!$serviceId) {
-            return response()->json(['message' => '請選擇服務項目'], 400);
+            return response()->json(['status' => 'error', 'message' => '請選擇服務項目']);
         }
 
         // 查詢該日期的所有預約時段並關聯師傅及服務區域
@@ -96,7 +96,7 @@ class ScheduleRecordController extends Controller
 
         // 如果沒有可用的師傅
         if ($appointmentTimes->isEmpty()) {
-            return response()->json(['message' => '該日期沒有可用的師傅'], 404);
+            return response()->json(['status' => 'empty', 'message' => '該師傅當日無可預約時段']);
         }
 
         // 過濾並去重，確保每個師傅只出現一次
@@ -105,9 +105,9 @@ class ScheduleRecordController extends Controller
                 'id' => $appointmentTime->master->id,
                 'name' => $appointmentTime->master->name,
             ];
-        })->unique('id'); // 基於 'id' 去重
+        })->unique('id')->values(); // 基於 'id' 去重並重新索引
 
-        return response()->json($masters);
+        return response()->json(['status' => 'success', 'data' => $masters]);
     }
     public function available_times(Request $request)
     {
