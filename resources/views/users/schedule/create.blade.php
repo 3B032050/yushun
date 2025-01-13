@@ -54,7 +54,7 @@
             <div class="form-group">
                 <label for="available_times">可預約時段</label>
                 <select id="available_times" class="form-control">
-                    <option value="">請選擇可預約時段</option>
+                    <option value="">請先選擇師傅</option>
                 </select>
             </div>
 
@@ -95,11 +95,11 @@
                 const selectedDate = document.getElementById('selected_date').value;
                 const masterId = document.getElementById('master_id').value;
                 const serviceId = document.getElementById('service_id').value;
-                const startTime = document.getElementById('start_time').value;
-                const endTime = document.getElementById('end_time').value;
-                const price = document.getElementById('price').value;
-
-                if (!selectedDate || !masterId || !serviceId || !startTime || !endTime || !price) {
+                // const startTime = document.getElementById('start_time').value;
+                // const endTime = document.getElementById('end_time').value;
+                // const price = document.getElementById('price').value;
+                const availableTime = document.getElementById('available_times');
+                if (!selectedDate || !masterId || !serviceId || !availableTime) {
                     alert('請確保所有選項都已填寫完整');
                     return;
                 }
@@ -138,21 +138,31 @@
 
             calendar.render();
 
+
             serviceSelect.addEventListener('change', function () {
                 const serviceId = this.value;
+                console.log('Service ID:', serviceId);
                 masterSelect.innerHTML = '<option value="">加載中...</option>';
                 masterSelect.disabled = true;
 
-                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}`)
+                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}`)
+
                     .then(response => response.json())
                     .then(data => {
-                        masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
-                        data.forEach(master => {
-                            const option = document.createElement('option');
-                            option.value = master.id;
-                            option.textContent = master.name;
-                            masterSelect.appendChild(option);
-                        });
+                        console.log('Data received:', data);
+                        if (data.length === 0) {
+                            // 如果沒有師傅資料，顯示「無師傅資料」
+                            masterSelect.innerHTML = '<option value="">無師傅資料</option>';
+                        } else {
+                            // 有師傅資料時，顯示師傅選項
+                            masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
+                            data.forEach(master => {
+                                const option = document.createElement('option');
+                                option.value = master.id;
+                                option.textContent = master.name;
+                                masterSelect.appendChild(option);
+                            });
+                        }
                         masterSelect.disabled = false;
                     })
                     .catch(error => {
@@ -160,7 +170,6 @@
                         console.error('Error:', error);
                     });
             });
-
             masterSelect.addEventListener('change', function () {
                 const masterId = this.value;
                 availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
@@ -170,19 +179,27 @@
                     .then(response => response.json())
                     .then(data => {
                         availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
-                        data.forEach(time => {
+                        if (data.length === 0) {
+                            // 如果沒有可預約時段，顯示「無可預約時段」
                             const option = document.createElement('option');
-                            option.value = time.id;
-                            option.textContent = `${time.start_time} - ${time.end_time}`;
+                            option.value = "";
+                            option.textContent = "無可預約時段";
                             availableTimesSelect.appendChild(option);
-                        });
+                        } else {
+                            // 有可預約時段時，顯示時段選項
+                            data.forEach(time => {
+                                const option = document.createElement('option');
+                                option.value = time.id;
+                                option.textContent = `${time.start_time} - ${time.end_time}`;
+                                availableTimesSelect.appendChild(option);
+                            });
+                        }
                     })
                     .catch(error => {
                         availableTimesSelect.innerHTML = '<option value="">無法加載時段</option>';
                         console.error('Error:', error);
                     });
             });
-
         });
     </script>
 
