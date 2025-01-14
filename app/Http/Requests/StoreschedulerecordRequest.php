@@ -11,7 +11,7 @@ class StoreschedulerecordRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,12 +22,10 @@ class StoreschedulerecordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'appointment_time_id' => 'required|exists:appointments,id',
-            'price' => 'required|integer|min:0',
-            'time_period' => 'nullable|date_format:Y-m-d H:i:s',
-            'payment_date' => 'nullable|date_format:Y-m-d H:i:s',
-            'service_date' => 'nullable|date_format:Y-m-d',
-            'is_recurring' => 'nullable|boolean',
+            'service_date' => 'required|date',
+//            'service_id' => 'required|exists:services,id',
+            'master_id' => 'required|exists:masters,id',
+//            'available_times' => 'required|exists:appointments,id',  // 修正名稱對應
         ];
     }
 }

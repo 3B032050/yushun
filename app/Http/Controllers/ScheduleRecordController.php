@@ -80,11 +80,11 @@ class ScheduleRecordController extends Controller
         $serviceId = $request->query('service_id');
 
         if (!$date) {
-            return response()->json(['message' => '請提供日期'], 400);
+            return response()->json(['status' => 'error', 'message' => '請提供日期']);
         }
 
         if (!$serviceId) {
-            return response()->json(['message' => '請選擇服務項目'], 400);
+            return response()->json(['status' => 'error', 'message' => '請選擇服務項目']);
         }
 
         // 查詢該日期的所有預約時段並關聯師傅及服務區域
@@ -97,7 +97,7 @@ class ScheduleRecordController extends Controller
 
         // 如果沒有可用的師傅
         if ($appointmentTimes->isEmpty()) {
-            return response()->json(['message' => '該日期沒有可用的師傅'], 404);
+            return response()->json(['status' => 'empty', 'message' => '該師傅當日無可預約時段']);
         }
 
         // 過濾並去重，確保每個師傅只出現一次
@@ -106,9 +106,9 @@ class ScheduleRecordController extends Controller
                 'id' => $appointmentTime->master->id,
                 'name' => $appointmentTime->master->name,
             ];
-        })->unique('id'); // 基於 'id' 去重
+        })->unique('id')->values(); // 基於 'id' 去重並重新索引
 
-        return response()->json($masters);
+        return response()->json(['status' => 'success', 'data' => $masters]);
     }
     public function available_times(Request $request)
     {
@@ -145,30 +145,39 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
+//        // 驗證後的資料
+//        $validatedData = $request->validated();
+//
+//        // 從 appointment 資料表中抓取相關資料
+//        $appointment = AppointmentTime::findOrFail($validatedData['appointment_id']);
+//
+//        // 創建排程記錄
+//        $scheduleRecord = new ScheduleRecord();
+//        $scheduleRecord->master_id = $appointment->master_id; // 從 appointment 中取得 master_id
+//        $scheduleRecord->user_id = $userId;     // 從 appointment 中取得 user_id
+//        $scheduleRecord->appointment_time_id = $appointment->appointment_time_id; // 從 appointment 中取得 appointment_time_id
+//        $scheduleRecord->price = $validatedData['price'];
+//        $scheduleRecord->time_period = $validatedData['time_period'] ?? null;
+//        $scheduleRecord->payment_date = $validatedData['payment_date'] ?? null;
+//        $scheduleRecord->service_date = $validatedData['service_date'] ?? null;
+//        $scheduleRecord->is_recurring = $validatedData['is_recurring'] ?? false;
+//
+//        // 儲存資料
+//        $scheduleRecord->save();
+//
+//        // 回應或重導
+//        return redirect()->route('schedules.index')
+//            ->with('success', '排程記錄已成功新增！');
         $userId = Auth::user();
-        // 驗證後的資料
-        $validatedData = $request->validated();
+        ScheduleRecord::create([
+            'master_id' => $request->master_id,
+            'user_id' => $userId->id,
+            'service_date' => $request->service_date,
+            'appointment_time_id' => $request->appointment_time_id,
+            'status' => 0
+        ]);
 
-        // 從 appointment 資料表中抓取相關資料
-        $appointment = AppointmentTime::findOrFail($validatedData['appointment_id']);
-
-        // 創建排程記錄
-        $scheduleRecord = new ScheduleRecord();
-        $scheduleRecord->master_id = $appointment->master_id; // 從 appointment 中取得 master_id
-        $scheduleRecord->user_id = $userId;     // 從 appointment 中取得 user_id
-        $scheduleRecord->appointment_time_id = $appointment->appointment_time_id; // 從 appointment 中取得 appointment_time_id
-        $scheduleRecord->price = $validatedData['price'];
-        $scheduleRecord->time_period = $validatedData['time_period'] ?? null;
-        $scheduleRecord->payment_date = $validatedData['payment_date'] ?? null;
-        $scheduleRecord->service_date = $validatedData['service_date'] ?? null;
-        $scheduleRecord->is_recurring = $validatedData['is_recurring'] ?? false;
-
-        // 儲存資料
-        $scheduleRecord->save();
-
-        // 回應或重導
-        return redirect()->route('schedules.index')
-            ->with('success', '排程記錄已成功新增！');
+        return redirect()->route('users.schedule.index')->with('success', '預約成功');
     }
 
     /**

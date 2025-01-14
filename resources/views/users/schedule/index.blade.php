@@ -24,7 +24,7 @@
     </div>
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段></a>>
+        <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段</a> >
     </div>
 
     <!-- 日曆顯示區域 -->
