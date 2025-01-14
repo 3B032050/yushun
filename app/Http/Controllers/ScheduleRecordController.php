@@ -144,30 +144,39 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
+//        // 驗證後的資料
+//        $validatedData = $request->validated();
+//
+//        // 從 appointment 資料表中抓取相關資料
+//        $appointment = AppointmentTime::findOrFail($validatedData['appointment_id']);
+//
+//        // 創建排程記錄
+//        $scheduleRecord = new ScheduleRecord();
+//        $scheduleRecord->master_id = $appointment->master_id; // 從 appointment 中取得 master_id
+//        $scheduleRecord->user_id = $userId;     // 從 appointment 中取得 user_id
+//        $scheduleRecord->appointment_time_id = $appointment->appointment_time_id; // 從 appointment 中取得 appointment_time_id
+//        $scheduleRecord->price = $validatedData['price'];
+//        $scheduleRecord->time_period = $validatedData['time_period'] ?? null;
+//        $scheduleRecord->payment_date = $validatedData['payment_date'] ?? null;
+//        $scheduleRecord->service_date = $validatedData['service_date'] ?? null;
+//        $scheduleRecord->is_recurring = $validatedData['is_recurring'] ?? false;
+//
+//        // 儲存資料
+//        $scheduleRecord->save();
+//
+//        // 回應或重導
+//        return redirect()->route('schedules.index')
+//            ->with('success', '排程記錄已成功新增！');
         $userId = Auth::user();
-        // 驗證後的資料
-        $validatedData = $request->validated();
+        ScheduleRecord::create([
+            'master_id' => $request->master_id,
+            'user_id' => $userId->id,
+            'service_date' => $request->service_date,
+            'appointment_time_id' => $request->appointment_time_id,
+            'status' => 0
+        ]);
 
-        // 從 appointment 資料表中抓取相關資料
-        $appointment = AppointmentTime::findOrFail($validatedData['appointment_id']);
-
-        // 創建排程記錄
-        $scheduleRecord = new ScheduleRecord();
-        $scheduleRecord->master_id = $appointment->master_id; // 從 appointment 中取得 master_id
-        $scheduleRecord->user_id = $userId;     // 從 appointment 中取得 user_id
-        $scheduleRecord->appointment_time_id = $appointment->appointment_time_id; // 從 appointment 中取得 appointment_time_id
-        $scheduleRecord->price = $validatedData['price'];
-        $scheduleRecord->time_period = $validatedData['time_period'] ?? null;
-        $scheduleRecord->payment_date = $validatedData['payment_date'] ?? null;
-        $scheduleRecord->service_date = $validatedData['service_date'] ?? null;
-        $scheduleRecord->is_recurring = $validatedData['is_recurring'] ?? false;
-
-        // 儲存資料
-        $scheduleRecord->save();
-
-        // 回應或重導
-        return redirect()->route('schedules.index')
-            ->with('success', '排程記錄已成功新增！');
+        return redirect()->route('users.schedule.index')->with('success', '預約成功');
     }
 
     /**

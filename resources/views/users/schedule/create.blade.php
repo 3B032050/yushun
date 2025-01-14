@@ -53,14 +53,14 @@
 
             <div class="form-group">
                 <label for="available_times">可預約時段</label>
-                <select id="available_times" class="form-control">
+                <select id="available_times" name="appointment_time_id" class="form-control">
                     <option value="">請先選擇師傅</option>
                 </select>
             </div>
-
+            <button type="submit" class="btn btn-primary">確認</button>
+            <button class="btn btn-secondary close-modal">取消</button>
         </form>
-        <button id="confirm-schedule" class="btn btn-primary">確認</button>
-        <button class="btn btn-secondary close-modal">取消</button>
+
 
     </div>
 
@@ -91,20 +91,21 @@
                 });
             });
 
-            confirmButton.addEventListener('click', function () {
-                const selectedDate = document.getElementById('selected_date').value;
-                const masterId = document.getElementById('master_id').value;
-                const serviceId = document.getElementById('service_id').value;
-                // const startTime = document.getElementById('start_time').value;
-                // const endTime = document.getElementById('end_time').value;
-                // const price = document.getElementById('price').value;
-                const availableTime = document.getElementById('available_times');
-                if (!selectedDate || !masterId || !serviceId || !availableTime) {
-                    alert('請確保所有選項都已填寫完整');
-                    return;
-                }
-                scheduleForm.submit();
-            });
+            // confirmButton.addEventListener('click', function (event) {
+            //     event.preventDefault();  // 阻止表單的預設提交
+            //
+            //     const selectedDate = document.getElementById('selected_date').value;
+            //     const masterId = document.getElementById('master_id').value;
+            //     const serviceId = document.getElementById('service_id').value;
+            //     const availableTime = document.getElementById('available_times').value;  // 修正抓取值
+            //
+            //     if (!selectedDate || !masterId || !serviceId || !availableTime) {
+            //         alert('請確保所有選項都已填寫完整');
+            //         return;
+            //     }
+            //
+            //     scheduleForm.submit();  // 提交表單
+            // });
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
