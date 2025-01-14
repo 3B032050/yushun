@@ -1,17 +1,31 @@
-<div class="container-fluid bg-custom text-black-30 py-2 px-sm-3 px-lg-4 py-lg-5">
-    <div class="row pt-4">
-        <div class="col-lg-2">
+<div class="container-fluid bg-custom text-black py-3">
+    <div class="row">
+        <div class="col-lg-12 text-center" style="color: black;">
+            <!-- 在此添加頁腳內容，例如聯繫方式或版權資訊 -->
+            <p>聯繫我們：example@example.com | 電話：123-456-7890</p>
+            <p>&copy; 2025 Your Website Name. All rights reserved.</p>
         </div>
-       
-    </div>
-    <hr>
-    <div class="col-lg-12 col-md-0 mb-0" align="center" style="color:black">
-        <!--<h5 class="text-black text-uppercase mb-4" style="letter-spacing: 1px;">聯繫我們</h5>-->
-       
     </div>
 </div>
+
 <style>
+    /* 自訂背景顏色為透明或白色 */
     .bg-custom {
-        background-color: #EEEDEC; /* Replace with your desired color code */
+        background-color: transparent; /* 透明背景 */
+        padding: 0; /* 移除多餘的內間距 */
+        margin: 0; /* 移除多餘的外間距 */
     }
+
+    /* 調整文字顏色和對齊方式 */
+    .text-black {
+        color: black;
+    }
+
+    /* 移除頁腳多餘的邊框或間距 */
+    .container-fluid {
+        border: none;
+    }
+
+    /* 如果需要額外的設計，可以添加更多樣式 */
 </style>
+

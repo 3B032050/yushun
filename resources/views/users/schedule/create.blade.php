@@ -114,17 +114,39 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                events: [
-                        @foreach($appointmenttimes as $appointmenttime)
-                    {
-                        title: '{{ $appointmenttime->master ? $appointmenttime->master->name : "暫無師傅" }}',
-                        color: '{{ $appointmenttime->master ? ($appointmenttime->status == 1 ? "#28a745" : "#dc3545") : "#dc3545" }}',
-                        textColor: '{{ $appointmenttime->master ? "#ffffff" : "#dc3545" }}',
-                        id: '{{ $appointmenttime->id }}',
-                    },
+                events: function(info, successCallback, failureCallback) {
+                    const events = [];
+
+                    @if($appointmenttimes && $appointmenttimes->count() > 0)
+                    @foreach($appointmenttimes as $appointmenttime)
+                    events.push({
+                        title: '可預約',
+                        start: '{{ $appointmenttime->service_date }}', // 只使用日期，移除時間
+                        end: '{{ $appointmenttime->service_date }}',
+                        color: '#28a745', // 綠色表示可預約
+                        textColor: '#ffffff', // 白色文字
+                    });
                     @endforeach
-                ],
-                dateClick: function (info) {
+                    @else
+                    // 無可預約師傅，添加無法預約事件
+                    events.push({
+                        title: '無可預約師傅',
+                        color: '#dc3545', // 紅色表示無法預約
+                        textColor: '#ffffff', // 白色文字
+                    });
+                    @endif
+
+                    // 使用 successCallback 返回事件
+                    successCallback(events);
+                },
+                eventRender: function(info) {
+                    // 使用 CSS 居中標題
+                    const titleElement = info.el.querySelector('.fc-event-title');
+                    if (titleElement) {
+                        titleElement.style.textAlign = 'center'; // 居中標題
+                    }
+                },
+                dateClick: function(info) {
                     selectedDate = info.dateStr;
                     modalDate.textContent = new Date(selectedDate).toLocaleDateString('zh-TW', {
                         year: 'numeric',
@@ -138,23 +160,25 @@
 
             calendar.render();
 
-
             serviceSelect.addEventListener('change', function () {
+
                 const serviceId = this.value;
                 console.log('Service ID:', serviceId);
+                // 確認是否已選擇日期
+                if (!selectedDate) {
+                    alert('請先選擇日期');
+                    return; // 停止執行後續程式
+                }
                 masterSelect.innerHTML = '<option value="">加載中...</option>';
                 masterSelect.disabled = true;
 
                 fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}`)
-
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Data received:', data);
-                        if (data.length === 0) {
-                            // 如果沒有師傅資料，顯示「無師傅資料」
+                        console.log('Data received:', data); // 确认收到的数据
+                        if (Array.isArray(data) && data.length === 0) {
                             masterSelect.innerHTML = '<option value="">無師傅資料</option>';
-                        } else {
-                            // 有師傅資料時，顯示師傅選項
+                        } else if (Array.isArray(data)) {
                             masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
                             data.forEach(master => {
                                 const option = document.createElement('option');
@@ -162,6 +186,8 @@
                                 option.textContent = master.name;
                                 masterSelect.appendChild(option);
                             });
+                        } else {
+                            masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
                         }
                         masterSelect.disabled = false;
                     })
@@ -209,7 +235,11 @@
         #schedule-modal.hidden {
             display: none;
         }
-
+        .fc-event-title {
+            text-align: center !important; /* 強制居中 */
+            width: 100%; /* 確保標題區域寬度填滿 */
+            display: block; /* 使標題區域成為區塊元素 */
+        }
         #schedule-modal {
             position: fixed;
             top: 50%;

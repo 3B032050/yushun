@@ -32,6 +32,7 @@ class ScheduleRecordController extends Controller
     {
 
         $appointmenttimes = AppointmentTime::with('master.serviceAreas')->get();
+        //dd($appointmenttimes);
         $items = AdminServiceItem::all();
 
         $data = ['appointmenttimes' => $appointmenttimes,
