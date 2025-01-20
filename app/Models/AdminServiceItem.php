@@ -13,6 +13,7 @@ class AdminServiceItem extends Model
         'id',
         'name',
         'description',
+        'price',
     ];
     public function masterearea()
     {

@@ -37,6 +37,7 @@ class AdminServiceItemController extends Controller
 
         $item->name = $request->name;
         $item->description = $request->description;
+        $item->price = $request->price;
         $item->save();
 
         // 4. 返回設備列表，並顯示成功訊息
@@ -71,6 +72,7 @@ class AdminServiceItemController extends Controller
 
         $service_item->name = $request->name;
         $service_item->description = $request->description;
+        $service_item->price = $request->price;
         $service_item->save();
 
         return redirect()->route('admins.service_items.index');

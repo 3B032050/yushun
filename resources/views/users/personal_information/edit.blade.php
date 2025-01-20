@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('users.layouts.master')
 
 @section('title','個人資料')
 

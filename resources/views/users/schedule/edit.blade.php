@@ -1,4 +1,4 @@
-@extends('masters.layouts.master')
+@extends('users.layouts.master')
 
 @section('title', '編輯預約時段')
 

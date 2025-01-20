@@ -26,6 +26,7 @@
                 <th scope="col" style="text-align:center; width: 5%;">#</th>
                 <th scope="col" style="text-align:center; width: 20%;">名稱</th>
                 <th scope="col" style="text-align:center; width: 10%;">描述</th>
+                <th scope="col" style="text-align:center; width: 10%;">價格</th>
                 <th scope="col" style="text-align:center; width: 15%;">編輯</th>
                 <th scope="col" style="text-align:center; width: 15%;">刪除</th>
             </tr>
@@ -36,6 +37,7 @@
                     <td class="align-middle" style="text-align:center">{{ $index + 1 }}</td>
                     <td class="align-middle" style="text-align:center">{{ $item->name}}</td>
                     <td class="align-middle" style="text-align:center">{{ $item->description}}</td>
+                    <td class="align-middle" style="text-align:center">{{ $item->price}}</td>
                     <td class="align-middle" style="text-align:center">
                         <a href="{{ route('admins.service_items.edit', $item->id) }}" class="btn btn-secondary btn-sm">編輯</a>
                     </td>
