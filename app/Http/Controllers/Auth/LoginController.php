@@ -28,7 +28,11 @@ class LoginController extends Controller
      */
     protected function redirectTo()
     {
-            return '/users/index';
+        if (Auth::guard('web')->check()) {
+            return route('users.index');
+        }
+
+        return '/login';
     }
 
     /**

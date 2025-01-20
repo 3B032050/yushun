@@ -104,8 +104,9 @@ Route::group(['middleware' => 'master'], function() {
 
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users.index');
+
     Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/index', [App\Http\Controllers\UserController::class, 'index'])->name('index');
         Route::get('schedule/index', [App\Http\Controllers\ScheduleRecordController::class, 'index'])->name('schedule.index');
         Route::get('schedule/available_masters', [App\Http\Controllers\ScheduleRecordController::class, 'available_masters'])->name('schedule.available_masters');
         Route::get('schedule/available_times', [App\Http\Controllers\ScheduleRecordController::class, 'available_times'])->name('schedule.available_times');

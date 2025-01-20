@@ -57,6 +57,22 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="price" class="col-md-4 col-form-label text-md-end">
+                                    <span class="required">*</span>{{ __('價格 / Price') }}
+                                </label>
+
+                                <div class="col-md-6">
+                                    <input id="price" type="text" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price', $service_item->price) }}" required autocomplete="price" placeholder="請輸入設備名稱" autofocus>
+
+                                    @error('price')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <!-- 儲存按鈕 -->
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
