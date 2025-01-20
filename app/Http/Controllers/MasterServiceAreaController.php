@@ -72,14 +72,14 @@ class MasterServiceAreaController extends Controller
         $serviceItemId = session('service_item_id');
 
         foreach ($request->service_area as $adminServiceAreaId) {
-            $existingRecord = MasterServiceArea::where('master_id', $masterId)
-                ->where('admin_service_area_id', $adminServiceAreaId)
-                ->exists();
-
-            if ($existingRecord) {
-                return redirect()->route('masters.service_areas.index')
-                    ->with('error', '資料已經存在');
-            }
+//            $existingRecord = MasterServiceArea::where('master_id', $masterId)
+//                ->where('admin_service_area_id', $adminServiceAreaId)
+//                ->exists();
+//
+//            if ($existingRecord) {
+//                return redirect()->route('masters.service_areas.index')
+//                    ->with('error', '資料已經存在');
+//            }
 
             $masterServiceArea = MasterServiceArea::create([
                 'master_id' => $masterId,
