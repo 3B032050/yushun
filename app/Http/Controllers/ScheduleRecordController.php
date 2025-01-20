@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AppointmentConfirmation;
 use App\Models\AdminServiceItem;
 use App\Models\AppointmentTime;
+use App\Models\Master;
 use App\Models\MasterServiceArea;
 use App\Models\ScheduleRecord;
 use App\Http\Requests\StoreschedulerecordRequest;
 use App\Http\Requests\UpdateschedulerecordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ScheduleRecordController extends Controller
 {
@@ -168,15 +171,30 @@ class ScheduleRecordController extends Controller
 //        // 回應或重導
 //        return redirect()->route('schedules.index')
 //            ->with('success', '排程記錄已成功新增！');
-        $userId = Auth::user();
+        $user = Auth::user();
         ScheduleRecord::create([
             'master_id' => $request->master_id,
-            'user_id' => $userId->id,
+            'user_id' => $user->id,
             'service_date' => $request->service_date,
             'appointment_time_id' => $request->appointment_time_id,
             'status' => 0
         ]);
+        $master = Master::find($request->master_id);
 
+        // 構建郵件內容
+        $appointmentDetails = [
+            'master_name' => $master->name,
+            'user_name' => $user->name,
+            'service_date' => $request->service_date,
+            'appointment_time' => $request->start_time . ' - ' . $request->end_time,
+
+        ];
+
+        // 發送郵件給師傅
+        Mail::to($master->email)->send(new AppointmentConfirmation($appointmentDetails));
+
+        // 發送郵件給客戶
+        Mail::to($user->email)->send(new AppointmentConfirmation($appointmentDetails));
         return redirect()->route('users.schedule.index')->with('success', '預約成功');
     }
 
