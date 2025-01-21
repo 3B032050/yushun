@@ -16,7 +16,7 @@ class ScheduleRecord extends Model
         'user_id',
         'appointment_time_id',
         //'price',
-        'time_period',
+        'appointment_time',
         'payment_date',
         'service_date',
         'is_recurring',

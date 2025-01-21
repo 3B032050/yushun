@@ -148,35 +148,24 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
-//        // 驗證後的資料
-//        $validatedData = $request->validated();
-//
-//        // 從 appointment 資料表中抓取相關資料
-//        $appointment = AppointmentTime::findOrFail($validatedData['appointment_id']);
-//
-//        // 創建排程記錄
-//        $scheduleRecord = new ScheduleRecord();
-//        $scheduleRecord->master_id = $appointment->master_id; // 從 appointment 中取得 master_id
-//        $scheduleRecord->user_id = $userId;     // 從 appointment 中取得 user_id
-//        $scheduleRecord->appointment_time_id = $appointment->appointment_time_id; // 從 appointment 中取得 appointment_time_id
-//        $scheduleRecord->price = $validatedData['price'];
-//        $scheduleRecord->time_period = $validatedData['time_period'] ?? null;
-//        $scheduleRecord->payment_date = $validatedData['payment_date'] ?? null;
-//        $scheduleRecord->service_date = $validatedData['service_date'] ?? null;
-//        $scheduleRecord->is_recurring = $validatedData['is_recurring'] ?? false;
-//
-//        // 儲存資料
-//        $scheduleRecord->save();
-//
-//        // 回應或重導
-//        return redirect()->route('schedules.index')
-//            ->with('success', '排程記錄已成功新增！');
+        // 檢查該時段是否已被預約
+        $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
+            ->where('service_date', $request->service_date)
+            ->where('appointment_time_id', $request->appointment_time_id)
+            ->exists();
+
+        if ($isAlreadyBooked) {
+            return redirect()->back()->with('error', '該時段已被預約，請選擇其他時段');
+        }
+
         $user = Auth::user();
+        $appointmentTime = AppointmentTime::find($request->appointment_time_id);
         ScheduleRecord::create([
             'master_id' => $request->master_id,
             'user_id' => $user->id,
             'service_date' => $request->service_date,
             'appointment_time_id' => $request->appointment_time_id,
+            'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
             'status' => 0
         ]);
         $master = Master::find($request->master_id);
@@ -186,7 +175,7 @@ class ScheduleRecordController extends Controller
             'master_name' => $master->name,
             'user_name' => $user->name,
             'service_date' => $request->service_date,
-            'appointment_time' => $request->start_time . ' - ' . $request->end_time,
+            'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
 
         ];
 

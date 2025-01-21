@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('master_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('appointment_time_id');
-            $table->datetime('time_period')->nullable();
+            $table->datetime('appointment_time')->nullable();
             $table->datetime('payment_date')->nullable();
             $table->datetime('service_date')->nullable();
             $table->boolean('is_recurring')->default(false);
