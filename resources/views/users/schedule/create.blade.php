@@ -119,23 +119,30 @@
                     const events = [];
 
                     @if($appointmenttimes && $appointmenttimes->count() > 0)
-                    @foreach($appointmenttimes as $appointmenttime)
-                    events.push({
-                        title: '可預約',
-                        start: '{{ $appointmenttime->service_date }}', // 只使用日期，移除時間
-                        end: '{{ $appointmenttime->service_date }}',
-                        color: '#28a745', // 綠色表示可預約
-                        textColor: '#ffffff', // 白色文字
-                    });
-                    @endforeach
+                        {{-- 先收集所有有可預約時段的日期 --}}
+                        @php
+                            $availableDates = $appointmenttimes->pluck('service_date')->unique();
+                        @endphp
+
+                        {{-- 為每個日期添加一個 "可預約" 事件 --}}
+                        @foreach($availableDates as $date)
+                        events.push({
+                            title: '可預約',
+                            start: '{{ $date }}', // 只使用日期
+                            end: '{{ $date }}',
+                            color: '#28a745', // 綠色表示可預約
+                            textColor: '#ffffff', // 白色文字
+                        });
+                        @endforeach
                     @else
                     // 無可預約師傅，添加無法預約事件
-                    events.push({
-                        title: '無可預約師傅',
-                        color: '#dc3545', // 紅色表示無法預約
-                        textColor: '#ffffff', // 白色文字
-                    });
+                        events.push({
+                            title: '無可預約師傅',
+                            color: '#dc3545', // 紅色表示無法預約
+                            textColor: '#ffffff', // 白色文字
+                        });
                     @endif
+
 
                     // 使用 successCallback 返回事件
                     successCallback(events);
