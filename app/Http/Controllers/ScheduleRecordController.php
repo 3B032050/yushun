@@ -163,6 +163,7 @@ class ScheduleRecordController extends Controller
         ScheduleRecord::create([
             'master_id' => $request->master_id,
             'user_id' => $user->id,
+            'service_id' => $request->service_id,
             'service_date' => $request->service_date,
             'appointment_time_id' => $request->appointment_time_id,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,

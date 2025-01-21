@@ -20,4 +20,9 @@ class AdminServiceItem extends Model
         return $this->belongsToMany(MasterServiceArea::class, 'admin_master_area_relationship', 'admin_service_item_id', 'master_service_area_id');
     }
 
+    public function ScheduleRecord()
+    {
+        return $this->hasMany(ScheduleRecord::class);
+    }
+
 }

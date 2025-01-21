@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('master_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('appointment_time_id');
+            $table->unsignedBigInteger('service_id');
             $table->string('appointment_time')->nullable();
             $table->datetime('payment_date')->nullable();
             $table->datetime('service_date')->nullable();
@@ -27,6 +28,7 @@ return new class extends Migration
             $table->foreign('master_id')->references('id')->on('masters')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('appointment_time_id')->references('id')->on('appointment_times')->onDelete('cascade');
+            $table->foreign('service_id')->references('id')->on('admin_service_items')->onDelete('cascade');
         });
 
     }

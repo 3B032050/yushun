@@ -15,7 +15,7 @@ class ScheduleRecord extends Model
         'master_id',
         'user_id',
         'appointment_time_id',
-        //'price',
+        'service_id',
         'appointment_time',
         'payment_date',
         'service_date',
@@ -34,5 +34,9 @@ class ScheduleRecord extends Model
     public function master()
     {
         return $this->belongsTo(Master::class);
+    }
+    public function service()
+    {
+        return $this->belongsTo(AdminServiceItem::class);
     }
 }
