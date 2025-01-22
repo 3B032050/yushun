@@ -99,6 +99,14 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/uniforms/edit/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'edit'])->name('uniforms.edit');
         Route::patch('/uniforms/update/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'update'])->name('uniforms.update');
         Route::delete('/uniforms/destroy/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'destroy'])->name('uniforms.destroy');
+
+        //師傅管理
+        Route::get('/masters/index', [App\Http\Controllers\AdminMasterController::class, 'index'])->name('masters.index');
+        Route::get('/masters/create',[App\Http\Controllers\AdminMasterController::class,'create'])->name('masters.create');
+        Route::post('/masters/store', [App\Http\Controllers\AdminMasterController::class, 'store'])->name("masters.store");
+        Route::get('/masters/edit/{master}', [App\Http\Controllers\AdminMasterController::class, 'edit'])->name('masters.edit');
+        Route::patch('/masters/update/{master}', [App\Http\Controllers\AdminMasterController::class, 'update'])->name('masters.update');
+        Route::delete('/masters/destroy/{master}', [App\Http\Controllers\AdminMasterController::class, 'destroy'])->name('masters.destroy');
     });
 });
 
