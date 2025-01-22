@@ -20,13 +20,29 @@ class ScheduleRecordController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    { $userId = Auth::user();
+    {
 
-        $schedules = ScheduleRecord::where('user_id', $userId)->get();
+        // 檢查用戶是否已登入
+        $user = Auth::user();
 
+        if (!$user) {
+            // 如果未登入，重定向到登入頁面或顯示錯誤訊息
+            return redirect()->route('login')->with('error', '請先登入以檢視預約時段。');
+        }
 
+        // 查詢該用戶的預約時段
+        $schedules = ScheduleRecord::with('appointmenttime')->where('user_id', $user->id)->get();
+        //dd($schedules);
+
+        // 檢查是否有資料
+        if ($schedules->isEmpty()) {
+            // 可選：返回一個視圖，顯示無預約記錄的訊息
+            session()->flash('info', '目前尚無任何預約時段。');
+        }
+        // 傳遞資料到視圖
         return view('users.schedule.index', compact('schedules'));
     }
+
 
     /**
      * Show the form for creating a new resource.
