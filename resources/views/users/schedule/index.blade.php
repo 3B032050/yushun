@@ -3,6 +3,11 @@
 @section('title', '豫順清潔')
 
 @section('content')
+    @if(session('info'))
+        <div class="alert alert-info">
+            {{ session('info') }}
+        </div>
+    @endif
     @if(session('error'))
         <div class="alert alert-danger">
             {{ session('error') }}
@@ -29,14 +34,20 @@
 
     <!-- 日曆顯示區域 -->
     <div id="calendar"></div>
-
+{{--    @if($schedules->isEmpty())--}}
+{{--        <p>沒有預約資料</p>--}}
+{{--    @else--}}
+{{--        <p>有 {{ $schedules->count() }} 筆預約資料</p>--}}
+{{--    @endif--}}
 @endsection
 @push('styles')
     <style>
         #calendar {
             max-width: 100%;
             margin: 0 auto;
-            height: 600px;  /* 設置明確的高度 */
+            height: 600px;
+           /*min-height: 300px;*/
+            /* 設置明確的高度 */
         }
         .fc-event-delete-container {
             margin-top: 10px; /* 上方間隔 */
@@ -82,29 +93,32 @@
                 events: [
                         @foreach($schedules as $schedule)
                     {
-                        title: '{{ $schedule->user ? $schedule->user->name : "暫無客戶" }}',
-                        start: '{{ $schedule->service_date }}T{{ $schedule->start_time }}',
-                        end: '{{ $schedule->service_date }}T{{ $schedule->end_time }}',
-                        url: '{{ route('users.schedule.edit', $schedule->id) }}',
-                        color: '{{ $schedule->status == 1 ? "#28a745" : "#dc3545" }}', // 根據狀態設置顏色
+                        title: '師傅名稱{{ $schedule->master->name}}<br>已預約 {{ $schedule->appointment_time }} ',
+                        start: '{{ $schedule->service_date}}',
+                        end: '{{ $schedule->service_date}}',
+                        color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}', // 根據狀態設置顏色
                         id: '{{ $schedule->id }}', // 添加事件ID
                     },
                     @endforeach
                 ],
-                editable: true, // 可以拖拽修改
-                droppable: true, // 可以拖拽
+                // editable: true, // 可以拖拽修改
+                // droppable: true, // 可以拖拽
                 eventContent: function(arg) {
-                    // 這裡自定義事件的顯示方式
-                    var startTime = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    var endTime = arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    return {
+                        html: `<div class="fc-event-title">${arg.event.title}</div>`  // 只顯示 title
+                    };
+                    // 確保 start 和 end 時間不為 null
+                    var startTime = arg.event.start ? arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    var endTime = arg.event.end ? arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
 
                     return {
-                        html: `
-            <div class="fc-event-time">${startTime} - ${endTime}</div>
-            <div class="fc-event-title">${arg.event.title}</div>
-        `
-                    };
+                                html: `
+                <div class="fc-event-time">${startTime} - ${endTime}</div>
+                <div class="fc-event-title">${arg.event.title}</div>
+            `
+                            };
                 }
+
             });
 
             calendar.render(); // 渲染日曆

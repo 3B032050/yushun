@@ -29,51 +29,6 @@
 
     <!-- 日曆顯示區域 -->
     <div id="calendar"></div>
-
-{{--    <div class="container mt-5">--}}
-{{--        <h1 class="text-center">師傅可預約時段</h1>--}}
-
-{{--        <!-- 如果沒有資料 -->--}}
-{{--        @if($appointmenttimes->isEmpty())--}}
-{{--            <p class="text-center">目前沒有可用的預約時段。</p>--}}
-{{--        @else--}}
-{{--            <table class="table table-bordered text-center">--}}
-{{--                <thead>--}}
-{{--                <tr>--}}
-{{--                    <th>客戶名稱</th>--}}
-{{--                    <th>日期</th>--}}
-{{--                    <th>開始時間</th>--}}
-{{--                    <th>結束時間</th>--}}
-{{--                    <th>狀態</th>--}}
-{{--                    <th>操作</th>--}}
-{{--                </tr>--}}
-{{--                </thead>--}}
-{{--                <tbody>--}}
-{{--                @foreach($appointmenttimes as $appointmenttime)--}}
-{{--                    <tr>--}}
-{{--                        <td>{{ $appointmenttime->user ? $appointmenttime->user->name : '暫無客戶' }}</td>--}}
-{{--                        <td>{{ $appointmenttime->service_date }}</td>--}}
-{{--                        <td>{{ $appointmenttime->start_time }}</td>--}}
-{{--                        <td>{{ $appointmenttime->end_time }}</td>--}}
-{{--                        @if($appointmenttime->status == '1')--}}
-{{--                            <td class="text-success font-weight-bold">(已預約)</td>--}}
-{{--                        @elseif($appointmenttime->status == '0')--}}
-{{--                            <td class="text-danger font-weight-bold">(待預約)</td>--}}
-{{--                        @endif--}}
-{{--                        <td>--}}
-{{--                            <a href="{{ route('masters.appointmenttime.edit', $appointmenttime->id) }}" class="btn btn-primary">編輯</a>--}}
-{{--                            <form action="{{ route('masters.appointmenttime.destroy', $appointmenttime->id) }}" method="POST" style="display:inline;">--}}
-{{--                                @csrf--}}
-{{--                                @method('DELETE')--}}
-{{--                                <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這個時段嗎？')">刪除</button>--}}
-{{--                            </form>--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-{{--                @endforeach--}}
-{{--                </tbody>--}}
-{{--            </table>--}}
-{{--        @endif--}}
-{{--    </div>--}}
 @endsection
     @push('styles')
         <style>

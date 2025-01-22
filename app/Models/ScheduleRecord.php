@@ -29,7 +29,7 @@ class ScheduleRecord extends Model
     }
     public function appointmenttime()
     {
-        return $this->belongsTo(AppointmentTime::class);
+        return $this->belongsTo(AppointmentTime::class, 'appointment_time_id');
     }
     public function master()
     {
