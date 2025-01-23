@@ -164,6 +164,7 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
+       
         // 檢查該時段是否已被預約
         $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
             ->where('service_date', $request->service_date)
@@ -185,6 +186,14 @@ class ScheduleRecordController extends Controller
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
             'status' => 0
         ]);
+        AppointmentTime::where('id', $request->appointment_time_id)
+            ->where('master_id', $request->master_id)
+            ->update([
+                'user_id' => $user->id,
+                'status' => '1',
+            ]);
+
+
         $master = Master::find($request->master_id);
 
         // 構建郵件內容

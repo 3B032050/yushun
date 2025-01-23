@@ -23,14 +23,16 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center">
-        <form method="POST" style="max-width: 600px; width: 100%;" action="{{ route('masters.appointmenttime.update', $appointmenttime->id) }}">
+    <div class="d-flex justify-content-center align-items-start" style="min-height: 100vh; width: 100%;">
+        <div class="w-100" style="max-width: 800px;">
+        <!-- 更新時段表單 -->
+        <form method="POST" action="{{ route('masters.appointmenttime.update', $appointmenttime->id) }}" class="mb-3">
             @csrf
             @method('PATCH')
 
             <div class="form-group mb-3">
                 <label for="service_date">服務日期</label>
-                <input type="date" id="service_date" name="service_date" value="{{ old('service_date', $appointmenttime->service_date) }}" class="form-control" required>
+                <input type="date" id="service_date" name="service_date" value="{{ old('service_date', $appointmenttime->service_date) }}" class="form-control"  disabled required>
             </div>
 
             <div class="form-group mb-3">
@@ -45,14 +47,14 @@
 
             <button type="submit" class="btn btn-primary w-100">更新時段</button>
         </form>
-        <div class="d-flex justify-content-center">
-            <div class="form-group mb-3">
-                <form action="{{ route('masters.appointmenttime.destroy',  ['appointmenttime' => $appointmenttime->id]) }}" method="POST" style="display:inline;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger" onclick="return confirm('確定要刪除這個時段嗎？')">刪除</button>
-                </form>
-            </div>
-        </div>
+
+        <!-- 刪除時段表單 -->
+        <form action="{{ route('masters.appointmenttime.destroy', ['appointmenttime' => $appointmenttime->id]) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger w-100" onclick="return confirm('確定要刪除這個時段嗎？')">刪除</button>
+        </form>
     </div>
+
+
 @endsection

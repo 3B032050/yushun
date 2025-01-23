@@ -112,13 +112,12 @@ class MastersAppointmentTimeController extends Controller
 //        dd($request);
         // 驗證資料
         $validated = $request->validate([
-            'service_date' => 'required|date',
             'start_time' => 'required|after_or_equal:service_date', // start_time 必須在 service_date 之後
             'end_time' => 'required|after:start_time', // end_time 必須在 start_time 之後
         ]);
 
         // 先取得提交的資料
-        $updatedData = $request->only(['service_date', 'start_time', 'end_time']);
+        $updatedData = $request->only(['start_time', 'end_time']);
 
         // 比對每個欄位是否有變更
         $changes = [];

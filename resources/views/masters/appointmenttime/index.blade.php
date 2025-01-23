@@ -81,7 +81,7 @@
                 events: [
                         @foreach($appointmenttimes as $appointmenttime)
                     {
-                        title: '{{ $appointmenttime->user ? $appointmenttime->user->name : "暫無客戶" }}',
+                        title: '<b>客戶名稱：</b>{{ $appointmenttime->user ? $appointmenttime->user->name : "暫無客戶" }}<br><b>時段：</b>{{ $appointmenttime->start_time }} - {{ $appointmenttime->end_time }}',
                         start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
                         end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
                         url: '{{ route('masters.appointmenttime.edit', $appointmenttime->id) }}',
@@ -89,21 +89,26 @@
                         id: '{{ $appointmenttime->id }}', // 添加事件ID
                     },
                     @endforeach
+
                 ],
                 editable: true, // 可以拖拽修改
                 droppable: true, // 可以拖拽
                 eventContent: function(arg) {
-                    // 這裡自定義事件的顯示方式
+                    return {
+                        html: `<div class="fc-event-title">${arg.event.title}</div>`  // 只顯示 title
+                    };
+                    // 提取开始时间和结束时间
                     var startTime = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                    var endTime = arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                    var endTime = arg.event.end ? arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
 
                     return {
                         html: `
+            <div class="fc-event-title">${arg.event.title.replace(/\n/g, '<br>')}</div>
             <div class="fc-event-time">${startTime} - ${endTime}</div>
-            <div class="fc-event-title">${arg.event.title}</div>
         `
                     };
                 }
+
             });
 
             calendar.render(); // 渲染日曆
