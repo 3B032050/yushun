@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppointmentTime;
 use App\Http\Requests\StoreappointmenttimeRequest;
 use App\Http\Requests\UpdateappointmenttimeRequest;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -147,5 +148,60 @@ class MastersAppointmentTimeController extends Controller
         $appointmenttime->delete();
 
         return redirect()->route('masters.appointmenttime.index')->with('success', '刪除成功');
+    }
+    public function copy(Request $request)
+    {
+        // 獲取當前登入的師傅 ID
+        $masterId = Auth::guard('master')->id();
+
+        // 當前月的第一天和最後一天
+        $currentMonthStart = Carbon::now()->startOfMonth();
+        $currentMonthEnd = Carbon::now()->endOfMonth();
+        $targetMonth = $request->input('target_month', 1); // 1 表示下個月，2 表示下下個月，依此類推
+        // 根據選擇的目標月份來確定複製的時間範圍
+        $targetMonthOffset = $request->input('target_month', 1);
+        $targetMonthStart = $currentMonthStart->copy()->addMonths($targetMonthOffset);
+        $targetMonthEnd = $targetMonthStart->copy()->endOfMonth();
+
+        // 獲取當前月師傅的可預約時段
+        $currentMonthTimes = AppointmentTime::where('master_id', $masterId)
+            ->whereBetween('service_date', [$currentMonthStart, $currentMonthEnd])
+            ->get();
+
+        // 檢查是否有需要複製的時段
+        if ($currentMonthTimes->isEmpty()) {
+            return redirect()->route('masters.appointmenttime.index')->with('error', '本月無可複製的時段！');
+        }
+
+        foreach ($currentMonthTimes as $time) {
+            // 檢查下個月是否已經存在相同的時段
+            $exists = AppointmentTime::where('master_id', $masterId)
+                ->where('service_date', Carbon::parse($time->service_date)->addMonths($targetMonthOffset)) // 同一天的預約，檢查下個月
+                ->where(function ($query) use ($time) {
+                    // 檢查新預約的時間範圍是否與現有預約重疊
+                    $query->whereBetween('start_time', [$time->start_time, $time->end_time])
+                        ->orWhereBetween('end_time', [$time->start_time, $time->end_time])
+                        ->orWhere(function ($query) use ($time) {
+                            // 檢查現有預約的時間範圍是否包含新預約的時間範圍
+                            $query->where('start_time', '<', $time->start_time)
+                                ->where('end_time', '>', $time->end_time);
+                        });
+                })
+                ->exists();
+
+            if (!$exists) {
+                // 複製到下個月
+                AppointmentTime::create([
+                    'master_id' => $time->master_id,
+                    'service_date' => Carbon::parse($time->service_date)->addMonths($targetMonthOffset),
+                    'start_time' => $time->start_time,
+                    'end_time' => $time->end_time,
+                    'status' => '0', // 預設為可預約狀態
+                ]);
+            }
+        }
+
+        // 返回到時段管理頁面並顯示成功消息
+        return redirect()->route('masters.appointmenttime.index')->with('success', '時段已成功複製到下個月！');
     }
 }
