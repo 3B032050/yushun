@@ -39,4 +39,9 @@ class ScheduleRecord extends Model
     {
         return $this->belongsTo(AdminServiceItem::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // 確保外鍵名稱正確
+    }
 }

@@ -107,6 +107,9 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/masters/edit/{master}', [App\Http\Controllers\AdminMasterController::class, 'edit'])->name('masters.edit');
         Route::patch('/masters/update/{master}', [App\Http\Controllers\AdminMasterController::class, 'update'])->name('masters.update');
         Route::delete('/masters/destroy/{master}', [App\Http\Controllers\AdminMasterController::class, 'destroy'])->name('masters.destroy');
+
+        Route::get('schedules/index', [App\Http\Controllers\AdminScheduleController::class, 'index'])->name('schedules.index');
+        Route::get('schedules/getScheduleData', [App\Http\Controllers\AdminScheduleController::class, 'getScheduleData'])->name('schedules.getScheduleData');
     });
 });
 

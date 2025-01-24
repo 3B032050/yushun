@@ -128,16 +128,6 @@
                     </a>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fas fa-calendar-days fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>客戶管理</h3>
-                        </div>
-                    </button>
-                </div>
-                <div class="col-6 col-md-3 mb-2">
                     <a href="{{ route('admins.equipment.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-regular fa-calendar-plus fa-3x"></i>
@@ -188,14 +178,14 @@
                     </button>
                 </div>
                 <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
+                    <a href="{{ route('admins.schedules.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
                         </div>
                         <div>
                             <h3>排程管理</h3>
                         </div>
-                    </button>
+                    </a>
                 </div>
 
             @endif
