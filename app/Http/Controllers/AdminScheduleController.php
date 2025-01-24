@@ -29,8 +29,8 @@ class AdminScheduleController extends Controller
 
             return [
                 'title' => '客戶：' . ($schedule->user ? $schedule->user->name : '未知用戶'),
-                'start' => $schedule->service_date . 'T' . $startTime,
-                'end' => $schedule->service_date . 'T' . $endTime,
+                'start' => $schedule->service_date,
+                'end' => $schedule->service_date,
                 'description' => '狀態：' . ($schedule->status == 0 ? '已確認' : '待確認'),
                 'color' => $schedule->status == 0 ? '#28a745' : '#dc3545',
             ];
