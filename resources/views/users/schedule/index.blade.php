@@ -29,16 +29,28 @@
     </div>
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段</a> >
+        <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段</a>
     </div>
 
     <!-- 日曆顯示區域 -->
     <div id="calendar"></div>
-{{--    @if($schedules->isEmpty())--}}
-{{--        <p>沒有預約資料</p>--}}
-{{--    @else--}}
-{{--        <p>有 {{ $schedules->count() }} 筆預約資料</p>--}}
-{{--    @endif--}}
+
+    <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- 內容將透過 JS 動態填入 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('styles')
     <style>
@@ -81,47 +93,45 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
-            // 初始化 FullCalendar
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth', // 初始視圖是月份視圖
-                locale: 'zh-tw',  // 設置語言為繁體中文
+                initialView: 'dayGridMonth',
+                locale: 'zh-tw',
                 headerToolbar: {
-                    left: 'prev,next today', // 顯示上月、下月、今天
-                    center: 'title',         // 顯示標題
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay' // 月視圖、周視圖、日視圖
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: [
                         @foreach($schedules as $schedule)
                     {
-                        title: '師傅名稱{{ $schedule->master->name}}<br>已預約 {{ $schedule->appointment_time }} ',
-                        start: '{{ $schedule->service_date}}',
-                        end: '{{ $schedule->service_date}}',
-                        color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}', // 根據狀態設置顏色
-                        id: '{{ $schedule->id }}', // 添加事件ID
+                        title: '師傅名稱：{{ $schedule->master->name }}',
+                        start: '{{ $schedule->service_date }}',
+                        end: '{{ $schedule->service_date }}',
+                        price: '{{ $schedule->service->price }}',
+                        appointmentTime: '{{ $schedule->appointment_time }}',
+                        status: '{{ $schedule->status == 0 ? "已確認" : "待確認" }}',
+                        color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}',
+                        id: '{{ $schedule->id }}',
                     },
                     @endforeach
                 ],
-                // editable: true, // 可以拖拽修改
-                // droppable: true, // 可以拖拽
-                eventContent: function(arg) {
-                    return {
-                        html: `<div class="fc-event-title">${arg.event.title}</div>`  // 只顯示 title
-                    };
-                    // 確保 start 和 end 時間不為 null
-                    var startTime = arg.event.start ? arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
-                    var endTime = arg.event.end ? arg.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                eventClick: function(info) {
+                    // 設置 Modal 內的內容
+                    document.getElementById('modal-title').innerText = info.event.title;
+                    document.getElementById('modal-body').innerHTML = `
+                <p><strong>預約日期：</strong> ${info.event.start.toLocaleString()}</p>
+                <p><strong>預約時間：</strong> ${info.event.extendedProps.appointmentTime}</p>
+                <p><strong>金額：</strong> ${info.event.extendedProps.price}</p>
+                <p><strong>狀態：</strong> ${info.event.extendedProps.status}</p>
+            `;
 
-                    return {
-                                html: `
-                <div class="fc-event-time">${startTime} - ${endTime}</div>
-                <div class="fc-event-title">${arg.event.title}</div>
-            `
-                            };
+                    // 顯示 Modal
+                    var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
+                    myModal.show();
                 }
-
             });
 
-            calendar.render(); // 渲染日曆
+            calendar.render();
         });
     </script>
 @endpush

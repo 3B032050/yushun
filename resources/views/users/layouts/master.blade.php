@@ -205,6 +205,35 @@
         vertical-align: middle; /* 垂直置中 */
         text-align: center;     /* 文字水平置中 */
     }
+    <style>
+     #calendar {
+         max-width: 100%;
+         margin: 0 auto;
+         height: 600px;
+         /*min-height: 300px;*/
+         /* 設置明確的高度 */
+     }
+    .fc-event-delete-container {
+        margin-top: 10px; /* 上方間隔 */
+        display: block;   /* 確保容器占滿整行 */
+        text-align: center; /* 可選，讓刪除按鈕居中 */
+    }
+
+    .fc-event-delete {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        font-size: 12px;
+        cursor: pointer;
+        display: block; /* 確保按鈕是塊級元素 */
+        margin: 0 auto; /* 居中對齊按鈕 */
+    }
+
+    .fc-event-delete:hover {
+        background-color: #c82333;
+    }
+</style>
 </style>
 
 @stack('scripts')
