@@ -43,6 +43,11 @@
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="service_price">價格</label>
+                <p id="service_price" class="form-control-static">請選擇服務項目</p>
+            </div>
+
             <!-- 師傅選擇 -->
             <div class="form-group">
                 <label for="master_id">選擇師傅</label>
@@ -169,31 +174,48 @@
             calendar.render();
 
             serviceSelect.addEventListener('change', function () {
-
                 const serviceId = this.value;
+                const servicePriceElement = document.getElementById('service_price');
+
                 console.log('Service ID:', serviceId);
+
                 // 確認是否已選擇日期
                 if (!selectedDate) {
                     alert('請先選擇日期');
-                    return; // 停止執行後續程式
+                    return;
                 }
+
                 masterSelect.innerHTML = '<option value="">加載中...</option>';
                 masterSelect.disabled = true;
 
                 availableTimesSelect.innerHTML = '<option value="">請先選擇師傅</option>';
                 availableTimesSelect.disabled = true;
 
+                // 透過 AJAX 獲取對應的價格
+                fetch(`{{ url('users/schedule/getServicePrice') }}?service_id=${serviceId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            servicePriceElement.textContent = `NT$ ${data.price}`;
+                        } else {
+                            servicePriceElement.textContent = '無法獲取價格';
+                        }
+                    })
+                    .catch(error => {
+                        servicePriceElement.textContent = '錯誤: 無法獲取價格';
+                        console.error('Error:', error);
+                    });
+
+                // 取得可預約的師傅
                 fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}`)
                     .then(response => response.json())
                     .then(data => {
                         console.log('Data received:', data);
 
                         if (data.status === 'empty') {
-                            // 後端返回沒有師傅的訊息
                             masterSelect.innerHTML = '<option value="">該師傅當日無可預約時段</option>';
                             masterSelect.disabled = true;
                         } else if (data.status === 'success' && data.data.length > 0) {
-                            // 有師傅資料時，顯示師傅選項
                             masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
                             data.data.forEach(master => {
                                 const option = document.createElement('option');
@@ -204,7 +226,6 @@
 
                             masterSelect.disabled = false;
                         } else {
-                            // 其他錯誤情況
                             masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
                             masterSelect.disabled = true;
                         }

@@ -60,39 +60,19 @@ class ScheduleRecordController extends Controller
         return view('users.schedule.create', $data);
 
     }
-//    public function (Request $request)
-//    {
-//        $date = $request->query('date');
-//        $masterId = $request->query('master_id');
-//        $serviceAreaId = $request->query('service_area');
-//
-//        // 確保傳入的參數存在
-//        if (!$date || !$masterId || !$serviceAreaId) {
-//            return response()->json(['message' => '請提供日期、師傅與服務地區'], 400);
-//        }
-//        //dd($date);
-//        // 查找該日期、師傅和服務區域的可用時段
-//        $appointmentTimes = AppointmentTime::with('master', 'serviceArea')
-//            ->where('service_date', $date)
-//            ->where('master_id', $masterId)
-//            ->where('service_area_id', $serviceAreaId)
-//            ->get();
-//
-//        if ($appointmentTimes->isEmpty()) {
-//            return response()->json(['message' => '該日期沒有可用的時段'], 404);
-//        }
-//
-//        // 返回可預約的時段
-//        $times = $appointmentTimes->map(function ($appointmentTime) {
-//            return [
-//                'id' => $appointmentTime->id,
-//                'start_time' => $appointmentTime->start_time,
-//                'end_time' => $appointmentTime->end_time,
-//            ];
-//        });
-//
-//        return response()->json($times);
-//    }
+
+    public function getServicePrice(Request $request)
+    {
+        $serviceId = $request->query('service_id');
+        $service = AdminServiceItem::find($serviceId);
+
+        if (!$service) {
+            return response()->json(['status' => 'error', 'message' => '找不到服務項目'], 404);
+        }
+
+        return response()->json(['status' => 'success', 'price' => $service->price]);
+    }
+
     public function available_masters(Request $request)
     {
         $date = $request->query('date');
@@ -164,7 +144,7 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
-       
+
         // 檢查該時段是否已被預約
         $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
             ->where('service_date', $request->service_date)
