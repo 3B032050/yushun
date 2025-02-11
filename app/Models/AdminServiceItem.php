@@ -22,7 +22,7 @@ class AdminServiceItem extends Model
 
     public function ScheduleRecord()
     {
-        return $this->hasMany(ScheduleRecord::class);
+        return $this->hasMany(ScheduleRecord::class, 'service_id');
     }
 
 }

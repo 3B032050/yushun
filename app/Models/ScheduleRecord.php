@@ -37,7 +37,7 @@ class ScheduleRecord extends Model
     }
     public function service()
     {
-        return $this->belongsTo(AdminServiceItem::class);
+        return $this->belongsTo(AdminServiceItem::class, 'service_id');
     }
 
     public function user()

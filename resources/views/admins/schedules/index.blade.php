@@ -27,7 +27,22 @@
         <!-- 行事曆 -->
         <div id="calendar"></div>
     </div>
-
+    <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal-title">事件詳情</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- 這裡會透過 JavaScript 動態填充內容 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @push('styles')
     <style>
@@ -97,11 +112,25 @@
                 eventContent: function(arg) {
                     return {
                         html: `
-                    <div class="fc-event-title">${arg.event.title}</div>
-                    <div class="fc-event-description">${arg.event.extendedProps.description}</div>
-                `
+                <div class="fc-event-title">${arg.event.title}</div>
+                <div class="fc-event-description">${arg.event.extendedProps.description}</div>
+            `
                     };
+                },
+                eventClick: function(info) {
+                    console.log("點擊事件資料：", info.event.extendedProps);
+                    document.getElementById('modal-title').innerText = info.event.title;
+                    document.getElementById('modal-body').innerHTML = `
+                    <p><strong>日期：</strong> ${info.event.start.toLocaleString()}</p>
+                    <p><strong>時間：</strong> ${info.event.extendedProps.time ?? '未設定'}</p>
+                    <p><strong>金額：</strong> ${info.event.extendedProps.price ?? '未提供'}</p>
+                    <p><strong>狀態：</strong> ${info.event.extendedProps.description}</p>
+                `;
+
+                    var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
+                    myModal.show();
                 }
+
             });
 
             calendar.render();
