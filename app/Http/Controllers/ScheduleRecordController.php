@@ -11,6 +11,7 @@ use App\Models\ScheduleRecord;
 use App\Http\Requests\StoreschedulerecordRequest;
 use App\Http\Requests\UpdateschedulerecordRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -164,53 +165,130 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
-       
-        // 檢查該時段是否已被預約
+        $appointmentTime = AppointmentTime::find($request->appointment_time_id);
+
+        if (!$appointmentTime) {
+            return redirect()->back()->with('error', '預約時段不存在！');
+        }
+
+        $user = Auth::user();
+
+// 檢查當天的時段是否已被預約
         $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
             ->where('service_date', $request->service_date)
             ->where('appointment_time_id', $request->appointment_time_id)
+            ->where('status', 1) // 只檢查已確認的排程
             ->exists();
 
         if ($isAlreadyBooked) {
             return redirect()->back()->with('error', '該時段已被預約，請選擇其他時段');
         }
+        // **處理定期預約**
+        if ($request->boolean('is_recurring') && $request->recurring_interval > 0) {
+            $intervalDays = (int) $request->recurring_interval; // 每隔幾天預約一次
 
-        $user = Auth::user();
-        $appointmentTime = AppointmentTime::find($request->appointment_time_id);
-        ScheduleRecord::create([
-            'master_id' => $request->master_id,
-            'user_id' => $user->id,
-            'service_id' => $request->service_id,
-            'service_date' => $request->service_date,
-            'appointment_time_id' => $request->appointment_time_id,
-            'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
-            'status' => 0
-        ]);
-        AppointmentTime::where('id', $request->appointment_time_id)
-            ->where('master_id', $request->master_id)
-            ->update([
+            for ($i = 1; $i <= 5; $i++) { // 預設新增 5 次排程
+                $futureDate = Carbon::parse($request->service_date)->addDays($intervalDays * $i);
+
+                // 檢查該未來日期是否已有相同的預約，且該時段可預約（status = 0）
+                $existingTime = AppointmentTime::where('master_id', $request->master_id)
+                    ->where('service_date', $futureDate->toDateString())
+                    ->where('start_time', $appointmentTime->start_time)
+                    ->where('end_time', $appointmentTime->end_time)
+                    ->where('status', 0) // 該時段為可預約
+                    ->first(); // 如果找到該時段則返回
+
+                // 如果沒有找到該時段，則新增該時段
+                if (!$existingTime) {
+                    // **新增 `AppointmentTime` 可預約時段（狀態：待確認）**
+                    $newAppointment = AppointmentTime::create([
+                        'master_id' => $request->master_id,
+                        'service_date' => $futureDate->toDateString(),
+                        'start_time' => $appointmentTime->start_time,
+                        'end_time' => $appointmentTime->end_time,
+                        'status' => 0, // 0 代表可預約
+                    ]);
+                } else {
+                    // 如果該時段已經存在，只需用 `existingTime` 即可
+                    $newAppointment = $existingTime;
+                }
+
+                // 檢查 `ScheduleRecord` 是否已存在該排程，避免重複
+                $existingSchedule = ScheduleRecord::where('master_id', $request->master_id)
+                    ->where('service_date', $futureDate->toDateString())
+                    ->where('appointment_time_id', $newAppointment->id) // 使用新的或已存在的 `appointment_time_id`
+                    ->exists();
+
+                if (!$existingSchedule)
+                {
+                    // **新增 `ScheduleRecord` 排程（狀態：待確認）**
+                    ScheduleRecord::create([
+                        'master_id' => $request->master_id,
+                        'user_id' => $user->id,
+                        'service_id' => $request->service_id,
+                        'service_date' => $futureDate->toDateString(),
+                        'appointment_time_id' => $newAppointment->id, // 使用 `appointment_time_id`
+                        'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time, // 使用 start_time 和 end_time
+                        'status' => 0, // 0 代表待確認
+
+                    ]);
+                    AppointmentTime::where('id',  $newAppointment->id)
+                        ->where('master_id', $request->master_id)
+                        ->update([
+                            'user_id' => $user->id,
+                            'status' => 0, // 0 代確認
+                        ]);
+                }
+            }
+        }
+        else
+        {
+            // **建立當天的排程紀錄**
+            ScheduleRecord::create([
+                'master_id' => $request->master_id,
                 'user_id' => $user->id,
-                'status' => '1',
+                'service_id' => $request->service_id,
+                'service_date' => $request->service_date,
+                'appointment_time_id' => $request->appointment_time_id,
+                'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
+                'status' => 1 // 已確認
             ]);
 
+            // **更新該時段狀態為「已預約」**
+            AppointmentTime::where('id', $request->appointment_time_id)
+                ->where('master_id', $request->master_id)
+                ->update([
+                    'user_id' => $user->id,
+                    'status' => 1, // 1 代表已預約
+                ]);
+        }
 
+        // 發送郵件
+        $this->sendAppointmentConfirmationEmail($appointmentTime, $request, $user);
+
+        return redirect()->route('users.schedule.index')->with('success', '預約成功');
+    }
+
+    /**
+     * 發送預約確認郵件
+     */
+    private function sendAppointmentConfirmationEmail($appointmentTime, $request, $user)
+    {
         $master = Master::find($request->master_id);
-
-        // 構建郵件內容
         $appointmentDetails = [
             'master_name' => $master->name,
             'user_name' => $user->name,
             'service_date' => $request->service_date,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
-
         ];
 
-        // 發送郵件給師傅
-        Mail::to($master->email)->send(new AppointmentConfirmation($appointmentDetails));
+        if (!empty($master->email)) {
+            Mail::to($master->email)->send(new AppointmentConfirmation($appointmentDetails));
+        }
 
-        // 發送郵件給客戶
-        Mail::to($user->email)->send(new AppointmentConfirmation($appointmentDetails));
-        return redirect()->route('users.schedule.index')->with('success', '預約成功');
+        if (!empty($user->email)) {
+            Mail::to($user->email)->send(new AppointmentConfirmation($appointmentDetails));
+        }
     }
 
     /**

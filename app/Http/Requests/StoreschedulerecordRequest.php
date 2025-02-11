@@ -28,4 +28,12 @@ class StoreschedulerecordRequest extends FormRequest
 //            'available_times' => 'required|exists:appointments,id',  // 修正名稱對應
         ];
     }
+    public function messages()
+    {
+        return [
+            'recurring_interval.required_if' => '請輸入定期預約的間隔天數。',
+            'recurring_interval.integer' => '定期預約的間隔天數必須是數字。',
+            'recurring_interval.min' => '定期預約的間隔天數必須大於 0。',
+        ];
+    }
 }

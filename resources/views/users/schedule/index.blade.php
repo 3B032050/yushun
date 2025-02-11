@@ -96,7 +96,7 @@
                         title: '師傅名稱{{ $schedule->master->name}}<br>已預約 {{ $schedule->appointment_time }} ',
                         start: '{{ $schedule->service_date}}',
                         end: '{{ $schedule->service_date}}',
-                        color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}', // 根據狀態設置顏色
+                        color: '{{ $schedule->status == 1 ? "#28a745" : "#dc3545" }}', // 根據狀態設置顏色
                         id: '{{ $schedule->id }}', // 添加事件ID
                     },
                     @endforeach
