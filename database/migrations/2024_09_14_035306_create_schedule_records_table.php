@@ -21,7 +21,8 @@ return new class extends Migration
             $table->datetime('payment_date')->nullable();
             $table->datetime('service_date')->nullable();
             $table->boolean('is_recurring')->default(false);
-            $table->string('status');
+            $table->integer('recurring_interval')->nullable(); // 存放間隔天數
+            $table->tinyInteger('status')->default(0); // 0: 未確認, 1: 已確認, 2: 已完成
             $table->timestamps();
 
             // 外鍵約束

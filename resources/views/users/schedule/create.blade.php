@@ -31,7 +31,20 @@
         <form id="schedule-form" action="{{ route('users.schedule.store') }}" method="POST">
             @csrf
             <input type="hidden" id="selected_date" name="service_date">
-
+            <label>
+                <input type="checkbox" name="is_recurring" id="is_recurring">
+                是否為定期客戶
+            </label>
+            <!-- 顯示錯誤訊息 -->
+            @if ($errors->has('recurring_interval'))
+                <p class="text-danger">{{ $errors->first('recurring_interval') }}</p>
+            @endif
+            <div class="form-group">
+            <div id="recurring_options" style="display: none;">
+                    <label>每隔幾天預約一次：</label>
+                    <input type="number" name="recurring_interval" min="1">
+                </div>
+            </div>
             <!-- 服務項目選擇 -->
             <div class="form-group">
                 <label for="service_id">選擇服務項目</label>
@@ -95,7 +108,9 @@
                     modal.classList.add('hidden');
                 });
             });
-
+            document.getElementById('is_recurring').addEventListener('change', function () {
+                document.getElementById('recurring_options').style.display = this.checked ? 'block' : 'none';
+            });
             // confirmButton.addEventListener('click', function (event) {
             //     event.preventDefault();  // 阻止表單的預設提交
             //
@@ -273,6 +288,8 @@
                     });
             });
         });
+
+
     </script>
 
 

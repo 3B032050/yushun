@@ -104,6 +104,7 @@
                 events: [
                         @foreach($schedules as $schedule)
                     {
+
                         title: '師傅名稱：{{ $schedule->master->name }}',
                         start: '{{ $schedule->service_date }}',
                         end: '{{ $schedule->service_date }}',
