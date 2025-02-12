@@ -119,17 +119,27 @@
                 },
                 eventClick: function(info) {
                     console.log("點擊事件資料：", info.event.extendedProps);
+
+                    // 只顯示年月日
+                    const formattedDate = info.event.start.toLocaleDateString('zh-TW', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
                     document.getElementById('modal-title').innerText = info.event.title;
                     document.getElementById('modal-body').innerHTML = `
-                    <p><strong>日期：</strong> ${info.event.start.toLocaleString()}</p>
-                    <p><strong>時間：</strong> ${info.event.extendedProps.time ?? '未設定'}</p>
+                    <p><strong>服務日期：</strong> ${formattedDate}</p>
+                    <p><strong>服務時間：</strong> ${info.event.extendedProps.time ?? '未設定'}</p>
+                    <p><strong>服務內容：</strong> ${info.event.extendedProps.service ?? '未提供'}</p>
                     <p><strong>金額：</strong> ${info.event.extendedProps.price ?? '未提供'}</p>
                     <p><strong>狀態：</strong> ${info.event.extendedProps.description}</p>
-                `;
+                    `;
 
                     var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
                     myModal.show();
                 }
+
 
             });
 

@@ -109,21 +109,16 @@
                         start: '{{ $schedule->service_date }}',
                         end: '{{ $schedule->service_date }}',
                         price: '{{ $schedule->service->price }}',
+                        service: '{{ $schedule->service->name }}',
                         appointmentTime: '{{ $schedule->appointment_time }}',
-                        status: '{{
-                            $schedule->status == 1 ? "已確認" :
-                            ($schedule->status == 2 ? "已完成" :
-                            ($schedule->status == 3 ? "不成立" :
-                            ($schedule->status == 4 ? "取消" : "待確認")))
-                        }}',
 
-                        color: '{{
-                        $schedule->status == 1 ? "#28a745" :  // 綠色：已確認
-                            ($schedule->status == 2 ? "#007bff" : // 藍色：已完成
-                            ($schedule->status == 3 ? "#6c757d" : // 灰色：不成立
-                            ($schedule->status == 4 ? "#ffc107" : // 黃色：取消
-                            "#dc3545"))) // 紅色：待確認
-                        }}',
+                        status: '{{ $schedule->status == 0 ? "待確認" :
+                                   ($schedule->status == 1 ? "已確認" :
+                                   ($schedule->status == 2 ? "已完成" :
+                                   ($schedule->status == 3 ? "不成立" :
+                                   ($schedule->status == 4 ? "已取消" : "未知狀態"))))}}',
+                        color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}',
+
                         id: '{{ $schedule->id }}',
                     },
                     @endforeach
@@ -131,12 +126,21 @@
                 eventClick: function(info) {
                     // 設置 Modal 內的內容
                     document.getElementById('modal-title').innerText = info.event.title;
+
+                    // 只顯示 年-月-日
+                    const eventDate = new Date(info.event.start).toLocaleDateString('zh-TW', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+
                     document.getElementById('modal-body').innerHTML = `
-                <p><strong>預約日期：</strong> ${info.event.start.toLocaleString()}</p>
-                <p><strong>預約時間：</strong> ${info.event.extendedProps.appointmentTime}</p>
-                <p><strong>金額：</strong> ${info.event.extendedProps.price}</p>
-                <p><strong>狀態：</strong> ${info.event.extendedProps.status}</p>
-            `;
+                    <p><strong>預約日期：</strong> ${eventDate}</p>
+                    <p><strong>預約時間：</strong> ${info.event.extendedProps.appointmentTime}</p>
+                    <p><strong>服務內容：</strong> ${info.event.extendedProps.service}</p>
+                    <p><strong>金額：</strong> ${info.event.extendedProps.price}</p>
+                    <p><strong>狀態：</strong> ${info.event.extendedProps.status}</p>
+                    `;
 
                     // 顯示 Modal
                     var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));

@@ -127,16 +127,19 @@
                 events: [
                         @foreach($appointmenttimes as $index => $appointmenttime)
                     {
-                        title: {!! json_encode('<b>客戶名稱：</b>' . ($appointmenttime->user ? $appointmenttime->user->name : "暫無客戶") . '<br><b>時段：</b>' . $appointmenttime->start_time . ' - ' . $appointmenttime->end_time) !!},
+                        title: {!! json_encode('<b>客戶名稱：</b>' . ($appointmenttime->user ? $appointmenttime->user->name : "暫無客戶") .
+                            '<br><b>時段：</b>' . $appointmenttime->start_time . ' - ' . $appointmenttime->end_time .
+                            '<br><b>狀態：</b>' .
+                            ($appointmenttime->status == 1 ? "已確認" :
+                            ($appointmenttime->status == 2 ? "已完成" :
+                            ($appointmenttime->status == 3 ? "不成立" :
+                            ($appointmenttime->status == 4 ? "取消" : "待確認"))))
+                        ) !!},
+
                         start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
                         end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
                         url: '{{ route('masters.appointmenttime.edit', $appointmenttime->id) }}',
-                        status: {!! json_encode(
-                            $appointmenttime->status == 1 ? "已確認" :
-                            ($appointmenttime->status == 2 ? "已完成" :
-                            ($appointmenttime->status == 3 ? "不成立" :
-                            ($appointmenttime->status == 4 ? "取消" : "待確認")))
-                        ) !!},
+
                         color: {!! json_encode(
                             $appointmenttime->status == 1 ? "#28a745" :  // 綠色：已確認
                             ($appointmenttime->status == 2 ? "#007bff" : // 藍色：已完成
