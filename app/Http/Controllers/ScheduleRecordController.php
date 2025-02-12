@@ -155,7 +155,7 @@ class ScheduleRecordController extends Controller
 
         $user = Auth::user();
 
-// 檢查當天的時段是否已被預約
+        // 檢查當天的時段是否已被預約
         $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
             ->where('service_date', $request->service_date)
             ->where('appointment_time_id', $request->appointment_time_id)
