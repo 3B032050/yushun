@@ -37,15 +37,22 @@
 
             <div class="form-group mb-3">
                 <label for="start_time">開始時間</label>
-                <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1" required>
+                <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1" disabled required>
             </div>
 
             <div class="form-group mb-3">
                 <label for="end_time">結束時間</label>
-                <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1" required>
+                <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1" disabled required>
             </div>
-
-            <button type="submit" class="btn btn-primary w-100">更新時段</button>
+            @if($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
+                <div class="d-flex justify-content-between">
+                    <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
+                    <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
+                </div>
+            @else
+                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>
+                <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a>
+            @endif
         </form>
 
         <!-- 刪除時段表單 -->

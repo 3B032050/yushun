@@ -110,8 +110,20 @@
                         end: '{{ $schedule->service_date }}',
                         price: '{{ $schedule->service->price }}',
                         appointmentTime: '{{ $schedule->appointment_time }}',
-                        status: '{{ $schedule->status == 0 ? "已確認" : "待確認" }}',
-                        color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}',
+                        status: '{{
+                            $schedule->status == 1 ? "已確認" :
+                            ($schedule->status == 2 ? "已完成" :
+                            ($schedule->status == 3 ? "不成立" :
+                            ($schedule->status == 4 ? "取消" : "待確認")))
+                        }}',
+
+                        color: '{{
+                        $schedule->status == 1 ? "#28a745" :  // 綠色：已確認
+                            ($schedule->status == 2 ? "#007bff" : // 藍色：已完成
+                            ($schedule->status == 3 ? "#6c757d" : // 灰色：不成立
+                            ($schedule->status == 4 ? "#ffc107" : // 黃色：取消
+                            "#dc3545"))) // 紅色：待確認
+                        }}',
                         id: '{{ $schedule->id }}',
                     },
                     @endforeach

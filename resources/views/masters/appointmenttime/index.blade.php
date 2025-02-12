@@ -125,15 +125,28 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay' // 月視圖、周視圖、日視圖
                 },
                 events: [
-                        @foreach($appointmenttimes as $appointmenttime)
+                        @foreach($appointmenttimes as $index => $appointmenttime)
                     {
-                        title: '<b>客戶名稱：</b>{{ $appointmenttime->user ? $appointmenttime->user->name : "暫無客戶" }}<br><b>時段：</b>{{ $appointmenttime->start_time }} - {{ $appointmenttime->end_time }}',
+                        title: {!! json_encode('<b>客戶名稱：</b>' . ($appointmenttime->user ? $appointmenttime->user->name : "暫無客戶") . '<br><b>時段：</b>' . $appointmenttime->start_time . ' - ' . $appointmenttime->end_time) !!},
                         start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
                         end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
                         url: '{{ route('masters.appointmenttime.edit', $appointmenttime->id) }}',
-                        color: '{{ $appointmenttime->status == 1 ? "#28a745" : "#dc3545" }}', // 根據狀態設置顏色
-                        id: '{{ $appointmenttime->id }}', // 添加事件ID
-                    },
+                        status: {!! json_encode(
+                            $appointmenttime->status == 1 ? "已確認" :
+                            ($appointmenttime->status == 2 ? "已完成" :
+                            ($appointmenttime->status == 3 ? "不成立" :
+                            ($appointmenttime->status == 4 ? "取消" : "待確認")))
+                        ) !!},
+                        color: {!! json_encode(
+                            $appointmenttime->status == 1 ? "#28a745" :  // 綠色：已確認
+                            ($appointmenttime->status == 2 ? "#007bff" : // 藍色：已完成
+                            ($appointmenttime->status == 3 ? "#6c757d" : // 灰色：不成立
+                            ($appointmenttime->status == 4 ? "#ffc107" : // 黃色：取消
+                            "#dc3545"))) // 紅色：待確認
+                        ) !!},
+                        id: '{{ $appointmenttime->id }}'
+                    }
+                    @if (!$loop->last), @endif
                     @endforeach
 
                 ],
