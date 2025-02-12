@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AppointmentConfirmation;
 use App\Models\AppointmentTime;
 use App\Http\Requests\StoreappointmenttimeRequest;
 use App\Http\Requests\UpdateappointmenttimeRequest;
+use App\Models\Master;
+use App\Models\ScheduleRecord;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class MastersAppointmentTimeController extends Controller
 {
@@ -139,22 +143,44 @@ class MastersAppointmentTimeController extends Controller
             if ($request->action == 'accept') {
                 // 設置狀態為已確認
                 $appointmenttime->status = 1;
+                ScheduleRecord::where('id', $request->appointment_time_id)
+                    ->where('master_id', $request->master_id)
+                    ->update([
+                        'status' => 1, // 1 代表已預約
+                    ]);
+                $user = $appointmenttime->user;
+                $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $user);
+
             } elseif ($request->action == 'reject') {
                 // 設置狀態為不成立
                 $appointmenttime->status = 3;
             }
-
             // 保存狀態更改
             $appointmenttime->save();
             return redirect()->route('masters.appointmenttime.index')->with('success', '訂單已更新');
         }
-
-
             // 如果沒有變更資料，可以返回提示訊息或做其他處理
         return redirect()->back()->with('error', '沒有選擇任何動作，請重新操作');
     }
 
+    private function sendAppointmentConfirmationEmail($appointmentTime, $request, $user)
+    {
+        $master = Auth::guard('master');
+        $appointmentDetails = [
+            'master_name' => $master->name,
+            'user_name' => $user->name,
+            'service_date' => $appointmentTime->service_date,
+            'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
+        ];
 
+        if (!empty($master->email)) {
+            Mail::to($master->email)->send(new AppointmentConfirmation($appointmentDetails));
+        }
+
+        if (!empty($user->email)) {
+            Mail::to($user->email)->send(new AppointmentConfirmation($appointmentDetails));
+        }
+    }
     /**
      * Remove the specified resource from storage.
      */

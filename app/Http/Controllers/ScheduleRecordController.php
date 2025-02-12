@@ -223,8 +223,6 @@ class ScheduleRecordController extends Controller
                 }
             }
         }
-        else
-        {
             // **建立當天的排程紀錄**
             ScheduleRecord::create([
                 'master_id' => $request->master_id,
@@ -243,7 +241,6 @@ class ScheduleRecordController extends Controller
                     'user_id' => $user->id,
                     'status' => 1, // 1 代表已預約
                 ]);
-        }
 
         // 發送郵件
         $this->sendAppointmentConfirmationEmail($appointmentTime, $request, $user);
