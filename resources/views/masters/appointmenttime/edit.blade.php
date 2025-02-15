@@ -49,6 +49,12 @@
                 <label for="service">服務項目</label>
                 <input type="text" id="service" name="service" value="{{ old('service', $appointmenttime->schedulerecord->service->name) }}" class="form-control" step="1" disabled required>
             </div>
+
+            <div class="form-group mb-3">
+                <label for="name">客戶名稱</label>
+                <input type="text" id="name" name="name" value="{{ old('name', $appointmenttime->user->name) }}" class="form-control" step="1" disabled required>
+            </div>
+
             @if($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
                 <div class="d-flex justify-content-between">
                     <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
