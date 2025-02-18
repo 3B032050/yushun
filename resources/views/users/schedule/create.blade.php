@@ -17,7 +17,7 @@
     <div class="container-fluid px-4">
         <div style="margin-top: 10px;">
             <p style="font-size: 1.8em;">
-                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
                 <a href="{{ route('users.schedule.index') }}" class="custom-link">預約時段</a> &gt;
                 新增預約時段
             </p>
@@ -43,6 +43,21 @@
             <div id="recurring_options" style="display: none;">
                     <label>每隔幾天預約一次：</label>
                     <input type="number" name="recurring_interval" min="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>選擇服務地址：</label>
+                <div>
+                    <input type="radio" name="address_option" id="use_profile_address" value="profile" checked>
+                    <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
+                </div>
+                <div>
+                    <input type="radio" name="address_option" id="use_custom_address" value="custom">
+                    <label for="use_custom_address">手動輸入服務地址</label>
+                </div>
+                <div class="form-group" id="custom_address_container" style="display: none;">
+                    <label for="service_address">輸入服務地址：</label>
+                    <input type="text" id="service_address" name="service_address" class="form-control" placeholder="請輸入服務地址">
                 </div>
             </div>
             <!-- 服務項目選擇 -->
@@ -87,7 +102,6 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/locales/zh-tw.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -102,7 +116,12 @@
             const confirmButton = document.getElementById('confirm-schedule');
             const scheduleForm = document.getElementById('schedule-form');
             let selectedDate = null;
-
+            //地址
+            const addressOptionProfile = document.getElementById('use_profile_address');
+            const addressOptionCustom = document.getElementById('use_custom_address');
+            const customAddressContainer = document.getElementById('custom_address_container');
+            const servicePriceElement = document.getElementById('service_price');
+            const serviceAddressInput = document.getElementById('service_address');
             closeModalButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     modal.classList.add('hidden');
@@ -111,21 +130,32 @@
             document.getElementById('is_recurring').addEventListener('change', function () {
                 document.getElementById('recurring_options').style.display = this.checked ? 'block' : 'none';
             });
-            // confirmButton.addEventListener('click', function (event) {
-            //     event.preventDefault();  // 阻止表單的預設提交
-            //
-            //     const selectedDate = document.getElementById('selected_date').value;
-            //     const masterId = document.getElementById('master_id').value;
-            //     const serviceId = document.getElementById('service_id').value;
-            //     const availableTime = document.getElementById('available_times').value;  // 修正抓取值
-            //
-            //     if (!selectedDate || !masterId || !serviceId || !availableTime) {
-            //         alert('請確保所有選項都已填寫完整');
-            //         return;
-            //     }
-            //
-            //     scheduleForm.submit();  // 提交表單
-            // });
+            // 預設隱藏手動輸入的輸入框(地址)
+            if (addressOptionProfile.checked) {
+                customAddressContainer.style.display = 'none';
+            }
+
+            addressOptionProfile.addEventListener('change', function() {
+                customAddressContainer.style.display = 'none';
+            });
+
+            addressOptionCustom.addEventListener('change', function() {
+                customAddressContainer.style.display = 'block';
+            });
+            //serviceSelect.addEventListener('change', function () {
+                const serviceId = this.value;
+                let serviceAddress = '';
+
+                // 根據選擇的地址來設定服務地址
+                if (addressOptionCustom.checked) {
+                    serviceAddress = serviceAddressInput.value.trim();  // 去除前後空白
+                } else {
+                    serviceAddress = '{{ Auth::user()->address }}'.trim(); // 確保是完整地址
+                }
+
+                console.log('使用的地址:', serviceAddress);  // 確保地址是正確
+
+            //});
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -167,12 +197,9 @@
                     // 使用 successCallback 返回事件
                     successCallback(events);
                 },
-                eventRender: function(info) {
-                    // 使用 CSS 居中標題
-                    const titleElement = info.el.querySelector('.fc-event-title');
-                    if (titleElement) {
-                        titleElement.style.textAlign = 'center'; // 居中標題
-                    }
+                eventContent: function(arg) {
+                    // 設置事件內容，包含標題並置中
+                    return { html: `<div style="text-align: center;">${arg.event.title}</div>` };
                 },
                 dateClick: function(info) {
                     selectedDate = info.dateStr;
@@ -190,7 +217,6 @@
 
             serviceSelect.addEventListener('change', function () {
                 const serviceId = this.value;
-                const servicePriceElement = document.getElementById('service_price');
 
                 console.log('Service ID:', serviceId);
 
@@ -221,12 +247,14 @@
                         console.error('Error:', error);
                     });
 
+
+
                 // 取得可預約的師傅
-                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}`)
+                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}&address=${serviceAddress}`)
                     .then(response => response.json())
                     .then(data => {
                         console.log('Data received:', data);
-
+                        alert(JSON.stringify(data));
                         if (data.status === 'empty') {
                             masterSelect.innerHTML = '<option value="">該師傅當日無可預約時段</option>';
                             masterSelect.disabled = true;
