@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('email');
             $table->string('position');
-            $table->integer('total_hours');
+            $table->integer('total_hours')->nullable();
             //position=0管理員,11是師傅
 //            $table->unsignedBigInteger('service_item_id')->nullable();
 //            //$table->foreign('service_item_id')->references('id')->on('service_items');
