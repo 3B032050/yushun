@@ -61,10 +61,12 @@
                     <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
                 </div>
             @else
-                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>
+{{--                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>--}}
+                <a href="" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
                 <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a>
             @endif
-        </form>
+        </form>.
+
 
         <!-- 刪除時段表單 -->
         <form action="{{ route('masters.appointmenttime.destroy', ['appointmenttime' => $appointmenttime->id]) }}" method="POST">

@@ -17,8 +17,10 @@ return new class extends Migration
             //$table->foreign('masters_id')->references('id')->on('masters');
             $table->unsignedBigInteger('equipment_id');
            // $table->foreign('equipment_id')->references('id')->on('equipment');
+            $table->integer('quantity');
             $table->string('status');
-            $table->datetime('borrowing_date')->nullable();
+            $table->datetime('borrowing_date');
+            $table->datetime('return_date');
             $table->timestamps();
         });
     }

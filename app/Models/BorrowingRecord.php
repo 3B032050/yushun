@@ -14,6 +14,14 @@ class BorrowingRecord extends Model
         'master_id',
         'equipment_id',
         'status',
+        'quantity',
         'borrowing_date',
+        'return_date',
     ];
+
+
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class, 'equipment_id');
+    }
 }
