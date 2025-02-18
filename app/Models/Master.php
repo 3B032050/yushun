@@ -16,6 +16,7 @@ class Master extends Authenticatable // 修改這裡
         'email',
         'password',
         'position',
+        'total_hours',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -46,6 +47,11 @@ class Master extends Authenticatable // 修改這裡
     public function ScheduleRecord()
     {
         return $this->hasMany(ScheduleRecord::class); // 假設師傅有多個項目
+    }
+
+    public function money()
+    {
+        return $this->hasOne(Money::class);
     }
 
 }

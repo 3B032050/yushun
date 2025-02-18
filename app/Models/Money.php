@@ -5,20 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Equipment extends Model
+class Money extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'id',
-        'name',
-        'quantity',
-        'photo',
+        'master_id',
+        'price',
+        'payment_date',
     ];
 
-    public function borrowing_record()
+    public function master()
     {
-        return $this->hasMany(BorrowingRecord::class, 'equipment_id');
+        return $this->hasOne(Master::class);
     }
 }

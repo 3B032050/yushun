@@ -49,16 +49,24 @@
                 <label for="service">服務項目</label>
                 <input type="text" id="service" name="service" value="{{ old('service', $appointmenttime->schedulerecord->service->name) }}" class="form-control" step="1" disabled required>
             </div>
+
+            <div class="form-group mb-3">
+                <label for="name">客戶名稱</label>
+                <input type="text" id="name" name="name" value="{{ old('name', $appointmenttime->user->name) }}" class="form-control" step="1" disabled required>
+            </div>
+
             @if($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
                 <div class="d-flex justify-content-between">
                     <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
                     <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
                 </div>
             @else
-                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>
+{{--                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>--}}
+                <a href="" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
                 <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a>
             @endif
-        </form>
+        </form>.
+
 
         <!-- 刪除時段表單 -->
         <form action="{{ route('masters.appointmenttime.destroy', ['appointmenttime' => $appointmenttime->id]) }}" method="POST">
