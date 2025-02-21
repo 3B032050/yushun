@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AppointmentConfirmation;
+use App\Models\AdminServiceArea;
 use App\Models\AdminServiceItem;
 use App\Models\AppointmentTime;
 use App\Models\Master;
@@ -13,6 +14,7 @@ use App\Http\Requests\UpdateschedulerecordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ScheduleRecordController extends Controller
@@ -78,7 +80,7 @@ class ScheduleRecordController extends Controller
     {
         $date = $request->query('date');
         $serviceId = $request->query('service_id');
-
+        $address = $request->query('address');
         if (!$date) {
             return response()->json(['status' => 'error', 'message' => '請提供日期']);
         }
@@ -86,18 +88,34 @@ class ScheduleRecordController extends Controller
         if (!$serviceId) {
             return response()->json(['status' => 'error', 'message' => '請選擇服務項目']);
         }
+        if (!$address) {
+            return response()->json(['status' => 'error', 'message' => '請提供服務地點']);
+        }
+        // 取得地址前六個字（可根據實際情況調整）
+
+        $areaKeyword = mb_substr($address, 0, 6, "UTF-8");
+        // 替換 '台' 為 '臺'
+        $areaKeyword = str_replace(['台', '臺'], '臺', $areaKeyword);
+        Log::info("Address: $address, Area Keyword: $areaKeyword");  // 將查詢的關鍵字輸出到日誌中
+
+        $serviceArea = AdminServiceArea::whereRaw("CONCAT(TRIM(major_area), TRIM(minor_area)) LIKE ?", [strtolower($areaKeyword) . '%'])->first();
+
+        if (!$serviceArea) {
+            return response()->json(['status' => 'error', 'message' => '找不到該地址的服務區域', 'areaKeyword' => $areaKeyword]);
+        }
 
         // 查詢該日期的所有預約時段並關聯師傅及服務區域
         $appointmentTimes = AppointmentTime::with('master')
             ->where('service_date', $date)
-            ->whereHas('master.serviceAreas', function ($query) use ($serviceId) {
-                $query->where('admin_service_item_id', $serviceId);
+            ->whereHas('master.serviceAreas', function ($query) use ($serviceArea, $serviceId) {
+                $query->where('admin_service_area_id', $serviceArea->id)
+                    ->where('admin_service_item_id', $serviceId);
             })
             ->get();
-
+        //dd($appointmentTimes->toArray());
         // 如果沒有可用的師傅
         if ($appointmentTimes->isEmpty()) {
-            return response()->json(['status' => 'empty', 'message' => '該師傅當日無可預約時段']);
+            return response()->json(['message' => '當日無可預約師傅']);
         }
 
         // 過濾並去重，確保每個師傅只出現一次
@@ -108,7 +126,7 @@ class ScheduleRecordController extends Controller
             ];
         })->unique('id')->values(); // 基於 'id' 去重並重新索引
 
-        return response()->json(['status' => 'success', 'data' => $masters]);
+        //return response()->json(['status' => 'success', 'data' => $masters]);
     }
     public function available_times(Request $request)
     {
@@ -122,6 +140,7 @@ class ScheduleRecordController extends Controller
         // 查詢該師傅於該日期的所有預約時段
         $appointmentTimes = AppointmentTime::where('service_date', $date)
             ->where('master_id', $masterId)
+            ->where('status', 0)
             ->get();
 
         if ($appointmentTimes->isEmpty()) {

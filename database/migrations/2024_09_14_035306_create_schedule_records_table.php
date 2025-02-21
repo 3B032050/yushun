@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('appointment_time')->nullable();
             $table->datetime('payment_date')->nullable();
             $table->datetime('service_date')->nullable();
+            $table->string('service_address')->nullable();
             $table->boolean('is_recurring')->default(false);
             $table->integer('recurring_interval')->nullable(); // 存放間隔天數
             $table->string('memo')->nullable();
