@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('money', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('master_id');
+            $table->unsignedBigInteger('schedule_record_id')->nullable();
+            $table->foreign('schedule_record_id')->references('id')->on('schedule_records')->onDelete('cascade');
             $table->integer('price');
             $table->datetime('payment_date')->nullable();
             $table->timestamps();

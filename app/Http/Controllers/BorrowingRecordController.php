@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\BorrowingRecord;
 use App\Http\Requests\StoreborrowingrecordRequest;
 use App\Http\Requests\UpdateborrowingrecordRequest;
+use App\Models\Equipment;
+use Illuminate\Support\Facades\Auth;
 
 class BorrowingRecordController extends Controller
 {
@@ -21,7 +23,11 @@ class BorrowingRecordController extends Controller
      */
     public function create()
     {
-        //
+        $equipments = Equipment::all();
+
+        $data = ['equipments' => $equipments];
+
+        return view('masters.borrow_equipments.create',$data);
     }
 
     /**
@@ -29,8 +35,46 @@ class BorrowingRecordController extends Controller
      */
     public function store(StoreborrowingrecordRequest $request)
     {
-        //
+        $masterId = Auth::guard('master')->id();
+
+        // 驗證請求資料（確保設備陣列正確）
+        $validated = $request->validate([
+            'equipment_ids' => 'required|array', // 多筆設備 ID
+            'equipment_ids.*' => 'exists:equipment,id', // 每個 ID 必須存在
+            'borrow_quantities' => 'nullable|array', // 數量欄位可選填
+            'borrow_quantities.*' => 'nullable|integer|min:1', // 設備數量可為空，但填寫時至少為 1
+        ]);
+
+        // 迭代所有設備，逐筆處理
+        foreach ($validated['equipment_ids'] as $index => $equipment_id) {
+            $quantity = $validated['borrow_quantities'][$index] ?? 0; // 取得對應設備的數量，沒填則為 0
+            $equipment = Equipment::findOrFail($equipment_id);
+
+            // 如果設備數量為 0，則跳過這筆
+            if ($quantity > 0) {
+                // 檢查設備是否足夠
+                if ($equipment->quantity < $quantity) {
+                    return redirect()->back()->with('error', "設備 {$equipment->name} 的數量不足！");
+                }
+
+                // 新增借用記錄
+                BorrowingRecord::create([
+                    'master_id' => $masterId,
+                    'equipment_id' => $equipment_id,
+                    'quantity' => $quantity,
+                    'status' => 0, // 0 = 借出中
+                    'borrowing_date' => now(), // 借用日期為當前時間
+                    'return_date' => now(), // 歸還日期為 null
+                ]);
+
+                // 更新設備數量
+                $equipment->decrement('quantity', $quantity);
+            }
+        }
+
+        return redirect()->route('masters.appointmenttime.index')->with('success', '設備借用成功！');
     }
+
 
     /**
      * Display the specified resource.

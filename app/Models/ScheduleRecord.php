@@ -21,11 +21,16 @@ class ScheduleRecord extends Model
         'service_date',
         'is_recurring',
         'status',
+        'memo',
     ];
 
     public function scheduledetail()
     {
         return $this->hasOne(ScheduleDetail::class);
+    }
+    public function money()
+    {
+        return $this->hasOne(Money::class);
     }
     public function appointmenttime()
     {

@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('schedule_record_id');
            // $table->foreign('schedule_record_id')->references('id')->on('schedule_records');
-            $table->string('status')->default(0);
-            $table->integer('price');
+            $table->string('before_photo')->nullable();
+            $table->string('after_photo')->nullable();
+            $table->integer('score')->nullable();
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

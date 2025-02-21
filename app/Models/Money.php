@@ -12,6 +12,7 @@ class Money extends Model
     protected $fillable = [
         'id',
         'master_id',
+        'schedule_record_id',
         'price',
         'payment_date',
     ];
@@ -19,5 +20,10 @@ class Money extends Model
     public function master()
     {
         return $this->hasOne(Master::class);
+    }
+
+    public function schedulerecord()
+    {
+        return $this->hasOne(ScheduleRecord::class);
     }
 }

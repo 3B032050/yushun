@@ -12,8 +12,10 @@ class ScheduleDetail extends Model
     protected $fillable = [
         'id',
         'schedule_record_id',
-        'status',
-        'price',
+        'before_photo',
+        'after_photo',
+        'score',
+        'comment',
     ];
 
     public function schedulerecord()

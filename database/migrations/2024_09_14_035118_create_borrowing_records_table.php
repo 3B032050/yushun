@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->string('status');
             $table->datetime('borrowing_date');
-            $table->datetime('return_date');
+            $table->datetime('return_date')->nullable();
             $table->timestamps();
         });
     }

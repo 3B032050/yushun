@@ -47,13 +47,25 @@
 
             <div class="form-group mb-3">
                 <label for="service">服務項目</label>
-                <input type="text" id="service" name="service" value="{{ old('service', $appointmenttime->schedulerecord->service->name) }}" class="form-control" step="1" disabled required>
+                @if(optional($appointmenttime->schedulerecord)->service)
+                    <input type="text" id="service" name="service" value="{{ old('service', $appointmenttime->schedulerecord->service->name) }}" class="form-control" disabled required>
+                @else
+                    <input type="text" id="service" name="service" value="無服務項目" class="form-control" disabled required>
+                @endif
             </div>
 
             <div class="form-group mb-3">
-                <label for="name">客戶名稱</label>
-                <input type="text" id="name" name="name" value="{{ old('name', $appointmenttime->user->name) }}" class="form-control" step="1" disabled required>
+                <label for="service">服務項目</label>
+                @if(optional(optional($appointmenttime->schedulerecord)->service)->name)
+                    <input type="text" id="service" name="service" value="{{ old('service', optional(optional($appointmenttime->schedulerecord)->service)->name) }}" class="form-control" disabled required>
+                @else
+                    <input type="text" id="service" name="service" value="無客戶" class="form-control" disabled required>
+                @endif
             </div>
+
+            @if($appointmenttime->status == 1)
+                <a href="{{ route('masters.borrow_equipments.create') }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
+            @endif
 
             @if($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
                 <div class="d-flex justify-content-between">
@@ -62,7 +74,6 @@
                 </div>
             @else
 {{--                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>--}}
-                <a href="" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
                 <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a>
             @endif
         </form>.
