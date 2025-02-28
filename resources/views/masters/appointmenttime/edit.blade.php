@@ -65,6 +65,7 @@
 
             @if($appointmenttime->status == 1)
                 <a href="{{ route('masters.borrow_equipments.create') }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
+                <a href="{{ route('masters.schedule_details.create', $appointmenttime->id) }}" class="btn btn-success w-100">完成訂單</a><br><br>
             @endif
 
             @if($appointmenttime->status == 0 && $appointmenttime->user_id!=null)

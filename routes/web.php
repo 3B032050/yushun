@@ -69,6 +69,10 @@ Route::group(['middleware' => 'master'], function() {
         //借用設備
         Route::get('borrow_equipments/create', [\App\Http\Controllers\BorrowingRecordController::class, 'create'])->name('borrow_equipments.create');
         Route::post('borrow_equipments', [\App\Http\Controllers\BorrowingRecordController::class, 'store'])->name('borrow_equipments.store');
+
+        Route::get('schedule_details/{appointmenttime}/create', [\App\Http\Controllers\ScheduleDetailController::class, 'create'])->name('schedule_details.create');
+
+        Route::post('schedule_details/{appointmenttime}/store', [\App\Http\Controllers\ScheduleDetailController::class, 'store'])->name('schedule_details.store');
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {
@@ -131,5 +135,6 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('schedule/store', [App\Http\Controllers\ScheduleRecordController::class, 'store'])->name("schedule.store");
         Route::get('personal_information/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("personal_information.edit");
         Route::patch('personal_information/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('personal_information.update');
+        Route::post('schedule_details/review', [App\Http\Controllers\ScheduleDetailController::class, 'review'])->name('schedule_details.review');
     });
 });

@@ -51,45 +51,54 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">撰寫評論</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reviewForm" method="POST" action="{{ route('users.schedule_details.review') }}">
+                        @csrf
+                        @method('POST')
+                        <input type="hidden" name="schedule_id" id="schedule_id">
+
+                        <div class="mb-3">
+                            <label for="score" class="form-label">評分 (1-5)</label>
+                            <select class="form-control" name="score" id="score" required>
+                                <option value="">請選擇</option>
+                                <option value="1">⭐ 1</option>
+                                <option value="2">⭐⭐ 2</option>
+                                <option value="3">⭐⭐⭐ 3</option>
+                                <option value="4">⭐⭐⭐⭐ 4</option>
+                                <option value="5">⭐⭐⭐⭐⭐ 5</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">評語</label>
+                            <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">提交評論</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
-@push('styles')
-    <style>
-        #calendar {
-            max-width: 100%;
-            margin: 0 auto;
-            height: 600px;
-           /*min-height: 300px;*/
-            /* 設置明確的高度 */
-        }
-        .fc-event-delete-container {
-            margin-top: 10px; /* 上方間隔 */
-            display: block;   /* 確保容器占滿整行 */
-            text-align: center; /* 可選，讓刪除按鈕居中 */
-        }
-
-        .fc-event-delete {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            font-size: 12px;
-            cursor: pointer;
-            display: block; /* 確保按鈕是塊級元素 */
-            margin: 0 auto; /* 居中對齊按鈕 */
-        }
-
-        .fc-event-delete:hover {
-            background-color: #c82333;
-        }
-    </style>
-@endpush
-
 @push('scripts')
     <!-- 引入 FullCalendar 中文语言包 -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/locales/zh-tw.js"></script>
-
     <script>
+        function openReviewModal(scheduleId) {
+            document.getElementById('schedule_id').value = scheduleId;
+            var reviewModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+            reviewModal.show();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
@@ -104,35 +113,59 @@
                 events: [
                         @foreach($schedules as $schedule)
                     {
-
-                        title: '師傅名稱：{{ $schedule->master->name }}',
+                        title: `{!! '<b>師傅名稱：</b>' . ($schedule->master ? $schedule->master->name : "未指派") .
+                        '<br><b>時段：</b>' . $schedule->appointmenttime->start_time . ' - ' . $schedule->appointmenttime->end_time .
+                        '<br><b>狀態：</b>' .
+                        ($schedule->status == 1 ? "已確認" :
+                        ($schedule->status == 2 ? "已完成" :
+                        ($schedule->status == 3 ? "不成立" :
+                        ($schedule->status == 4 ? "取消" : "待確認")))) !!}`,
                         start: '{{ $schedule->service_date }}',
                         end: '{{ $schedule->service_date }}',
                         price: '{{ $schedule->service->price }}',
                         service: '{{ $schedule->service->name }}',
                         appointmentTime: '{{ $schedule->appointment_time }}',
-
                         status: '{{ $schedule->status == 0 ? "待確認" :
-                                   ($schedule->status == 1 ? "已確認" :
-                                   ($schedule->status == 2 ? "已完成" :
-                                   ($schedule->status == 3 ? "不成立" :
-                                   ($schedule->status == 4 ? "已取消" : "未知狀態"))))}}',
+                       ($schedule->status == 1 ? "已確認" :
+                       ($schedule->status == 2 ? "已完成" :
+                       ($schedule->status == 3 ? "不成立" :
+                       ($schedule->status == 4 ? "已取消" : "未知狀態"))))}}',
                         color: '{{ $schedule->status == 0 ? "#28a745" : "#dc3545" }}',
-
                         id: '{{ $schedule->id }}',
+                        score: '{{ $schedule->scheduledetail->score ?? "" }}',  // 評分
+                        comment: '{{ $schedule->scheduledetail->comment ?? "" }}',  // 評論
                     },
                     @endforeach
                 ],
+                eventContent: function(arg) {
+                    return {
+                        html: `<div class="fc-event-title">${arg.event.title}</div>`  // 解析 HTML
+                    };
+                },
                 eventClick: function(info) {
-                    // 設置 Modal 內的內容
-                    document.getElementById('modal-title').innerText = info.event.title;
+                    document.getElementById('modal-title').innerText = "詳細資訊";
 
-                    // 只顯示 年-月-日
                     const eventDate = new Date(info.event.start).toLocaleDateString('zh-TW', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                     });
+
+                    let reviewButton = ""; // 預設不顯示評論按鈕
+                    let reviewContent = ""; // 預設評論內容為空
+
+                    if (info.event.extendedProps.score) {
+                        // 如果已經有評分，顯示評分和評論內容，並加上區隔線
+                        reviewContent = `
+                        <hr>
+                        <h6><strong>訂單已評論</strong></h6>
+                        <p><strong>評分：</strong> ${"⭐".repeat(info.event.extendedProps.score)}</p>
+                        <p><strong>評論：</strong> ${info.event.extendedProps.comment}</p>
+                        `;
+                    } else if (info.event.extendedProps.status === "已完成") {
+                        // 如果沒有評分，但狀態為「已完成」，顯示評論按鈕
+                        reviewButton = `<button class="btn btn-warning mt-2" onclick="openReviewModal(${info.event.id})">撰寫評論</button>`;
+                    }
 
                     document.getElementById('modal-body').innerHTML = `
                     <p><strong>預約日期：</strong> ${eventDate}</p>
@@ -140,9 +173,10 @@
                     <p><strong>服務內容：</strong> ${info.event.extendedProps.service}</p>
                     <p><strong>金額：</strong> ${info.event.extendedProps.price}</p>
                     <p><strong>狀態：</strong> ${info.event.extendedProps.status}</p>
+                    ${reviewContent} <!-- 顯示評分與評論內容，並加上「訂單已評論」標示 -->
+                    ${reviewButton} <!-- 在狀態為已完成且未評論時顯示按鈕 -->
                     `;
 
-                    // 顯示 Modal
                     var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
                     myModal.show();
                 }
@@ -152,6 +186,13 @@
         });
     </script>
 @endpush
+<style>
+    #calendar {
+        max-width: 100%;
+        margin: 0 auto;
+        height: 600px;
+    }
+</style>
 
 
 

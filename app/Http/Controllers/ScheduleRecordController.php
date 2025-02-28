@@ -126,7 +126,7 @@ class ScheduleRecordController extends Controller
             ];
         })->unique('id')->values(); // 基於 'id' 去重並重新索引
 
-        //return response()->json(['status' => 'success', 'data' => $masters]);
+        return response()->json(['status' => 'success', 'data' => $masters]);
     }
     public function available_times(Request $request)
     {
