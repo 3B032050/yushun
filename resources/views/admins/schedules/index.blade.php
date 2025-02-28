@@ -50,28 +50,6 @@
             max-width: 100%;
             margin: 0 auto;
             height: 600px;
-            /*min-height: 300px;*/
-            /* 設置明確的高度 */
-        }
-        .fc-event-delete-container {
-            margin-top: 10px; /* 上方間隔 */
-            display: block;   /* 確保容器占滿整行 */
-            text-align: center; /* 可選，讓刪除按鈕居中 */
-        }
-
-        .fc-event-delete {
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            font-size: 12px;
-            cursor: pointer;
-            display: block; /* 確保按鈕是塊級元素 */
-            margin: 0 auto; /* 居中對齊按鈕 */
-        }
-
-        .fc-event-delete:hover {
-            background-color: #c82333;
         }
     </style>
 @endpush
@@ -86,18 +64,18 @@
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth', // 初始視圖
-                locale: 'zh-tw', // 設置語言為繁體中文
+                initialView: 'dayGridMonth',
+                locale: 'zh-tw',
                 headerToolbar: {
-                    left: 'prev,next today', // 顯示上月、下月、今天按鈕
-                    center: 'title', // 顯示標題
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay' // 月視圖、周視圖、日視圖
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 events: function(fetchInfo, successCallback, failureCallback) {
                     let masterId = document.getElementById('master-select').value;
 
                     if (!masterId) {
-                        successCallback([]); // 如果未選擇師傅，顯示空數據
+                        successCallback([]);
                         return;
                     }
 
@@ -112,44 +90,51 @@
                 eventContent: function(arg) {
                     return {
                         html: `
-                <div class="fc-event-title">${arg.event.title}</div>
-                <div class="fc-event-description">${arg.event.extendedProps.description}</div>
-            `
+                            <div class="fc-event-content">
+                                <div><strong>客戶：</strong> ${arg.event.extendedProps.customer}</div>
+                                <div><strong>時段：</strong> ${arg.event.extendedProps.time ?? '未設定'}</div>
+                                <div><strong>狀態：</strong>${arg.event.extendedProps.description}</div>
+                            </div>
+        `
                     };
                 },
                 eventClick: function(info) {
-                    console.log("點擊事件資料：", info.event.extendedProps);
+                    document.getElementById('modal-title').innerText = "詳細資訊";
 
-                    // 只顯示年月日
-                    const formattedDate = info.event.start.toLocaleDateString('zh-TW', {
+                    const eventDate = new Date(info.event.start).toLocaleDateString('zh-TW', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                     });
 
-                    document.getElementById('modal-title').innerText = info.event.title;
+                    let reviewContent = "";
+                    if (info.event.extendedProps.score) {
+                        reviewContent = `
+                        <hr>
+                        <h6><strong>訂單已評論</strong></h6>
+                        <p><strong>評分：</strong> ${"⭐".repeat(info.event.extendedProps.score)}</p>
+                        <p><strong>評論：</strong> ${info.event.extendedProps.comment}</p>
+                        `;
+                    }
+
                     document.getElementById('modal-body').innerHTML = `
-                    <p><strong>服務日期：</strong> ${formattedDate}</p>
-                    <p><strong>服務時間：</strong> ${info.event.extendedProps.time ?? '未設定'}</p>
-                    <p><strong>服務內容：</strong> ${info.event.extendedProps.service ?? '未提供'}</p>
-                    <p><strong>金額：</strong> ${info.event.extendedProps.price ?? '未提供'}</p>
+                    <p><strong>預約日期：</strong> ${eventDate}</p>
+                    <p><strong>預約時間：</strong> ${info.event.extendedProps.time}</p>
+                    <p><strong>服務內容：</strong> ${info.event.extendedProps.service}</p>
+                    <p><strong>金額：</strong> ${info.event.extendedProps.price}</p>
                     <p><strong>狀態：</strong> ${info.event.extendedProps.description}</p>
+                    ${reviewContent}
                     `;
 
                     var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
                     myModal.show();
                 }
-
-
             });
 
             calendar.render();
 
-            // 當師傅選擇改變時，重新加載日曆事件
             document.getElementById('master-select').addEventListener('change', function() {
-                let masterId = this.value;
-                console.log('Selected master ID:', masterId); // 調試用
-                calendar.refetchEvents(); // 重新加載事件
+                calendar.refetchEvents();
             });
         });
     </script>

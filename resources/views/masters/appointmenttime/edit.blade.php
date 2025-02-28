@@ -63,7 +63,35 @@
                 @endif
             </div>
 
-            @if($appointmenttime->status == 1)
+            @if($appointmenttime->status == 2 && optional(optional($appointmenttime->schedulerecord)->scheduledetail))
+                <div class="card mt-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">客戶評價</h5>
+                    </div>
+                    <div class="card-body">
+                        @if(optional($appointmenttime->schedulerecord->scheduledetail)->score)
+                            <div class="mb-3">
+                                <label for="service" class="form-label">客戶評分</label>
+                                <div class="fs-5 text-warning">
+                                    {!! str_repeat('⭐', $appointmenttime->schedulerecord->scheduledetail->score) !!}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(optional($appointmenttime->schedulerecord->scheduledetail)->comment)
+                            <div class="mb-3">
+                                <label for="service" class="form-label">客戶評論</label>
+                                <div class="border rounded p-2 bg-light">
+                                    {{ $appointmenttime->schedulerecord->scheduledetail->comment }}
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div><br>
+            @endif
+
+
+        @if($appointmenttime->status == 1)
                 <a href="{{ route('masters.borrow_equipments.create') }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
                 <a href="{{ route('masters.schedule_details.create', $appointmenttime->id) }}" class="btn btn-success w-100">完成訂單</a><br><br>
             @endif
