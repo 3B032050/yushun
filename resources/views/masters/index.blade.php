@@ -7,16 +7,16 @@
     <div class="container my-5">
         <div class="row justify-content-start">
             @if (Auth::guard('master')->check() && Auth::guard('master')->user()->position === '1')
-                <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-sharp fa-solid fa-clipboard fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>我的訂單</h3>
-                        </div>
-                    </button>
-                </div>
+{{--                <div class="col-6 col-md-3 mb-2">--}}
+{{--                    <button class="button-name w-100" role="button">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-sharp fa-solid fa-clipboard fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>我的訂單</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
                 <div class="col-6 col-md-3 mb-2">
                     <button class="button-name w-100" role="button">
                         <div>
@@ -57,16 +57,16 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>對帳單</h3>
-                        </div>
-                    </button>
-                </div>
+{{--                <div class="col-6 col-md-3 mb-2">--}}
+{{--                    <button class="button-name w-100" role="button">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>對帳單</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
 
 {{--                <div class="col-6 col-md-3 mb-2">--}}
 {{--                    <button class="button-name w-100" role="button">--}}
@@ -106,16 +106,16 @@
 {{--                    </div>--}}
 {{--                </div>--}}
 
-                <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-solid fa-phone-volume fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>聯繫客服</h3>
-                        </div>
-                    </button>
-                </div>
+{{--                <div class="col-6 col-md-3 mb-2">--}}
+{{--                    <button class="button-name w-100" role="button">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-solid fa-phone-volume fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>聯繫客服</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
             @else
                 <div class="col-6 col-md-3 mb-2">
                     <a href="{{ route('admins.masters.index') }}" class="button-name w-100 text-decoration-none">
@@ -167,16 +167,16 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-6 col-md-3 mb-2">
-                    <button class="button-name w-100" role="button">
-                        <div>
-                            <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
-                        </div>
-                        <div>
-                            <h3>金流管理</h3>
-                        </div>
-                    </button>
-                </div>
+{{--                <div class="col-6 col-md-3 mb-2">--}}
+{{--                    <button class="button-name w-100" role="button">--}}
+{{--                        <div>--}}
+{{--                            <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>--}}
+{{--                        </div>--}}
+{{--                        <div>--}}
+{{--                            <h3>金流管理</h3>--}}
+{{--                        </div>--}}
+{{--                    </button>--}}
+{{--                </div>--}}
                 <div class="col-6 col-md-3 mb-2">
                     <a href="{{ route('admins.schedules.index') }}" class="button-name w-100 text-decoration-none">
                         <div>
