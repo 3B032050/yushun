@@ -11,9 +11,11 @@ use App\Models\MasterServiceArea;
 use App\Models\ScheduleRecord;
 use App\Http\Requests\StoreschedulerecordRequest;
 use App\Http\Requests\UpdateschedulerecordRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -78,19 +80,22 @@ class ScheduleRecordController extends Controller
 
     public function available_masters(Request $request)
     {
-        $date = $request->query('date');
-        $serviceId = $request->query('service_id');
-        $address = $request->query('address');
-        if (!$date) {
+        $date = $request->input('date', '');
+        $serviceId = $request->input('service_id', '');
+        $address = $request->input('address', '');
+
+        if (empty($date)) {
             return response()->json(['status' => 'error', 'message' => '請提供日期']);
         }
 
-        if (!$serviceId) {
+        if (empty($serviceId)) {
             return response()->json(['status' => 'error', 'message' => '請選擇服務項目']);
         }
-        if (!$address) {
+
+        if (empty($address)) {
             return response()->json(['status' => 'error', 'message' => '請提供服務地點']);
         }
+
         // 取得地址前六個字（可根據實際情況調整）
 
         $areaKeyword = mb_substr($address, 0, 6, "UTF-8");
@@ -98,10 +103,19 @@ class ScheduleRecordController extends Controller
         $areaKeyword = str_replace(['台', '臺'], '臺', $areaKeyword);
         Log::info("Address: $address, Area Keyword: $areaKeyword");  // 將查詢的關鍵字輸出到日誌中
 
-        $serviceArea = AdminServiceArea::whereRaw("CONCAT(TRIM(major_area), TRIM(minor_area)) LIKE ?", [strtolower($areaKeyword) . '%'])->first();
+        $serviceArea = AdminServiceArea::where(DB::raw("CONCAT(TRIM(major_area), TRIM(minor_area))"), 'LIKE', $areaKeyword . '%')->first();
 
         if (!$serviceArea) {
             return response()->json(['status' => 'error', 'message' => '找不到該地址的服務區域', 'areaKeyword' => $areaKeyword]);
+        }
+        $user = Auth::user();
+        $user->address = $address;
+        if ($user->save()) {
+            Log::info('用戶地址已更新', ['user' => $user]);
+            //return response()->json(['message' => '地址更新成功']);
+        } else {
+            Log::error('更新地址失敗', ['user' => $user]);
+            //return response()->json(['message' => '更新地址失敗'], 500);
         }
 
         // 查詢該日期的所有預約時段並關聯師傅及服務區域
@@ -119,12 +133,13 @@ class ScheduleRecordController extends Controller
         }
 
         // 過濾並去重，確保每個師傅只出現一次
-        $masters = $appointmentTimes->map(function ($appointmentTime) {
+        $masters = $appointmentTimes->pluck('master')->unique('id')->map(function ($master) {
             return [
-                'id' => $appointmentTime->master->id,
-                'name' => $appointmentTime->master->name,
+                'id' => $master->id,
+                'name' => $master->name,
             ];
-        })->unique('id')->values(); // 基於 'id' 去重並重新索引
+        })->values();
+        // 基於 'id' 去重並重新索引
 
         return response()->json(['status' => 'success', 'data' => $masters]);
     }
@@ -144,6 +159,7 @@ class ScheduleRecordController extends Controller
             ->get();
 
         if ($appointmentTimes->isEmpty()) {
+            Log::info('該師傅當日無可預約時段', ['date' => $date, 'master_id' => $masterId]);
             return response()->json(['message' => '該師傅當日無可預約時段'], 404);
         }
 
@@ -153,8 +169,9 @@ class ScheduleRecordController extends Controller
                 'start_time' => $appointmentTime->start_time,
                 'end_time' => $appointmentTime->end_time,
             ];
-        });
-
+        })->values(); // 使用 values() 確保是重新索引的陣列
+        Log::info('Available appointment times:', ['times' => $times]);
+        //dd($times);
         return response()->json($times);
     }
 

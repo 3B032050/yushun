@@ -254,7 +254,7 @@
                     .then(response => response.json())
                     .then(data => {
                         console.log('Data received:', data);
-                        alert(JSON.stringify(data));
+                        //alert(JSON.stringify(data));
                         if (data.status === 'empty') {
                             masterSelect.innerHTML = '<option value="">該師傅當日無可預約時段</option>';
                             masterSelect.disabled = true;
