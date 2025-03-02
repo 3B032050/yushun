@@ -13,6 +13,7 @@ class BorrowingRecord extends Model
         'id',
         'master_id',
         'equipment_id',
+        'appointment_time_id',
         'status',
         'quantity',
         'borrowing_date',
@@ -23,5 +24,14 @@ class BorrowingRecord extends Model
     public function equipment()
     {
         return $this->belongsTo(Equipment::class, 'equipment_id');
+    }
+    public function master()
+    {
+        return $this->belongsTo(Master::class, 'master_id');
+    }
+
+    public function appointmenttime()
+    {
+        return $this->belongsTo(AppointmentTime::class, 'appointment_time_id');
     }
 }

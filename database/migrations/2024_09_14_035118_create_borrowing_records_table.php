@@ -14,9 +14,14 @@ return new class extends Migration
         Schema::create('borrowing_records', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('master_id');
-            //$table->foreign('masters_id')->references('id')->on('masters');
+//            $table->foreign('master_id')->references('id')->on('masters')->onDelete('cascade');
+
             $table->unsignedBigInteger('equipment_id');
-           // $table->foreign('equipment_id')->references('id')->on('equipment');
+//            $table->foreign('equipment_id')->references('id')->on('equipments')->onDelete('cascade');
+
+            $table->unsignedBigInteger('appointment_time_id');
+//            $table->foreign('appointment_time_id')->references('id')->on('appointment_times')->onDelete('cascade');
+
             $table->integer('quantity');
             $table->string('status');
             $table->datetime('borrowing_date');

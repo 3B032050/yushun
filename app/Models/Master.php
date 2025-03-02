@@ -49,6 +49,11 @@ class Master extends Authenticatable // 修改這裡
         return $this->hasMany(ScheduleRecord::class); // 假設師傅有多個項目
     }
 
+    public function borrowingRecord()
+    {
+        return $this->hasMany(BorrowingRecord::class); // 假設師傅有多個項目
+    }
+
     public function money()
     {
         return $this->hasOne(Money::class);

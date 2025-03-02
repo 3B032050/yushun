@@ -3,6 +3,17 @@
 @section('title', '完成訂單')
 
 @section('content')
+    <div class="container-fluid px-4">
+        <div style="margin-top: 10px;">
+            <p style="font-size: 1.8em;">
+                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">可預約時段</a> &gt;
+                <a href="{{ url()->previous() }}" class="custom-link">編輯可預約時段</a> >
+                上傳照片
+            </p>
+        </div>
+    </div>
+
     <div class="container">
         <h2 class="text-center mt-4">完成訂單</h2>
         <form action="{{ route('masters.schedule_details.store', $appointmenttime->id) }}" method="POST" enctype="multipart/form-data">

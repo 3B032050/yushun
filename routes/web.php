@@ -67,8 +67,8 @@ Route::group(['middleware' => 'master'], function() {
         Route::post('/rentals/{rental}/return', [\App\Http\Controllers\MasterRentUniformController::class, 'return'])->name('rent_uniforms.return');
 
         //借用設備
-        Route::get('borrow_equipments/create', [\App\Http\Controllers\BorrowingRecordController::class, 'create'])->name('borrow_equipments.create');
-        Route::post('borrow_equipments', [\App\Http\Controllers\BorrowingRecordController::class, 'store'])->name('borrow_equipments.store');
+        Route::get('borrow_equipments/{appointmenttime}/create', [\App\Http\Controllers\BorrowingRecordController::class, 'create'])->name('borrow_equipments.create');
+        Route::post('borrow_equipments/{appointmenttime}', [\App\Http\Controllers\BorrowingRecordController::class, 'store'])->name('borrow_equipments.store');
 
         Route::get('schedule_details/{appointmenttime}/create', [\App\Http\Controllers\ScheduleDetailController::class, 'create'])->name('schedule_details.create');
 
