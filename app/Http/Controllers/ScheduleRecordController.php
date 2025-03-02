@@ -108,16 +108,6 @@ class ScheduleRecordController extends Controller
         if (!$serviceArea) {
             return response()->json(['status' => 'error', 'message' => '找不到該地址的服務區域', 'areaKeyword' => $areaKeyword]);
         }
-        $user = Auth::user();
-        $user->address = $address;
-        if ($user->save()) {
-            Log::info('用戶地址已更新', ['user' => $user]);
-            //return response()->json(['message' => '地址更新成功']);
-        } else {
-            Log::error('更新地址失敗', ['user' => $user]);
-            //return response()->json(['message' => '更新地址失敗'], 500);
-        }
-
         // 查詢該日期的所有預約時段並關聯師傅及服務區域
         $appointmentTimes = AppointmentTime::with('master')
             ->where('service_date', $date)

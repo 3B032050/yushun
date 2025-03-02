@@ -48,18 +48,11 @@
             <div class="form-group">
                 <label>選擇服務地址：</label>
                 <div>
-                    <input type="radio" name="address_option" id="use_profile_address" value="profile" checked>
+                    <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
                     <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
                 </div>
-                <div>
-                    <input type="radio" name="address_option" id="use_custom_address" value="custom">
-                    <label for="use_custom_address">手動輸入服務地址</label>
-                </div>
-                <div class="form-group" id="custom_address_container" style="display: none;">
-                    <label for="service_address">輸入服務地址：</label>
-                    <input type="text" id="service_address" name="service_address" class="form-control" placeholder="請輸入服務地址">
-                </div>
             </div>
+
             <!-- 服務項目選擇 -->
             <div class="form-group">
                 <label for="service_id">選擇服務項目</label>
@@ -116,46 +109,34 @@
             const confirmButton = document.getElementById('confirm-schedule');
             const scheduleForm = document.getElementById('schedule-form');
             let selectedDate = null;
-            //地址
-            const addressOptionProfile = document.getElementById('use_profile_address');
-            const addressOptionCustom = document.getElementById('use_custom_address');
-            const customAddressContainer = document.getElementById('custom_address_container');
-            const servicePriceElement = document.getElementById('service_price');
-            const serviceAddressInput = document.getElementById('service_address');
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    modal.classList.add('hidden');
-                });
-            });
             document.getElementById('is_recurring').addEventListener('change', function () {
                 document.getElementById('recurring_options').style.display = this.checked ? 'block' : 'none';
             });
-            // 預設隱藏手動輸入的輸入框(地址)
+            // 取消按鈕關閉模態框
+            closeModalButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    modal.classList.add('hidden'); // 在這裡隱藏模態框
+                });
+            });
+            const addressOptionProfile = document.getElementById('use_profile_address');
+            let serviceAddress = '';
+
+            // 預設隱藏手動輸入的輸入框(地址)，並確保使用個人地址
             if (addressOptionProfile.checked) {
-                customAddressContainer.style.display = 'none';
+                serviceAddress = '{{ Auth::user()->address }}'.trim(); // 使用用戶的預設地址
             }
 
-            addressOptionProfile.addEventListener('change', function() {
-                customAddressContainer.style.display = 'none';
-            });
-
-            addressOptionCustom.addEventListener('change', function() {
-                customAddressContainer.style.display = 'block';
-            });
-            //serviceSelect.addEventListener('change', function () {
-                const serviceId = this.value;
-                let serviceAddress = '';
-
-                // 根據選擇的地址來設定服務地址
-                if (addressOptionCustom.checked) {
-                    serviceAddress = serviceAddressInput.value.trim();  // 去除前後空白
-                } else {
-                    serviceAddress = '{{ Auth::user()->address }}'.trim(); // 確保是完整地址
+            // 如果個人地址為空，顯示錯誤提示
+          
+            // 當表單中的服務項目選擇改變時，確保地址已經設定好
+            serviceSelect.addEventListener('change', function() {
+                if (!serviceAddress) {
+                    alert('請先選擇地址');
+                    return; // 如果地址未設定，阻止繼續選擇服務項目
                 }
-
-                console.log('使用的地址:', serviceAddress);  // 確保地址是正確
-
-            //});
+                // 地址已設定，繼續執行
+                console.log('服務項目選擇了:', this.value);
+            });
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
