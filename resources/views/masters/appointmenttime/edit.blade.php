@@ -91,8 +91,57 @@
             @endif
 
 
-        @if($appointmenttime->status == 1)
-                <a href="{{ route('masters.borrow_equipments.create') }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
+            @if($appointmenttime->status == 2 && optional($appointmenttime->schedulerecord->scheduledetail)->score !== null || optional($appointmenttime->schedulerecord->scheduledetail)->comment !== null)
+                <div class="card mt-3">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">客戶評價</h5>
+                    </div>
+                    <div class="card-body">
+                        @if(optional($appointmenttime->schedulerecord->scheduledetail)->score !== null)
+                            <div class="mb-3">
+                                <label class="form-label">客戶評分</label>
+                                <div class="fs-5 text-warning">
+                                    {!! str_repeat('⭐', $appointmenttime->schedulerecord->scheduledetail->score) !!}
+                                </div>
+                            </div>
+                        @endif
+
+                        @if(optional($appointmenttime->schedulerecord->scheduledetail)->comment !== null)
+                            <div class="mb-3">
+                                <label class="form-label">客戶評論</label>
+                                <div class="border rounded p-2 bg-light">
+                                    {{ $appointmenttime->schedulerecord->scheduledetail->comment }}
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            @endif
+
+
+        @if($appointmenttime->status == 1 || $appointmenttime->status == 2)
+                @php
+                    $borrowRecords = \App\Models\BorrowingRecord::where('appointment_time_id', $appointmenttime->id)->get();
+                @endphp
+
+                @if($borrowRecords->isNotEmpty())
+                    <div class="card mt-3">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">已借用設備</h5>
+                        </div>
+                        <div class="card-body">
+                            @foreach($borrowRecords as $record)
+                                <div class="border rounded p-2 mb-2 bg-light">
+                                    <p><strong>設備名稱：</strong> {{ optional($record->equipment)->name ?? '未知設備' }}</p>
+                                    <p><strong>數量：</strong> {{ $record->quantity }}</p>
+                                    <p><strong>狀態：</strong> {{ $record->status == 1 ? '已歸還' : '使用中' }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div><br>
+                @else
+                    <a href="{{ route('masters.borrow_equipments.create', $appointmenttime->id) }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
+                @endif
                 <a href="{{ route('masters.schedule_details.create', $appointmenttime->id) }}" class="btn btn-success w-100">完成訂單</a><br><br>
             @endif
 
@@ -105,7 +154,7 @@
 {{--                <p class="text-center text-muted">此時段無客戶，無法接受或拒絕。</p>--}}
                 <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a>
             @endif
-        </form>.
+        </form>
 
 
         <!-- 刪除時段表單 -->
@@ -113,7 +162,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger w-100" onclick="return confirm('確定要刪除這個時段嗎？')">刪除</button>
-        </form>
+        </form><br>
     </div>
 
 

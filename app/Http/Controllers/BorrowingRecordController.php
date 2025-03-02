@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppointmentTime;
 use App\Models\BorrowingRecord;
 use App\Http\Requests\StoreborrowingrecordRequest;
 use App\Http\Requests\UpdateborrowingrecordRequest;
@@ -21,19 +22,19 @@ class BorrowingRecordController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(AppointmentTime $appointmenttime)
     {
         $equipments = Equipment::all();
 
         $data = ['equipments' => $equipments];
 
-        return view('masters.borrow_equipments.create',$data);
+        return view('masters.borrow_equipments.create',$data, compact('appointmenttime'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreborrowingrecordRequest $request)
+    public function store(StoreborrowingrecordRequest $request,AppointmentTime $appointmenttime)
     {
         $masterId = Auth::guard('master')->id();
 
@@ -61,6 +62,7 @@ class BorrowingRecordController extends Controller
                 BorrowingRecord::create([
                     'master_id' => $masterId,
                     'equipment_id' => $equipment_id,
+                    'appointment_time_id' => $appointmenttime->id,
                     'quantity' => $quantity,
                     'status' => 0, // 0 = 借出中
                     'borrowing_date' => now(), // 借用日期為當前時間

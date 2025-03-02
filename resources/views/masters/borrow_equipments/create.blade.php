@@ -24,7 +24,7 @@
         <h1 class="mt-4 text-center">借用設備</h1>
     </div>
 
-    <form method="POST" action="{{ route('masters.borrow_equipments.store') }}">
+    <form method="POST" action="{{ route('masters.borrow_equipments.store', $appointmenttime->id) }}">
         @csrf
         <div class="container">
             <div class="row">

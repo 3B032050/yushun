@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppointmentTime;
+use App\Models\BorrowingRecord;
+use App\Models\Equipment;
 use App\Models\ScheduleDetail;
 use App\Http\Requests\StorescheduledetailRequest;
 use App\Http\Requests\UpdatescheduledetailRequest;
@@ -60,6 +62,19 @@ class ScheduleDetailController extends Controller
 
         $appointmenttime->update(['status' => 2]);
         $scheduleRecord->update(['status' => 2]);
+
+        $borrowingRecords = BorrowingRecord::where('appointment_time_id', $appointmenttime->id)->get();
+
+        foreach ($borrowingRecords as $record) {
+            if ($record->status == 0) {
+                $equipment = Equipment::find($record->equipment_id);
+                if ($equipment) {
+                    $equipment->quantity += $record->quantity;
+                    $equipment->save();
+                }
+                $record->update(['status' => 1]);
+            }
+        }
 
         $scheduleDetail->save();
 

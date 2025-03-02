@@ -34,4 +34,9 @@ class AppointmentTime extends Model
         return $this->belongsTo(Master::class, 'master_id');
     }
 
+    public function borrowingRecords()  // 注意，這裡用的是複數 borrowingRecords
+    {
+        return $this->hasMany(BorrowingRecord::class, 'appointmenttime_id', 'id');
+    }
+
 }
