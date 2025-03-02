@@ -11,6 +11,7 @@ use App\Models\ScheduleRecord;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class MastersAppointmentTimeController extends Controller
@@ -42,6 +43,7 @@ class MastersAppointmentTimeController extends Controller
      */
     public function store(StoreappointmenttimeRequest $request)
     {
+       // Log::info('Received request', ['request' => $request->all()]);
         //驗證數據
         $validated = $request->validate([
             'service_date' => 'required|date|after_or_equal:today',
@@ -78,7 +80,12 @@ class MastersAppointmentTimeController extends Controller
             'start_time' => $validated['start_time'],
             'end_time' => $validated['end_time'],
         ]);
-
+        Log::info('Attempting to create appointment time', [
+            'master_id' => $masterId,
+            'service_date' => $validated['service_date'],
+            'start_time' => $validated['start_time'],
+            'end_time' => $validated['end_time']
+        ]);
         //根據結果返回訊息
         if ($appointmentTime) {
             return redirect()->route('masters.appointmenttime.index')->with('success', '新增成功');
