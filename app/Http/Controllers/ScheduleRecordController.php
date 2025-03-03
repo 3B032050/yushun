@@ -55,7 +55,11 @@ class ScheduleRecordController extends Controller
     public function create()
     {
 
-        $appointmenttimes = AppointmentTime::with('master.serviceAreas')->get();
+        $appointmenttimes = AppointmentTime::whereNull('user_id')
+            ->where('status', 0)
+            ->with('master.serviceAreas')
+            ->get();
+
         //dd($appointmenttimes);
         $items = AdminServiceItem::all();
 
@@ -183,9 +187,13 @@ class ScheduleRecordController extends Controller
 
         // 檢查當天的時段是否已被預約
         $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
+            ->where(function ($query) {
+                $query->whereNotNull('user_id')  // user_id 有值
+                ->orWhere('status', 1);   // 或者 status 為 1
+            })
             ->where('service_date', $request->service_date)
             ->where('appointment_time_id', $request->appointment_time_id)
-            ->where('status', 1) // 只檢查已確認的排程
+
             ->exists();
 
         if ($isAlreadyBooked) {
@@ -200,10 +208,12 @@ class ScheduleRecordController extends Controller
 
                 // 檢查該未來日期是否已有相同的預約，且該時段可預約（status = 0）
                 $existingTime = AppointmentTime::where('master_id', $request->master_id)
+                    ->whereNull('user_id') //沒有客戶預約
+                    ->whereRaw('status = 0')  // 該時段為可預約
                     ->where('service_date', $futureDate->toDateString())
                     ->where('start_time', $appointmentTime->start_time)
                     ->where('end_time', $appointmentTime->end_time)
-                    ->where('status', 0) // 該時段為可預約
+
                     ->first(); // 如果找到該時段則返回
 
                 // 如果沒有找到該時段，則新增該時段
@@ -223,6 +233,8 @@ class ScheduleRecordController extends Controller
 
                 // 檢查 `ScheduleRecord` 是否已存在該排程，避免重複
                 $existingSchedule = ScheduleRecord::where('master_id', $request->master_id)
+                    ->whereNull('user_id')
+                    ->whereRaw('status = 0')
                     ->where('service_date', $futureDate->toDateString())
                     ->where('appointment_time_id', $newAppointment->id) // 使用新的或已存在的 `appointment_time_id`
                     ->exists();

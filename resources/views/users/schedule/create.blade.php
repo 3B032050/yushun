@@ -108,6 +108,7 @@
             const availableTimesSelect = document.getElementById('available_times');
             const confirmButton = document.getElementById('confirm-schedule');
             const scheduleForm = document.getElementById('schedule-form');
+            const servicePriceElement = document.getElementById('service_price');
             let selectedDate = null;
             document.getElementById('is_recurring').addEventListener('change', function () {
                 document.getElementById('recurring_options').style.display = this.checked ? 'block' : 'none';
@@ -127,11 +128,12 @@
             }
 
             // 如果個人地址為空，顯示錯誤提示
-          
+
             // 當表單中的服務項目選擇改變時，確保地址已經設定好
             serviceSelect.addEventListener('change', function() {
                 if (!serviceAddress) {
                     alert('請先選擇地址');
+                    window.location.href = '/users/personal_information/edit';
                     return; // 如果地址未設定，阻止繼續選擇服務項目
                 }
                 // 地址已設定，繼續執行
