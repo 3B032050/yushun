@@ -3,7 +3,7 @@
         <div class="col-lg-12 text-center" style="color: black;">
             <!-- 在此添加頁腳內容，例如聯繫方式或版權資訊 -->
             <p>聯繫我們：example@example.com | 電話：123-456-7890</p>
-            <p>&copy; 2025 Your Website Name. All rights reserved.</p>
+            <p>&copy; 豫順清潔</p>
         </div>
     </div>
 </div>

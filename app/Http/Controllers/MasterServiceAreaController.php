@@ -19,15 +19,17 @@ class MasterServiceAreaController extends Controller
     public function index()
     {
         $masterId = Auth::guard('master')->id();
-        $serviceAreas = MasterServiceArea::where('master_id', $masterId)->get();
+        $serviceAreas = MasterServiceArea::where('master_id', $masterId)
+            ->orderBy('admin_service_item_id') // 按 service_item_id 排序
+            ->get();
 
         if ($serviceAreas->isEmpty()) {
             return redirect()->route('masters.service_areas.create_item');
         }
 
-        $data = ['serviceAreas' => $serviceAreas];
-        return view('masters.service_areas.index', $data);
+        return view('masters.service_areas.index', ['serviceAreas' => $serviceAreas]);
     }
+
 
     public function storeServiceSelection(Request $request)
     {
@@ -42,13 +44,7 @@ class MasterServiceAreaController extends Controller
 
     public function create_item()
     {
-        $masterId = Auth::guard('master')->id();
-
-        $serviceItems = AdminServiceItem::whereNotIn('id', function ($query) use ($masterId) {
-            $query->select('admin_service_item_id')
-                ->from('master_service_areas')
-                ->where('master_id', $masterId);
-        })->get();
+        $serviceItems = AdminServiceItem::all();
 
         $data = ['serviceItems' => $serviceItems];
         return view('Masters.service_areas.create_item', $data);
@@ -60,7 +56,15 @@ class MasterServiceAreaController extends Controller
     public function create()
     {
         $serviceAreas = AdminServiceArea::all();
-        return view('Masters.service_areas.create', compact('serviceAreas'));
+        $serviceItemId = session('service_item_id');
+        // 取得目前 master 的選擇服務地區
+        $masterId = Auth::guard('master')->id();
+        $selectedAreas = MasterServiceArea::where('master_id', $masterId)
+            ->where('admin_service_item_id',$serviceItemId)
+            ->pluck('admin_service_area_id')
+            ->toArray(); // 取得該 master 選擇的地區 ID
+
+        return view('Masters.service_areas.create', compact('serviceAreas', 'selectedAreas'));
     }
 
     /**
@@ -72,14 +76,14 @@ class MasterServiceAreaController extends Controller
         $serviceItemId = session('service_item_id');
 
         foreach ($request->service_area as $adminServiceAreaId) {
-//            $existingRecord = MasterServiceArea::where('master_id', $masterId)
-//                ->where('admin_service_area_id', $adminServiceAreaId)
-//                ->exists();
-//
-//            if ($existingRecord) {
-//                return redirect()->route('masters.service_areas.index')
-//                    ->with('error', '資料已經存在');
-//            }
+            $existingRecord = MasterServiceArea::where('master_id', $masterId)
+                ->where('admin_service_area_id', $adminServiceAreaId)
+                ->exists();
+
+            if ($existingRecord) {
+                return redirect()->route('masters.service_areas.index')
+                    ->with('error', '資料已經存在');
+            }
 
             $masterServiceArea = MasterServiceArea::create([
                 'master_id' => $masterId,
