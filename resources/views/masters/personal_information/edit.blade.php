@@ -3,14 +3,15 @@
 @section('title','個人資料')
 
 @section('content')
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                個人資料
-            </p>
+    <div class="content-wrapper">
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                    個人資料
+                </p>
+            </div>
         </div>
-    </div>
 
         <!-- 使用 Bootstrap 的 row 和 col 來置中表單 -->
         <div class="row justify-content-center">
@@ -78,7 +79,8 @@
                             <form method="POST" action="{{ route('masters.rent_uniforms.store') }}">
                                 @csrf
 
-                                <div class="form-group mb-3 text-center">
+                                <div class="form-group mb-3 text-center"><strong>{{ __('請選擇制服尺寸和數量') }}</strong></div>
+                                    <label for="quantity" >尺寸</label>
                                     <select name="size" id="size" class="form-control">
                                         <option value="S">
                                             S
@@ -96,7 +98,7 @@
                                             XXL
                                         </option>
                                     </select>
-                                </div>
+
 
                                 <div class="form-group mb-3">
                                     <label for="quantity">數量</label>
@@ -138,6 +140,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
     <style>
         .required {
@@ -145,11 +148,12 @@
             margin-left: 5px;
             font-weight: bold;
         }
-
-        /* 調整卡片的寬度，使其在不同螢幕大小下能自動調整 */
         .card {
-            max-width: 600px; /* 最大寬度設定 */
-            margin: 0 auto;   /* 使卡片在螢幕中居中 */
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .content-wrapper {
+            min-height: calc(100vh - 60px); /* 減去頁尾的高度 */
         }
     </style>
 @endsection

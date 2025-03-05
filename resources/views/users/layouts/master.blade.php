@@ -39,6 +39,7 @@
 {{--            @yield('page-path')--}}
 {{--        </div>--}}
 @yield('content')
+@include('users.layouts.partials.footer')
 {{--        @include('layouts.partials.footer')--}}
 <!-- 引入 Flatpickr 样式 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">

@@ -1,17 +1,31 @@
-<div class="container-fluid bg-custom text-black-30 py-2 px-sm-3 px-lg-4 py-lg-5">
-    <div class="row pt-4">
-        <div class="col-lg-2">
+<div class="container-fluid bg-light text-black py-3 footer">
+    <div class="row">
+        <div class="col-lg-12 text-center">
+            <p>聯繫我們：example@example.com | 電話：123-456-7890</p>
+            <p>&copy; 豫順清潔</p>
         </div>
-       
-    </div>
-    <hr>
-    <div class="col-lg-12 col-md-0 mb-0" align="center" style="color:black">
-        <!--<h5 class="text-black text-uppercase mb-4" style="letter-spacing: 1px;">聯繫我們</h5>-->
-       
     </div>
 </div>
+
 <style>
-    .bg-custom {
-        background-color: #EEEDEC; /* Replace with your desired color code */
+    /* 設定主要內容區塊，讓它撐滿視窗 */
+    .content-wrapper {
+        min-height: calc(100vh - 120px); /* 頁面高度 - 頁尾高度 */
+        padding-bottom: 20px;
+    }
+
+    /* 頁尾固定在底部 */
+    .footer {
+        background-color: #f8f9fa; /* 淺灰色 */
+        position: relative;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* 讓 body 和 html 滿版 */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
     }
 </style>

@@ -39,6 +39,8 @@
 {{--            @yield('page-path')--}}
 {{--        </div>--}}
         @yield('content')
+
+        @include('masters.layouts.partials.footer')
 {{--        @include('layouts.partials.footer')--}}
         <!-- 引入 Flatpickr 样式 -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -205,6 +207,24 @@
                 vertical-align: middle; /* 垂直置中 */
                 text-align: center;     /* 文字水平置中 */
             }
+            /* 讓選項框變成黑色 */
+            .service-item {
+                padding: 10px 15px;
+                border-radius: 8px;
+                border: 2px solid black; /* 設定黑色邊框 */
+                transition: all 0.3s ease-in-out;
+            }
+
+            /* 當 radio 被選中時，讓邊框變黑色並加粗 */
+            .form-check-input:checked + label {
+                font-weight: bold;
+                color: black; /* 文字變黑色 */
+            }
+
+            .service-item:hover {
+                background-color: #f8f9fa; /* 可選，讓 hover 有明顯感 */
+            }
+
         </style>
 
         @stack('scripts')
