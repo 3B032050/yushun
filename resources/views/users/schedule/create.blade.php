@@ -40,9 +40,20 @@
                 <p class="text-danger">{{ $errors->first('recurring_interval') }}</p>
             @endif
             <div class="form-group">
-            <div id="recurring_options" style="display: none;">
-                    <label>每隔幾天預約一次：</label>
-                    <input type="number" name="recurring_interval" min="1">
+                <div>
+                    <label for="recurring_times">請選擇您希望的預約次數：</label>
+                    <select id="recurring_times" name="recurring_times">
+                        <option value="1">1 次</option>
+                        <option value="2">2 次</option>
+                        <option value="3">3 次</option>
+                        <option value="4">4 次</option>
+                        <option value="5">5 次</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="recurring_interval">每次預約間隔（週）：</label>
+                    <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="12" value="1">
                 </div>
             </div>
             <div class="form-group">
@@ -241,7 +252,11 @@
                         if (data.status === 'empty') {
                             masterSelect.innerHTML = '<option value="">該師傅當日無可預約時段</option>';
                             masterSelect.disabled = true;
-                        } else if (data.status === 'success' && data.data.length > 0) {
+                        }
+                        else if (data.status === 'error') {
+                            masterSelect.innerHTML = `<option value="">${data.message}</option>`;
+                            masterSelect.disabled = true;
+                        }else if (data.status === 'success' && data.data.length > 0) {
                             masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
                             data.data.forEach(master => {
                                 const option = document.createElement('option');

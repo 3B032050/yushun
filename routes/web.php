@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminServiceAreaController;
 use App\Http\Controllers\MastersAppointmentTimeController;
 use App\Http\Controllers\MasterServiceAreaController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 /*
@@ -28,8 +29,8 @@ Auth::routes();
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
-Route::get('masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('masters_login');
-Route::post('masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'login']);
+Route::get('auth/masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'showLoginForm'])->name('masters_login');
+Route::post('auth/masters/login', [\App\Http\Controllers\Auth\MasterLoginController::class, 'login']);
 Route::post('masters/logout', [\App\Http\Controllers\Auth\MasterLoginController::class, 'logout'])->name('masters_logout');
 Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('masters_register');
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
