@@ -80,7 +80,6 @@
                     <label for="service_price">價格</label>
                     <p id="service_price" class="form-control-static">請選擇服務項目</p>
                 </div>
-
                 <!-- 師傅選擇 -->
                 <div class="form-group">
                     <label for="master_id">選擇師傅</label>
@@ -88,7 +87,25 @@
                         <option value="">請先選擇服務項目</option>
                     </select>
                 </div>
+            <!-- 隱藏欄位，用來傳遞服務地址 -->
+                <input type="hidden" id="address" name="address">
+                <div class="form-group">
+                    <label>選擇服務地址：</label>
+                    <div>
+                        <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
+                        <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
+                    </div>
+                    <div>
+                        <!-- 選擇手動輸入地址 -->
+                        <input type="radio" name="address_option" id="enter_new_address" value="custom">
+                        <label for="enter_new_address">輸入欲服務地址</label>
+                    </div>
 
+                    <!-- 手動輸入地址的欄位，預設隱藏 -->
+                    <div id="custom_address_input" style="display: none;">
+                        <input type="text" class="form-control" id="custom_address" name="custom_address" placeholder="請輸入地址">
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="available_times">可預約時段</label>
                     <select id="available_times" name="appointment_time_id" class="form-control">
@@ -132,25 +149,52 @@
                     modal.classList.add('hidden'); // 在這裡隱藏模態框
                 });
             });
+            const addressField = document.getElementById('address');
             const addressOptionProfile = document.getElementById('use_profile_address');
-            let serviceAddress = '';
+            const customRadio = document.getElementById('enter_new_address');
+            const customAddressInput = document.getElementById('custom_address_input');
+            const customAddress = document.getElementById('custom_address');  // 手動輸入地址的input元素
+            let serviceAddress = '{{ Auth::user()->address }}';  // 預設為用戶的個人地址
 
-            // 預設隱藏手動輸入的輸入框(地址)，並確保使用個人地址
-            if (addressOptionProfile.checked) {
-                serviceAddress = '{{ Auth::user()->address }}'.trim(); // 使用用戶的預設地址
+            // 切換顯示地址輸入框
+            function toggleAddressInput() {
+                if (customRadio.checked) {
+                    customAddressInput.style.display = 'block';  // 顯示手動輸入地址欄位
+                    serviceAddress = '';  // 當手動輸入地址時，服務地址設為空
+                } else {
+                    customAddressInput.style.display = 'none';  // 隱藏手動輸入地址欄位
+                    serviceAddress = '{{ Auth::user()->address }}';  // 否則使用預設的地址
+                }
+                addressField.value = serviceAddress;  // 更新隱藏的地址欄位
+                console.log('目前選擇的服務地址:', serviceAddress);  // 打印當前選擇的地址
             }
 
-            // 如果個人地址為空，顯示錯誤提示
+        // 監聽 radio 點擊事件
+            addressOptionProfile.addEventListener('change', toggleAddressInput);
+            customRadio.addEventListener('change', toggleAddressInput);
 
-            // 當表單中的服務項目選擇改變時，確保地址已經設定好
+        // 預設執行一次
+            toggleAddressInput();
+
+            if (customAddress) {
+                // 當手動輸入地址時，更新 serviceAddress
+                customAddress.addEventListener('input', function() {
+                    serviceAddress = this.value.trim();  // 獲取手動輸入的地址並更新
+                    addressField.value = serviceAddress; // 更新隱藏欄位的值
+                    console.log('目前手動輸入的服務地址:', serviceAddress);  // 打印手動輸入的服務地址
+                });
+            } else {
+                console.log('找不到 custom_address 元素！');
+            }
+            // 當用戶選擇服務項目時，檢查是否設置了地址
             serviceSelect.addEventListener('change', function() {
-                if (!serviceAddress) {
-                    alert('請先選擇地址');
-                    window.location.href = '/users/personal_information/edit';
+                if (!serviceAddress || (customRadio.checked && !document.getElementById('custom_address').value.trim())) {
+                    alert('請先選擇或輸入地址');
+                    window.location.href = '/users/personal_information/edit';  // 重定向到個人資訊頁面
                     return; // 如果地址未設定，阻止繼續選擇服務項目
                 }
-                // 地址已設定，繼續執行
                 console.log('服務項目選擇了:', this.value);
+                console.log('選擇的服務地址:', serviceAddress);
             });
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -286,7 +330,7 @@
 
                 if (!masterId) return;
 
-                fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}`)
+                fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}&address=${serviceAddress}`)
                     .then(response => response.json())
                     .then(data => {
                         availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';

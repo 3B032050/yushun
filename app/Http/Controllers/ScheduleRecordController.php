@@ -176,7 +176,6 @@ class ScheduleRecordController extends Controller
     public function store(StoreschedulerecordRequest $request)
     {
         // 檢查該時段是否已被預約
-
         $appointmentTime = AppointmentTime::find($request->appointment_time_id);
 
         if (!$appointmentTime) {
@@ -184,7 +183,15 @@ class ScheduleRecordController extends Controller
         }
 
         $user = Auth::user();
+        if ($request->input('address_option') === 'profile') {
+            // 使用預設的個人地址
+            $address = $user->address;
+        } else {
+            // 使用手動輸入的地址
+            $address = $request->input('custom_address');
+        }
 
+       // dd($address);
         // 檢查當天的時段是否已被預約
         $isAlreadyBooked = ScheduleRecord::where('master_id', $request->master_id)
             ->where(function ($query) {
@@ -203,6 +210,7 @@ class ScheduleRecordController extends Controller
             'master_id' => $request->master_id,
             'user_id' => $user->id,
             'service_id' => $request->service_id,
+            'service_address'=>$address,
             'service_date' => $request->service_date,
             'appointment_time_id' => $request->appointment_time_id,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
@@ -266,6 +274,7 @@ class ScheduleRecordController extends Controller
                         'user_id' => $user->id,
                         'service_id' => $request->service_id,
                         'service_date' => $futureDate->toDateString(),
+                        'service_address'=>$address,
                         'appointment_time_id' => $newAppointment->id, // 使用 `appointment_time_id`
                         'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time, // 使用 start_time 和 end_time
                         'status' => 0, // 0 代表待確認
