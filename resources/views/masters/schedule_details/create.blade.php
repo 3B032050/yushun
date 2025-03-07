@@ -3,47 +3,44 @@
 @section('title', '完成訂單')
 
 @section('content')
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">可預約時段</a> &gt;
-                <a href="{{ url()->previous() }}" class="custom-link">編輯可預約時段</a> >
-                上傳照片
-            </p>
+    <div class="content-wrapper">
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                    <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">可預約時段</a> &gt;
+                    <a href="{{ url()->previous() }}" class="custom-link">編輯可預約時段</a> >
+                    上傳照片
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <h2 class="text-center mt-4">完成訂單</h2>
+            <form action="{{ route('masters.schedule_details.store', $appointmenttime->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="before_photo" class="form-label">清潔前照片</label>
+                        <input type="file" class="form-control" id="before_photo" name="before_photo" required onchange="previewImage(event, 'before_preview')">
+                        <div class="mt-2 text-center">
+                            <img id="before_preview" src="" class="img-thumbnail d-none preview-img">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="after_photo" class="form-label">清潔後照片</label>
+                        <input type="file" class="form-control" id="after_photo" name="after_photo" required onchange="previewImage(event, 'after_preview')">
+                        <div class="mt-2 text-center">
+                            <img id="after_preview" src="" class="img-thumbnail d-none preview-img">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100 mt-4">提交完成訂單</button>
+            </form>
         </div>
     </div>
-
-    <div class="container">
-        <h2 class="text-center mt-4">完成訂單</h2>
-        <form action="{{ route('masters.schedule_details.store', $appointmenttime->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-
-            <!-- 圖片上傳區塊 -->
-            <div class="row">
-                <!-- 清潔前照片 -->
-                <div class="col-md-6">
-                    <label for="before_photo" class="form-label">清潔前照片</label>
-                    <input type="file" class="form-control" id="before_photo" name="before_photo" required onchange="previewImage(event, 'before_preview')">
-                    <div class="mt-2 text-center">
-                        <img id="before_preview" src="" class="img-thumbnail d-none preview-img">
-                    </div>
-                </div>
-
-                <!-- 清潔後照片 -->
-                <div class="col-md-6">
-                    <label for="after_photo" class="form-label">清潔後照片</label>
-                    <input type="file" class="form-control" id="after_photo" name="after_photo" required onchange="previewImage(event, 'after_preview')">
-                    <div class="mt-2 text-center">
-                        <img id="after_preview" src="" class="img-thumbnail d-none preview-img">
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-success w-100 mt-4">提交完成訂單</button>
-        </form>
-    </div>
-
     <script>
         function previewImage(event, previewId) {
             const reader = new FileReader();

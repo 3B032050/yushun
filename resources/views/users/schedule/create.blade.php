@@ -3,105 +3,107 @@
 @section('title', '豫順清潔')
 
 @section('content')
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <div class="content-wrapper">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                <a href="{{ route('users.schedule.index') }}" class="custom-link">預約時段</a> &gt;
-                新增預約時段
-            </p>
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                    <a href="{{ route('users.schedule.index') }}" class="custom-link">預約時段</a> &gt;
+                    新增預約時段
+                </p>
+            </div>
         </div>
-    </div>
 
-    <!-- 彈出視窗 -->
-    <div id="schedule-modal" class="hidden">
-        <h4>新增時段預約</h4>
-        <p>選擇的日期：<span id="modal-date"></span></p>
-        <form id="schedule-form" action="{{ route('users.schedule.store') }}" method="POST">
-            @csrf
-            <input type="hidden" id="selected_date" name="service_date">
-            <label>
-                <input type="checkbox" name="is_recurring" id="is_recurring">
-                是否為定期客戶
-            </label>
-            <!-- 顯示錯誤訊息 -->
-            @if ($errors->has('recurring_interval'))
-                <p class="text-danger">{{ $errors->first('recurring_interval') }}</p>
-            @endif
-            <div class="form-group">
-                <div>
-                    <label for="recurring_times">請選擇您希望的預約次數：</label>
-                    <select id="recurring_times" name="recurring_times">
-                        <option value="1">1 次</option>
-                        <option value="2">2 次</option>
-                        <option value="3">3 次</option>
-                        <option value="4">4 次</option>
-                        <option value="5">5 次</option>
+        <!-- 彈出視窗 -->
+        <div id="schedule-modal" class="hidden">
+            <h4>新增時段預約</h4>
+            <p>選擇的日期：<span id="modal-date"></span></p>
+            <form id="schedule-form" action="{{ route('users.schedule.store') }}" method="POST">
+                @csrf
+                <input type="hidden" id="selected_date" name="service_date">
+                <label>
+                    <input type="checkbox" name="is_recurring" id="is_recurring">
+                    是否為定期客戶
+                </label>
+                <!-- 顯示錯誤訊息 -->
+                @if ($errors->has('recurring_interval'))
+                    <p class="text-danger">{{ $errors->first('recurring_interval') }}</p>
+                @endif
+                <div class="form-group">
+                    <div>
+                        <label for="recurring_times">請選擇您希望的預約次數：</label>
+                        <select id="recurring_times" name="recurring_times">
+                            <option value="1">1 次</option>
+                            <option value="2">2 次</option>
+                            <option value="3">3 次</option>
+                            <option value="4">4 次</option>
+                            <option value="5">5 次</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="recurring_interval">每次預約間隔（週）：</label>
+                        <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="12" value="1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>選擇服務地址：</label>
+                    <div>
+                        <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
+                        <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
+                    </div>
+                </div>
+
+                <!-- 服務項目選擇 -->
+                <div class="form-group">
+                    <label for="service_id">選擇服務項目</label>
+                    <select id="service_id" name="service_id" class="form-control" required>
+                        <option value="">請選擇服務項目</option>
+                        @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
-                <div>
-                    <label for="recurring_interval">每次預約間隔（週）：</label>
-                    <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="12" value="1">
+                <div class="form-group">
+                    <label for="service_price">價格</label>
+                    <p id="service_price" class="form-control-static">請選擇服務項目</p>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>選擇服務地址：</label>
-                <div>
-                    <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
-                    <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
+
+                <!-- 師傅選擇 -->
+                <div class="form-group">
+                    <label for="master_id">選擇師傅</label>
+                    <select id="master_id" name="master_id" class="form-control" disabled required>
+                        <option value="">請先選擇服務項目</option>
+                    </select>
                 </div>
-            </div>
 
-            <!-- 服務項目選擇 -->
-            <div class="form-group">
-                <label for="service_id">選擇服務項目</label>
-                <select id="service_id" name="service_id" class="form-control" required>
-                    <option value="">請選擇服務項目</option>
-                    @foreach($items as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="service_price">價格</label>
-                <p id="service_price" class="form-control-static">請選擇服務項目</p>
-            </div>
-
-            <!-- 師傅選擇 -->
-            <div class="form-group">
-                <label for="master_id">選擇師傅</label>
-                <select id="master_id" name="master_id" class="form-control" disabled required>
-                    <option value="">請先選擇服務項目</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="available_times">可預約時段</label>
-                <select id="available_times" name="appointment_time_id" class="form-control">
-                    <option value="">請先選擇師傅</option>
-                </select>
-            </div>
-            <button type="submit" class="btn btn-primary">確認</button>
-            <button class="btn btn-secondary close-modal">取消</button>
-        </form>
+                <div class="form-group">
+                    <label for="available_times">可預約時段</label>
+                    <select id="available_times" name="appointment_time_id" class="form-control">
+                        <option value="">請先選擇師傅</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">確認</button>
+                <button class="btn btn-secondary close-modal">取消</button>
+            </form>
 
 
+        </div>
+
+        <div id="calendar"></div>
     </div>
-
-    <div id="calendar"></div>
 @endsection
 
 @push('scripts')

@@ -3,42 +3,44 @@
 @section('title', '查看師傅排程')
 
 @section('content')
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                查看師傅排程
-            </p>
+    <div class="content-wrapper">
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                    查看師傅排程
+                </p>
+            </div>
+            <h1 class="mt-4 text-center">查看師傅排程</h1>
         </div>
-        <h1 class="mt-4 text-center">查看師傅排程</h1>
-    </div>
 
-    <div class="container">
-        <!-- 師傅選擇 -->
-        <div class="form-group">
-            <select id="master-select" class="form-control">
-                <option value="" selected disabled>請選擇師傅</option>
-                @foreach ($masters as $master)
-                    <option value="{{ $master->id }}">{{ $master->name }}</option>
-                @endforeach
-            </select>
-        </div><br><br>
+        <div class="container">
+            <!-- 師傅選擇 -->
+            <div class="form-group">
+                <select id="master-select" class="form-control">
+                    <option value="" selected disabled>請選擇師傅</option>
+                    @foreach ($masters as $master)
+                        <option value="{{ $master->id }}">{{ $master->name }}</option>
+                    @endforeach
+                </select>
+            </div><br><br>
 
-        <!-- 行事曆 -->
-        <div id="calendar"></div>
-    </div>
-    <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title">事件詳情</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    <!-- 這裡會透過 JavaScript 動態填充內容 -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+            <!-- 行事曆 -->
+            <div id="calendar"></div>
+        </div>
+        <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="eventDetailModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title">事件詳情</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <!-- 這裡會透過 JavaScript 動態填充內容 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    </div>
                 </div>
             </div>
         </div>

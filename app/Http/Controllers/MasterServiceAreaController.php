@@ -20,7 +20,7 @@ class MasterServiceAreaController extends Controller
     {
         $masterId = Auth::guard('master')->id();
         $serviceAreas = MasterServiceArea::where('master_id', $masterId)
-            ->orderBy('admin_service_item_id') // 按 service_item_id 排序
+            ->orderBy('admin_service_item_id')
             ->get();
 
         if ($serviceAreas->isEmpty()) {
@@ -62,7 +62,7 @@ class MasterServiceAreaController extends Controller
         $selectedAreas = MasterServiceArea::where('master_id', $masterId)
             ->where('admin_service_item_id',$serviceItemId)
             ->pluck('admin_service_area_id')
-            ->toArray(); // 取得該 master 選擇的地區 ID
+            ->toArray();
 
         return view('Masters.service_areas.create', compact('serviceAreas', 'selectedAreas'));
     }
@@ -75,33 +75,41 @@ class MasterServiceAreaController extends Controller
         $masterId = Auth::guard('master')->id();
         $serviceItemId = session('service_item_id');
 
-        foreach ($request->service_area as $adminServiceAreaId) {
-            $existingRecord = MasterServiceArea::where('master_id', $masterId)
-                ->where('admin_service_area_id', $adminServiceAreaId)
-                ->exists();
+        $existingServiceAreas = MasterServiceArea::where('master_id', $masterId)
+            ->where('admin_service_item_id', $serviceItemId)
+            ->pluck('admin_service_area_id')
+            ->toArray();
 
-            if ($existingRecord) {
-                return redirect()->route('masters.service_areas.index')
-                    ->with('error', '資料已經存在');
+        $selectedAreas = $request->service_area ?? [];
+
+        foreach ($selectedAreas as $adminServiceAreaId) {
+            if (!in_array($adminServiceAreaId, $existingServiceAreas)) {
+                $masterServiceArea = MasterServiceArea::create([
+                    'master_id' => $masterId,
+                    'admin_service_area_id' => $adminServiceAreaId,
+                    'admin_service_item_id' => $serviceItemId,
+                ]);
+
+                $masterServiceArea->adminarea()->attach([
+                    $adminServiceAreaId => ['admin_service_item_id' => $serviceItemId],
+                ]);
             }
-
-            $masterServiceArea = MasterServiceArea::create([
-                'master_id' => $masterId,
-                'admin_service_area_id' => $adminServiceAreaId,
-                'admin_service_item_id' => $serviceItemId,
-            ]);
-            $masterServiceArea->adminarea()->attach([
-                $adminServiceAreaId => ['admin_service_item_id' => $serviceItemId],
-            ]);
-//            $masterServiceArea->adminarea()->attach($adminServiceAreaId);
-//            $masterServiceArea->adminitem()->attach($serviceItemId);
+        }
+        $areasToDelete = array_diff($existingServiceAreas, $selectedAreas);
+        if (!empty($areasToDelete)) {
+            MasterServiceArea::where('master_id', $masterId)
+                ->where('admin_service_item_id', $serviceItemId)
+                ->whereIn('admin_service_area_id', $areasToDelete)
+                ->delete();
         }
 
         session()->forget('service_item_id');
 
         return redirect()->route('masters.service_areas.index')
-            ->with('success', '服務地區已成功新增');
+            ->with('success', '服務地區已成功更新');
     }
+
+
 
 
 

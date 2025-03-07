@@ -3,78 +3,75 @@
 @section('title', '豫順清潔')
 
 @section('content')
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <div class="content-wrapper">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                可預約時段
-            </p>
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                    可預約時段
+                </p>
+            </div>
         </div>
-    </div>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <!-- 下拉選單 -->
-        <div class="dropdown">
-            <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                操作選單
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li>
-                    <a class="dropdown-item" href="{{ route('masters.appointmenttime.create') }}">新增可預約時段</a>
-                </li>
-                <li>
-                    <!-- 複製時段的觸發按鈕 -->
-                    <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#copyModal">
-                        複製當月時段
-                    </button>
-                </li>
-            </ul>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <!-- 下拉選單 -->
+            <div class="dropdown">
+                <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    操作選單
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <a class="dropdown-item" href="{{ route('masters.appointmenttime.create') }}">新增可預約時段</a>
+                    </li>
+                    <li>
+                        <!-- 複製時段的觸發按鈕 -->
+                        <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#copyModal">
+                            複製當月時段
+                        </button>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
 
-    <!-- 複製時段的彈出視窗 -->
-    <div class="modal fade" id="copyModal" tabindex="-1" aria-labelledby="copyModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="copyModalLabel">選擇目標月份</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- 複製時段的表單 -->
-                    <form method="POST" action="{{ route('masters.appointmenttime.copy') }}">
-                        @csrf
-                        <div class="mb-3">
-                            <label for="target_month" class="form-label">選擇目標月份：</label>
-                            <select id="target_month" name="target_month" class="form-select">
-                                <option value="1">複製到一個月後</option>
-                                <option value="2">複製到兩個月後</option>
-                                <option value="3">複製到三個月後</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-success">複製時段</button>
-                    </form>
+        <!-- 複製時段的彈出視窗 -->
+        <div class="modal fade" id="copyModal" tabindex="-1" aria-labelledby="copyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="copyModalLabel">選擇目標月份</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 複製時段的表單 -->
+                        <form method="POST" action="{{ route('masters.appointmenttime.copy') }}">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="target_month" class="form-label">選擇目標月份：</label>
+                                <select id="target_month" name="target_month" class="form-select">
+                                    <option value="1">複製到一個月後</option>
+                                    <option value="2">複製到兩個月後</option>
+                                    <option value="3">複製到三個月後</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success">複製時段</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+        <div id="calendar"></div>
     </div>
-
-
-
-
-    <!-- 日曆顯示區域 -->
-    <div id="calendar"></div>
 @endsection
     @push('styles')
         <style>
@@ -82,26 +79,6 @@
                 max-width: 100%;
                 margin: 0 auto;
                 height: 600px;  /* 設置明確的高度 */
-            }
-            .fc-event-delete-container {
-                margin-top: 10px; /* 上方間隔 */
-                display: block;   /* 確保容器占滿整行 */
-                text-align: center; /* 可選，讓刪除按鈕居中 */
-            }
-
-            .fc-event-delete {
-                background-color: #dc3545;
-                color: white;
-                border: none;
-                padding: 5px 10px;
-                font-size: 12px;
-                cursor: pointer;
-                display: block; /* 確保按鈕是塊級元素 */
-                margin: 0 auto; /* 居中對齊按鈕 */
-            }
-
-            .fc-event-delete:hover {
-                background-color: #c82333;
             }
         </style>
     @endpush

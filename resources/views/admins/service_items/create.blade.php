@@ -3,15 +3,16 @@
 @section('title', '新增設備')
 
 @section('content')
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                <a href="{{ route('admins.service_items.index') }}" class="custom-link">項目管理</a> >
-                新增項目
-            </p>
+    <div class="content-wrapper">
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
+                    <a href="{{ route('admins.service_items.index') }}" class="custom-link">項目管理</a> >
+                    新增項目
+                </p>
+            </div>
         </div>
-    </div>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -82,7 +83,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
     <style>
         .required {
             color: red;

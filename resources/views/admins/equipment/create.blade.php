@@ -3,6 +3,7 @@
 @section('title', '新增設備')
 
 @section('content')
+    <div class="content-wrapper">
     <div class="container-fluid px-4">
         <div style="margin-top: 10px;">
             <p style="font-size: 1.8em;">
@@ -85,7 +86,7 @@
                 </div>
             </div>
         </div>
-
+    </div>
     <style>
         .required {
             color: red;

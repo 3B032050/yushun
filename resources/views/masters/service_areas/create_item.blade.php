@@ -52,7 +52,7 @@
 @endsection
 <style>
     .custom-radio {
-        transform: scale(1.5); /* 放大 radio 按鈕 */
-        border: 2px solid black !important; /* 黑色邊框 */
+        transform: scale(1.5);
+        border: 2px solid black !important;
     }
 </style>

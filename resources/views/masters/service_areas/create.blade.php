@@ -67,7 +67,7 @@
 
 <style>
     .custom-checkbox {
-        transform: scale(1.3); /* 放大 checkbox */
-        border: 2px solid black !important; /* 黑色邊框 */
+        transform: scale(1.3);
+        border: 2px solid black !important;
     }
 </style>

@@ -3,86 +3,88 @@
 @section('title', '豫順清潔')
 
 @section('content')
-    @if(session('info'))
-        <div class="alert alert-info">
-            {{ session('info') }}
-        </div>
-    @endif
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    <div class="content-wrapper">
+        @if(session('info'))
+            <div class="alert alert-info">
+                {{ session('info') }}
+            </div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <div class="container-fluid px-4">
-        <div style="margin-top: 10px;">
-            <p style="font-size: 1.8em;">
-                <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                預約時段
-            </p>
+        <div class="container-fluid px-4">
+            <div style="margin-top: 10px;">
+                <p style="font-size: 1.8em;">
+                    <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                    預約時段
+                </p>
+            </div>
         </div>
-    </div>
 
-    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段</a>
-    </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段</a>
+        </div>
 
-    <!-- 日曆顯示區域 -->
-    <div id="calendar"></div>
+        <!-- 日曆顯示區域 -->
+        <div id="calendar"></div>
 
-    <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title"></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    <!-- 內容將透過 JS 動態填入 -->
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+        <div class="modal fade" id="eventDetailModal" tabindex="-1" aria-labelledby="modal-title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modal-title"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <!-- 內容將透過 JS 動態填入 -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="reviewModalLabel">撰寫評論</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="reviewForm" method="POST" action="{{ route('users.schedule_details.review') }}">
-                        @csrf
-                        @method('POST')
-                        <input type="hidden" name="schedule_id" id="schedule_id">
+        <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="reviewModalLabel">撰寫評論</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="reviewForm" method="POST" action="{{ route('users.schedule_details.review') }}">
+                            @csrf
+                            @method('POST')
+                            <input type="hidden" name="schedule_id" id="schedule_id">
 
-                        <div class="mb-3">
-                            <label for="score" class="form-label">評分 (1-5)</label>
-                            <select class="form-control" name="score" id="score" required>
-                                <option value="">請選擇</option>
-                                <option value="1">⭐ 1</option>
-                                <option value="2">⭐⭐ 2</option>
-                                <option value="3">⭐⭐⭐ 3</option>
-                                <option value="4">⭐⭐⭐⭐ 4</option>
-                                <option value="5">⭐⭐⭐⭐⭐ 5</option>
-                            </select>
-                        </div>
+                            <div class="mb-3">
+                                <label for="score" class="form-label">評分 (1-5)</label>
+                                <select class="form-control" name="score" id="score" required>
+                                    <option value="">請選擇</option>
+                                    <option value="1">⭐ 1</option>
+                                    <option value="2">⭐⭐ 2</option>
+                                    <option value="3">⭐⭐⭐ 3</option>
+                                    <option value="4">⭐⭐⭐⭐ 4</option>
+                                    <option value="5">⭐⭐⭐⭐⭐ 5</option>
+                                </select>
+                            </div>
 
-                        <div class="mb-3">
-                            <label for="comment" class="form-label">評語</label>
-                            <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
-                        </div>
+                            <div class="mb-3">
+                                <label for="comment" class="form-label">評語</label>
+                                <textarea class="form-control" name="comment" id="comment" rows="3" required></textarea>
+                            </div>
 
-                        <button type="submit" class="btn btn-primary">提交評論</button>
-                    </form>
+                            <button type="submit" class="btn btn-primary">提交評論</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
