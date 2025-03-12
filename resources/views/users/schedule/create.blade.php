@@ -57,11 +57,23 @@
                         <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="12" value="1">
                     </div>
                 </div>
+                <!-- 隱藏欄位，用來傳遞服務地址 -->
+                <input type="hidden" id="address" name="address">
                 <div class="form-group">
                     <label>選擇服務地址：</label>
                     <div>
                         <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
                         <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
+                    </div>
+                    <div>
+                        <!-- 選擇手動輸入地址 -->
+                        <input type="radio" name="address_option" id="enter_new_address" value="custom">
+                        <label for="enter_new_address">輸入欲服務地址</label>
+                    </div>
+
+                    <!-- 手動輸入地址的欄位，預設隱藏 -->
+                    <div id="custom_address_input" style="display: none;">
+                        <input type="text" class="form-control" id="custom_address" name="custom_address" placeholder="請輸入地址">
                     </div>
                 </div>
 
@@ -87,25 +99,7 @@
                         <option value="">請先選擇服務項目</option>
                     </select>
                 </div>
-            <!-- 隱藏欄位，用來傳遞服務地址 -->
-                <input type="hidden" id="address" name="address">
-                <div class="form-group">
-                    <label>選擇服務地址：</label>
-                    <div>
-                        <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
-                        <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
-                    </div>
-                    <div>
-                        <!-- 選擇手動輸入地址 -->
-                        <input type="radio" name="address_option" id="enter_new_address" value="custom">
-                        <label for="enter_new_address">輸入欲服務地址</label>
-                    </div>
 
-                    <!-- 手動輸入地址的欄位，預設隱藏 -->
-                    <div id="custom_address_input" style="display: none;">
-                        <input type="text" class="form-control" id="custom_address" name="custom_address" placeholder="請輸入地址">
-                    </div>
-                </div>
                 <div class="form-group">
                     <label for="available_times">可預約時段</label>
                     <select id="available_times" name="appointment_time_id" class="form-control">
