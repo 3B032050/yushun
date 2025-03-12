@@ -307,20 +307,19 @@ class ScheduleRecordController extends Controller
     {
         $master = Master::find($request->master_id);
         $appointmentDetails = [
-            'master_name' => $master->name,
-            'user_name' => $user->name,
-            'service_date' => $request->service_date,
-            'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
-            'service_address'=>$appointmentTime->service_address,
+            'master_name' => $master->name ?? '未知師傅',
+            'user_name' => $user->name ?? '未知用戶',
+            'service_date' => $request->service_date ?? '未指定日期',
+            'appointment_time' => ($appointmentTime->start_time ?? '') . ' - ' . ($appointmentTime->end_time ?? ''),
+            'service_address' => $request->address ?? '未提供地址',
         ];
-
+        Log::info('Appointment Details:', $appointmentDetails);
         if (!empty($master->email)) {
-            Mail::to($master->email)->queue(new AppointmentConfirmation($appointmentTime));
-
+            Mail::to($master->email)->queue(new AppointmentConfirmation($appointmentDetails));
         }
 
         if (!empty($user->email)) {
-            Mail::to($user->email)->queue(new AppointmentConfirmation($appointmentTime));
+            Mail::to($user->email)->queue(new AppointmentConfirmation($appointmentDetails));
         }
     }
 
@@ -354,5 +353,21 @@ class ScheduleRecordController extends Controller
     public function destroy(ScheduleRecord $schedulerecord)
     {
         //
+    }
+    public function testMail()
+    {
+        $appointmentDetails = [
+            'master_name' => 'master',
+            'user_name' => 'admin',
+            'service_date' => '2025-03-21',
+            'appointment_time' => '16:54:00 - 19:54:00',
+            'service_address' => '桃園市桃園區',
+        ];
+
+        // 測試發送郵件到你自己的電子郵件
+        Mail::to('your_email@example.com')->send(new AppointmentConfirmation($appointmentDetails));
+
+        // 你也可以加上一個訊息來確認郵件是否發送
+        return response()->json(['message' => '郵件已發送']);
     }
 }

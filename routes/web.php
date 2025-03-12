@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminServiceAreaController;
 use App\Http\Controllers\MastersAppointmentTimeController;
 use App\Http\Controllers\MasterServiceAreaController;
+use App\Http\Controllers\ScheduleRecordController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
@@ -139,3 +140,4 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('schedule_details/review', [App\Http\Controllers\ScheduleDetailController::class, 'review'])->name('schedule_details.review');
     });
 });
+

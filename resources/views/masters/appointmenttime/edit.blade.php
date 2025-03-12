@@ -159,7 +159,7 @@
                 @else
                     <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
                 @endif
-
+            </form>
                 @if($appointmenttime->status == 0)  {{-- 只有在未接受的時段 (status = 0) 時才顯示刪除按鈕 --}}
                 <form action="{{ route('masters.appointmenttime.destroy', ['appointmenttime' => $appointmenttime->id]) }}" method="POST">
                     @csrf

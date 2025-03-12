@@ -7,11 +7,12 @@
     <title>預約確認</title>
 </head>
 <body>
-<p>親愛的 {{ $user_name }}，</p>
+<p>親愛的 {{ $user_name ?? '未知用戶' }}，</p>
 <p>您的預約已成功安排。</p>
-<p>師傅: {{ $master_name }}</p>
-<p>預約日期: {{ $service_date }}</p>
-<p>預約時間: {{ $appointment_time }}</p>
+<p>師傅: {{ $master_name ?? '未知師傅' }}</p>
+<p>預約日期: {{ $service_date ?? '未指定日期' }}</p>
+<p>預約時間: {{ $appointment_time ?? '未指定時間' }}</p>
+<p>服務地址: {{ $service_address ?? '未提供地址' }}</p>
 <p>感謝您的預約！</p>
 </body>
 </html>
