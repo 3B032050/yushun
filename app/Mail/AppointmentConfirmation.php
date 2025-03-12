@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentConfirmation extends Mailable implements ShouldQueue
 {
@@ -16,20 +17,15 @@ class AppointmentConfirmation extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      */
-    public $master_name;
-    public $user_name;
-    public $service_date;
-    public $appointment_time;
-    public $service_address;
+    use Queueable, SerializesModels;
+
+    public $appointmentDetails; // 確保變數可用
 
     public function __construct($appointmentDetails)
     {
-        $this->master_name = $appointmentDetails['master_name'];
-        $this->user_name = $appointmentDetails['user_name'];
-        $this->service_date = $appointmentDetails['service_date'];
-        $this->appointment_time = $appointmentDetails['appointment_time'];
-        $this->service_address = $appointmentDetails['service_address'];
+        $this->appointmentDetails = $appointmentDetails;
     }
+
 
     /**
      * Get the message envelope.
@@ -48,9 +44,11 @@ class AppointmentConfirmation extends Mailable implements ShouldQueue
     {
         return new Content(
             view: 'emails.appointment_confirmation',
+            with: $this->appointmentDetails // **這裡確保變數傳遞**
         );
 
     }
+
 
     /**
      * Get the attachments for the message.
@@ -61,9 +59,5 @@ class AppointmentConfirmation extends Mailable implements ShouldQueue
     {
         return [];
     }
-    public function build()
-    {
-        return $this->subject('預約確認通知')
-            ->view('emails.appointment_confirmation');
-    }
+
 }
