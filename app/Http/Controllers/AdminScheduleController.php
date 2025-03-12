@@ -23,25 +23,28 @@ class AdminScheduleController extends Controller
         $schedules = ScheduleRecord::where('master_id', $masterId)->get();
 
         $formattedSchedules = $schedules->map(function ($schedule) {
+            // 確保有日期，如果沒有 `service_date`，則使用 `appointment_time` 的日期部分
+            $serviceDate = $schedule->service_date ?? now()->toDateString();
+
             return [
                 'title' => '詳細資訊',
-                'start' => $schedule->service_date,
+                'start' => $serviceDate,  // 確保行事曆有日期
                 'color' => $schedule->status == 0 ? '#28a745' : '#dc3545',
                 'extendedProps' => [
-                    'time' => $schedule->appointment_time,
+                    'time' => $schedule->appointment_time ?? '未提供時間',
                     'price' => $schedule->service->price ?? '未提供',
                     'service' => $schedule->service->name ?? '未提供',
                     'customer' => $schedule->user ? $schedule->user->name : '未知用戶',
                     'description' => match ($schedule->status) {
-                        0 => '已確認',
-                        1 => '待確認',
+                        0 => '待確認',
+                        1 => '已確認',
                         2 => '已完成',
                         3 => '不成立',
                         4 => '已取消',
                         default => '未知狀態'
                     },
-                    'score' => $schedule->scheduledetail->score ?? null,  // 新增評分
-                    'comment' => $schedule->scheduledetail->comment ?? null, // 新增評論
+                    'score' => $schedule->scheduledetail->score ?? null,
+                    'comment' => $schedule->scheduledetail->comment ?? null,
                     'before_photo' => $schedule->before_photo ?? null,
                     'after_photo' => $schedule->after_photo ?? null,
                 ]
@@ -50,5 +53,6 @@ class AdminScheduleController extends Controller
 
         return response()->json($formattedSchedules);
     }
+
 
 }

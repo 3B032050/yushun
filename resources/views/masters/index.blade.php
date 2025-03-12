@@ -34,7 +34,7 @@
                                     <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>個人資料</h3>
+                                    <h3>個人資料(制服登記)</h3>
                                 </div>
                             </a>
                         </div>

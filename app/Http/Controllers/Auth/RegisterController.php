@@ -51,7 +51,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => ['required', 'regex:/^09\d{8}$/'], // 手機必填
+            'mobile' => ['required', 'regex:/^09[0-9]{8}$/', 'size:10'], // 手機號碼必須為 10 碼
             'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/'] ,// 市話選填
             'address' => ['nullable', 'string', 'max:255'],
             'line_id' => ['nullable', 'string', 'max:255'],
@@ -69,11 +69,12 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'mobile' => $data['mobile'],
             'phone' => $data['phone'],
             'address' => $data['address'],
             'line_id' => $data['line_id'],
 
-            'password' => Hash::make($data['phone']),
+            'password' => Hash::make($data['mobile']),
         ]);
     }
 

@@ -18,7 +18,7 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('名字/Name') }}
+                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('名字 / Name') }}
                                 <span style="color: blue;">(必填)</label>
 
                             <div class="col-md-6">
@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('信箱/Email') }}
+                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('信箱 / Email') }}
                                 <span style="color: blue;">(必填)</label>
 
                             <div class="col-md-6">
@@ -48,11 +48,11 @@
                         </div>
 
                         <div class="row mb-3">
-                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('電話號碼/Phone number') }}
+                            <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('電話號碼 / Phone number') }}
                                 <span style="color: blue;">(必填)</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" placeholder="格式：09XXXXXXXX" autofocus>
 
                                 @error('phone')
                                 <span class="invalid-feedback" role="alert">
