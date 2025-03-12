@@ -311,7 +311,7 @@ class ScheduleRecordController extends Controller
             'user_name' => $user->name,
             'service_date' => $request->service_date,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
-            'service_address'=>$appointmentTime->service_address,
+            'service_address'=>$request->address,
         ];
 
         if (!empty($master->email)) {
