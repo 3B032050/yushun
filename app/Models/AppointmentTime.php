@@ -16,6 +16,7 @@ class AppointmentTime extends Model
         'service_date',
         'start_time',
         'end_time',
+        'service_address',
         'status',
     ];
 

@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-
+            $table->string('service_address')->nullable();
             $table->date('service_date')->nullable();
             //$table->enum('period_time', ['AM', 'PM'])->nullable(); // 如果需要的話可以取消註解
             $table->time('start_time')->nullable();

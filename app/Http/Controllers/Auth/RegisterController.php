@@ -51,7 +51,8 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => ['required', 'string', 'max:15'],
+            'mobile' => ['required', 'regex:/^09\d{8}$/'], // 手機必填
+            'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/'] ,// 市話選填
             'address' => ['nullable', 'string', 'max:255'],
             'line_id' => ['nullable', 'string', 'max:255'],
         ]);

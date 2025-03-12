@@ -20,6 +20,7 @@ class AppointmentConfirmation extends Mailable implements ShouldQueue
     public $user_name;
     public $service_date;
     public $appointment_time;
+    public $service_address;
 
     public function __construct($appointmentDetails)
     {
@@ -27,6 +28,7 @@ class AppointmentConfirmation extends Mailable implements ShouldQueue
         $this->user_name = $appointmentDetails['user_name'];
         $this->service_date = $appointmentDetails['service_date'];
         $this->appointment_time = $appointmentDetails['appointment_time'];
+        $this->service_address = $appointmentDetails['service_address'];
     }
 
     /**

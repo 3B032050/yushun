@@ -222,6 +222,7 @@ class ScheduleRecordController extends Controller
             ->where('master_id', $request->master_id)
             ->update([
                 'user_id' => $user->id,
+                'service_address'=>$address,
                 'status' => 1, // 1 代表已預約
             ]);
         // **處理定期預約**
@@ -285,6 +286,7 @@ class ScheduleRecordController extends Controller
                         ->update([
                             'user_id' => $user->id,
                             'status' => 0, // 0 代確認
+                            'service_address'=>$address,
                         ]);
                 }
             }
@@ -309,6 +311,7 @@ class ScheduleRecordController extends Controller
             'user_name' => $user->name,
             'service_date' => $request->service_date,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
+            'service_address'=>$appointmentTime->service_address,
         ];
 
         if (!empty($master->email)) {
