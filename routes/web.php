@@ -140,4 +140,4 @@ Route::group(['middleware' => 'auth'], function() {
         Route::post('schedule_details/review', [App\Http\Controllers\ScheduleDetailController::class, 'review'])->name('schedule_details.review');
     });
 });
-Route::get('test-mail', [ScheduleRecordController::class, 'testMail']);
+

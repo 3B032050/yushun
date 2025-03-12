@@ -178,6 +178,7 @@ class MastersAppointmentTimeController extends Controller
             'user_name' => $user->name,
             'service_date' => $appointmentTime->service_date,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
+            'service_address'=>$appointmentTime->service_address,
         ];
 
         if (!empty($master->email)) {
