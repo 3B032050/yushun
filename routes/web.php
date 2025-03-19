@@ -23,8 +23,15 @@ use App\Http\Controllers\Auth\GoogleController;
 //});
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home.index');
-Auth::routes();
+Route::get('/home', function () {
+    return redirect()->route('users.index');
+})->name('home');
+Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
+Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+Route::get('register', [App\Http\Controllers\Auth\RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('register', [App\Http\Controllers\Auth\RegisterController::class, 'register']);
 
 //google第三方登入
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])->name('google.login');
@@ -40,32 +47,32 @@ Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
-        Route::patch('}/update/{user', [App\Http\Controllers\MasterController::class, 'update'])->name('update');
+        Route::patch('/update/{user}', [App\Http\Controllers\MasterController::class, 'update'])->name('update');
 
         //可服務地區
-        Route::get('service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
-        Route::get('service_areas/index', [MasterServiceAreaController::class, 'index'])->name('service_areas.index');
-        Route::get('service_areas/create', [MasterServiceAreaController::class, 'create'])->name('service_areas.create');
-        Route::post('service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
+        Route::get('/service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
+        Route::get('/service_areas/index', [MasterServiceAreaController::class, 'index'])->name('service_areas.index');
+        Route::get('/service_areas/create', [MasterServiceAreaController::class, 'create'])->name('service_areas.create');
+        Route::post('/service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
         Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
-        Route::get('service_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
-        Route::post('service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
+        Route::get('s/ervice_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
+        Route::post('/service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
 
         //可預約時段
-        Route::get('appointmenttime/index', [\App\Http\Controllers\MastersAppointmentTimeController::class, 'index'])->name('appointmenttime.index');
-        Route::get('appointmenttime/create', [MastersAppointmentTimeController::class, 'create'])->name('appointmenttime.create');
-        Route::post('appointmenttime', [MastersAppointmentTimeController::class, 'store'])->name('appointmenttime.store');
+        Route::get('/appointmenttime/index', [\App\Http\Controllers\MastersAppointmentTimeController::class, 'index'])->name('appointmenttime.index');
+        Route::get('/appointmenttime/create', [MastersAppointmentTimeController::class, 'create'])->name('appointmenttime.create');
+        Route::post('/appointmenttime', [MastersAppointmentTimeController::class, 'store'])->name('appointmenttime.store');
         Route::get('/appointmenttime/edit/{appointmenttime}', [App\Http\Controllers\MastersAppointmentTimeController::class, 'edit'])->name('appointmenttime.edit');
         Route::patch('/appointmenttime/{appointmenttime}/update', [App\Http\Controllers\MastersAppointmentTimeController::class, 'update'])->name('appointmenttime.update');
         Route::delete('/appointmenttime/{appointmenttime}/destroy', [MastersAppointmentTimeController::class, 'destroy'])->name("appointmenttime.destroy");
-        Route::post('appointmenttime/copy', [MastersAppointmentTimeController::class, 'copy'])->name('appointmenttime.copy');
+        Route::post('/appointmenttime/copy', [MastersAppointmentTimeController::class, 'copy'])->name('appointmenttime.copy');
 
         //租借制服
-        Route::get('rent_uniforms/index', [\App\Http\Controllers\MasterRentUniformController::class, 'index'])->name('rent_uniforms.index');
-        Route::get('rent_uniforms/create/{uniform}', [\App\Http\Controllers\MasterRentUniformController::class, 'create'])->name('rent_uniforms.create');
-        Route::post('rent_uniforms/store', [\App\Http\Controllers\MasterRentUniformController::class, 'store'])->name('rent_uniforms.store');
-        Route::get('rent_uniforms/history', [\App\Http\Controllers\MasterRentUniformController::class, 'history'])->name('rent_uniforms.history');
+        Route::get('/rent_uniforms/index', [\App\Http\Controllers\MasterRentUniformController::class, 'index'])->name('rent_uniforms.index');
+        Route::get('/rent_uniforms/create/{uniform}', [\App\Http\Controllers\MasterRentUniformController::class, 'create'])->name('rent_uniforms.create');
+        Route::post('/rent_uniforms/store', [\App\Http\Controllers\MasterRentUniformController::class, 'store'])->name('rent_uniforms.store');
+        Route::get('/rent_uniforms/history', [\App\Http\Controllers\MasterRentUniformController::class, 'history'])->name('rent_uniforms.history');
         Route::post('/rentals/{rental}/return', [\App\Http\Controllers\MasterRentUniformController::class, 'return'])->name('rent_uniforms.return');
 
         //借用設備
