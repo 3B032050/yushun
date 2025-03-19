@@ -63,7 +63,10 @@
                         <input type="text" id="service" name="service" value="無客戶" class="form-control" disabled required>
                     @endif
                 </div>
-
+                <div class="form-group mb-3">
+                    <label for="service_address">服務地址</label>
+                    <input type="text" id="service_address" name="service_address" value="{{ old('service_address', $appointmenttime->service_address) }}" class="form-control" step="1" disabled required>
+                </div>
                 @if($appointmenttime->status == 2 && optional(optional($appointmenttime->schedulerecord)->scheduledetail))
                     <div class="card mt-3">
                         <div class="card-header bg-primary text-white">

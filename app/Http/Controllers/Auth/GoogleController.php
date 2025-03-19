@@ -25,25 +25,32 @@ class GoogleController extends Controller
      */
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->user();
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
-        // 查找或創建用戶
-        $user = User::updateOrCreate(
-            ['email' => $googleUser->email],
-            [
-                'name' => $googleUser->name,
-                'google_id' => $googleUser->id,
-                'phone'=>$googleUser->phone,
-                'password'=>$googleUser->phone,
-                'address'=>$googleUser->address,
-                'avatar' => $googleUser->avatar,
-            ]
-        );
+            // 確保 Google 回傳 email
+            if (!$googleUser->email) {
+                return redirect()->route('login')->withErrors('Google 帳戶沒有提供 Email');
+            }
 
-        // 登入該用戶
-        Auth::login($user);
+            // 查找或創建用戶
+            $user = User::updateOrCreate(
+                ['email' => $googleUser->email],
+                [
+                    'name' => $googleUser->name,
+                    'google_id' => $googleUser->id,
+                    'password' => bcrypt(uniqid()), // 隨機密碼
+                    'avatar' => $googleUser->avatar,
+                ]
+            );
 
-        // 重定向至首頁或其他頁面
-        return redirect()->route('users.index');
+            // 登入用戶
+            Auth::login($user);
+
+            return redirect()->route('users.index');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Google 登入失敗，請重試');
+
+        }
     }
 }

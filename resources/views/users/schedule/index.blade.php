@@ -127,6 +127,7 @@
                         price: '{{ $schedule->service->price }}',
                         service: '{{ $schedule->service->name }}',
                         appointmentTime: '{{ $schedule->appointment_time }}',
+                        service_address: '{{ $schedule->service_address }}',
                         status: '{{ $schedule->status == 0 ? "待確認" :
                        ($schedule->status == 1 ? "已確認" :
                        ($schedule->status == 2 ? "已完成" :
