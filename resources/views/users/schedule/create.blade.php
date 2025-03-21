@@ -189,7 +189,7 @@
                     serviceAddress = '{{ Auth::user()->address }}'; // 重新設定為預設地址
                 }
                 addressField.value = serviceAddress;  // 更新隱藏欄位
-               // console.log('目前選擇的服務地址:', serviceAddress);
+                //console.log('目前選擇的服務地址:', serviceAddress);
             }
 
             // 監聽 radio 切換事件
@@ -212,7 +212,7 @@
                     window.location.href = '/users/personal_information/edit';  // 重定向到個人資訊頁面
                     return; // 如果地址未設定，阻止繼續選擇服務項目
                 }
-               // console.log('服務項目選擇了:', this.value);
+                //console.log('服務項目選擇了:', this.value);
                 //console.log('選擇的服務地址:', serviceAddress);
             });
 

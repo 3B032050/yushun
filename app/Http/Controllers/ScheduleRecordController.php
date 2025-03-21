@@ -97,13 +97,6 @@ class ScheduleRecordController extends Controller
             return response()->json(['status' => 'error', 'message' => '請提供日期']);
         }
 
-        // 使用 Carbon 解析日期，並且檢查是否有效
-        try {
-            $carbonDate = Carbon::parse($date);  // 解析日期
-        } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => '無效的日期格式']);
-        }
-
         if (empty($serviceId)) {
             return response()->json(['status' => 'error', 'message' => '請選擇服務項目']);
         }

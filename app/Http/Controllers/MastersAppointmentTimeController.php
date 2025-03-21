@@ -121,33 +121,35 @@ class MastersAppointmentTimeController extends Controller
      */
     public function update(Request $request, AppointmentTime $appointmenttime)
     {
-////        dd($request);
-//        // 驗證資料
-//        $validated = $request->validate([
-//            'start_time' => 'required|after_or_equal:service_date', // start_time 必須在 service_date 之後
-//            'end_time' => 'required|after:start_time', // end_time 必須在 start_time 之後
-//        ]);
-//
-//        // 先取得提交的資料
-//        $updatedData = $request->only(['start_time', 'end_time']);
-//
-//        // 比對每個欄位是否有變更
-//        $changes = [];
-//
-//        foreach ($updatedData as $key => $value) {
-//            if ($appointmenttime->$key !== $value) {
-//                $changes[$key] = $value;  // 只有當資料有變動時，才會添加到 $changes 陣列
-//            }
-//        }
-//
-//        // 如果有變更資料，執行更新操作
-//        if (!empty($changes)) {
-//            $appointmenttime->update($changes);
-//            return redirect()->route('masters.appointmenttime.index')->with('success', '時段更新成功');
-//        }
         // 檢查按鈕提交的行為
         if ($request->has('action')) {
-            if ($request->action == 'accept') {
+            if ($request->action == 'alter')
+            {
+                // 驗證資料
+                $validated = $request->validate([
+                    'start_time' => 'required|after_or_equal:service_date', // start_time 必須在 service_date 之後
+                    'end_time' => 'required|after:start_time', // end_time 必須在 start_time 之後
+                ]);
+
+                // 先取得提交的資料
+                $updatedData = $request->only(['start_time', 'end_time']);
+
+                // 比對每個欄位是否有變更
+                $changes = [];
+
+                foreach ($updatedData as $key => $value) {
+                    if ($appointmenttime->$key !== $value) {
+                        $changes[$key] = $value;  // 只有當資料有變動時，才會添加到 $changes 陣列
+                    }
+                }
+
+                // 如果有變更資料，執行更新操作
+                if (!empty($changes)) {
+                    $appointmenttime->update($changes);
+                    return redirect()->route('masters.appointmenttime.index')->with('success', '時段更新成功');
+                }
+            }
+            else if ($request->action == 'accept') {
                 // 設置狀態為已確認
                 $appointmenttime->status = 1;
                 ScheduleRecord::where('id', $request->appointment_time_id)

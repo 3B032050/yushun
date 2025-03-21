@@ -35,17 +35,27 @@
                     <label for="service_date">服務日期</label>
                     <input type="date" id="service_date" name="service_date" value="{{ old('service_date', $appointmenttime->service_date) }}" class="form-control"  disabled required>
                 </div>
-
+                @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
                 <div class="form-group mb-3">
                     <label for="start_time">開始時間</label>
-                    <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1" disabled required>
+                    <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1"  required>
                 </div>
 
                 <div class="form-group mb-3">
                     <label for="end_time">結束時間</label>
-                    <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1" disabled required>
+                    <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1"  required>
                 </div>
+                @else
+                    <div class="form-group mb-3">
+                        <label for="start_time">開始時間</label>
+                        <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1" disabled required>
+                    </div>
 
+                    <div class="form-group mb-3">
+                        <label for="end_time">結束時間</label>
+                        <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1" disabled required>
+                    </div>
+                @endif
                 <div class="form-group mb-3">
                     <label for="service">服務項目</label>
                     @if(optional($appointmenttime->schedulerecord)->service)
@@ -95,37 +105,6 @@
                 @endif
 
 
-{{--                @if($appointmenttime->status == 2 &&--}}
-{{--                    optional(optional($appointmenttime->schedulerecord)->scheduledetail)->score !== null ||--}}
-{{--                    optional(optional($appointmenttime->schedulerecord)->scheduledetail)->comment !== null)--}}
-
-{{--                    <div class="card mt-3">--}}
-{{--                        <div class="card-header bg-primary text-white">--}}
-{{--                            <h5 class="mb-0">客戶評價</h5>--}}
-{{--                        </div>--}}
-{{--                        <div class="card-body">--}}
-{{--                            @if(optional(optional($appointmenttime->schedulerecord)->scheduledetail)->score !== null)--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label class="form-label">客戶評分</label>--}}
-{{--                                    <div class="fs-5 text-warning">--}}
-{{--                                        {!! str_repeat('⭐', $appointmenttime->schedulerecord->scheduledetail->score) !!}--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            @endif--}}
-
-{{--                            @if(optional(optional($appointmenttime->schedulerecord)->scheduledetail)->comment !== null)--}}
-{{--                                <div class="mb-3">--}}
-{{--                                    <label class="form-label">客戶評論</label>--}}
-{{--                                    <div class="border rounded p-2 bg-light">--}}
-{{--                                        {{ $appointmenttime->schedulerecord->scheduledetail->comment }}--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            @endif--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                @endif--}}
-
-
                 @if($appointmenttime->status == 1)  {{-- 進行中 --}}
                 @php
                     $borrowRecords = \App\Models\BorrowingRecord::where('appointment_time_id', $appointmenttime->id)->get();
@@ -154,7 +133,11 @@
                 <a href="{{ route('masters.schedule_details.create', $appointmenttime->id) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                 @endif
 
-                @if($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
+                @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" name="action" value="alter" class="btn btn-success w-100" >修改</button>
+                    </div>
+                @elseif($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
                     <div class="d-flex justify-content-between">
                         <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
                         <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
