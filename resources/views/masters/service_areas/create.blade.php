@@ -18,7 +18,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8 col-12">
                 <div class="card">
-                    <div class="card-header text-center">{{ __('選擇服務項目') }}</div>
+                    <div class="card-header text-center"><strong>{{ __('選擇服務地區') }}</strong></div>
 
                     <div class="card-body">
                         <form action="{{ route('masters.service_areas.store') }}" method="POST" role="form" enctype="multipart/form-data">
@@ -26,11 +26,27 @@
                             @method('POST')
 
                             <div class="form-group">
-                                <label for="service_area" class="fw-bold">選擇服務地區</label>
-
                                 <div class="border p-3 rounded bg-light">
                                     <div class="row">
+                                        @php
+                                            $currentMajorArea = null;
+                                        @endphp
+
                                         @foreach($serviceAreas as $area)
+                                            @if ($currentMajorArea !== $area->major_area)
+                                                @if ($currentMajorArea !== null)
+                                                    <div class="col-12">
+                                                        <hr class="my-2"> <!-- 加入區隔線 -->
+                                                    </div>
+                                                @endif
+                                                @php
+                                                    $currentMajorArea = $area->major_area;
+                                                @endphp
+                                                <div class="col-12">
+                                                    <h5 class="fw-bold text-primary">{{ $currentMajorArea }}</h5> <!-- 顯示 major_area 標題 -->
+                                                </div>
+                                            @endif
+
                                             <div class="col-md-4 col-sm-6 col-12">
                                                 <div class="form-check">
                                                     <input class="form-check-input custom-checkbox"
@@ -38,16 +54,17 @@
                                                            name="service_area[]"
                                                            value="{{ $area->id }}"
                                                            id="area_{{ $area->id }}"
-                                                           @if(in_array($area->id, $selectedAreas)) checked @endif> <!-- 判斷是否已選擇 -->
+                                                           @if(in_array($area->id, $selectedAreas)) checked @endif>
                                                     <label class="form-check-label" for="area_{{ $area->id }}">
-                                                        {{ $area->major_area }} - {{ $area->minor_area }}
+                                                        {{ $area->minor_area }}
                                                     </label>
                                                 </div>
                                             </div>
                                         @endforeach
                                     </div>
                                 </div>
-                            </div><br>
+                            </div>
+                            <br>
 
                             <div class="row mb-0">
                                 <div class="col-12 text-center">

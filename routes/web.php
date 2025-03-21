@@ -39,8 +39,9 @@ Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterContro
 Route::group(['middleware' => 'master'], function() {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
-        Route::get('/personal_information/edit', [App\Http\Controllers\MasterController::class, 'edit'])->name("personal_information.edit");
-        Route::patch('}/update/{user', [App\Http\Controllers\MasterController::class, 'update'])->name('update');
+        Route::get('/personal_information/index', [App\Http\Controllers\MasterPersonalInformationController::class, 'index'])->name("personal_information.index");
+        Route::get('/personal_information/edit', [App\Http\Controllers\MasterPersonalInformationController::class, 'edit'])->name("personal_information.edit");
+        Route::patch('}/personal_information/update/{master}', [App\Http\Controllers\MasterPersonalInformationController::class, 'update'])->name('personal_information.update');
 
         //可服務地區
         Route::get('service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
@@ -127,7 +128,7 @@ Route::group(['middleware' => 'master'], function() {
 Route::group(['middleware' => 'auth'], function() {
 
     Route::prefix('users')->name('users.')->group(function () {
-        Route::get('/index', [App\Http\Controllers\UserController::class, 'index'])->name('index');
+        Route::get('index', [App\Http\Controllers\UserController::class, 'index'])->name('index');
         Route::get('schedule/index', [App\Http\Controllers\ScheduleRecordController::class, 'index'])->name('schedule.index');
         Route::get('schedule/available_masters', [App\Http\Controllers\ScheduleRecordController::class, 'available_masters'])->name('schedule.available_masters');
         Route::get('schedule/available_times', [App\Http\Controllers\ScheduleRecordController::class, 'available_times'])->name('schedule.available_times');

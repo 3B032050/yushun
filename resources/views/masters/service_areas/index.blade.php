@@ -42,21 +42,51 @@
                 @php
                     $groupedServiceAreas = $serviceAreas->groupBy('admin_service_item_id');
                 @endphp
+                @php
+                    $colors = ['#46A3FF', '#46A3FF', '#00EC00', '#FF9224', '#46A3FF', '#46A3FF']; // 服務項目顏色
+                @endphp
+
                 @foreach ($groupedServiceAreas as $index => $group)
+                    @php
+                        $colorIndex = $index % count($colors); // 根據服務項目取色
+                        $majorGroups = $group->flatMap(fn($serviceArea) => $serviceArea->adminarea)->groupBy('major_area');
+                    @endphp
+
                     <tr>
                         <td class="align-middle text-center">{{ $loop->iteration }}</td>
                         <td class="align-middle text-center"><h4>{{ $group->first()->adminitem->name }}</h4></td>
                         <td class="align-middle">
-                            @foreach ($group as $serviceArea)
-                                @foreach ($serviceArea->adminarea as $adminArea)
-                                    <span class="badge bg-primary area-badge">
-                                        {{ $adminArea->major_area }} - {{ $adminArea->minor_area }}
+                            @foreach ($majorGroups as $majorIndex => $minorAreas)
+                                @php
+                                    $uniqueId = "accordion-{$index}-" . Str::slug($majorIndex) . "-" . uniqid();
+                                @endphp
+                                <div class="accordion" id="{{ $uniqueId }}">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="heading-{{ $uniqueId }}">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse-{{ $uniqueId }}" aria-expanded="false"
+                                                    aria-controls="collapse-{{ $uniqueId }}"
+                                                    style="background-color: {{ $colors[$colorIndex] }}; color: white;">
+                                                {{ $majorIndex }}
+                                            </button>
+                                        </h2>
+                                        <div id="collapse-{{ $uniqueId }}" class="accordion-collapse collapse"
+                                             aria-labelledby="heading-{{ $uniqueId }}">
+                                            <div class="accordion-body">
+                                                @foreach ($minorAreas as $adminArea)
+                                                    <span class="badge bg-secondary area-badge">
+                                        {{ $adminArea->minor_area }}
                                     </span>
-                                @endforeach
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </td>
                     </tr>
                 @endforeach
+
                 </tbody>
             </table>
         </div>

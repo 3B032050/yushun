@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('password');
             $table->string('email');
+            $table->longText('introduction')->nullable();
             $table->string('position');
             $table->integer('total_hours')->nullable();
             //position=0管理員,11是師傅
