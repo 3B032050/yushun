@@ -59,16 +59,18 @@
                 </div>
                 <!-- 隱藏欄位，用來傳遞服務地址 -->
                 <input type="hidden" id="address" name="address">
-                <div class="form-group">
+                <div class="address-option">
                     <label>選擇服務地址：</label>
-                    <div>
-                        <input type="radio" name="address_option" id="use_profile_address" value="profile" checked>
-                        <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
-                    </div>
-                    <div>
-                        <!-- 選擇手動輸入地址 -->
-                        <input type="radio" name="address_option" id="enter_new_address" value="custom">
-                        <label for="enter_new_address">輸入欲服務地址</label>
+                    <div class="address-option-group">
+                        <div class="address-item">
+                            <input type="radio" name="address_option" id="use_profile_address" value="profile" checked>
+                            <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
+                        </div>
+                        <div class="address-item">
+                            <!-- 選擇手動輸入地址 -->
+                            <input type="radio" name="address_option" id="enter_new_address" value="custom">
+                            <label for="enter_new_address">輸入欲服務地址</label>
+                        </div>
                     </div>
 
                     <!-- 手動輸入地址的欄位，預設隱藏 -->
@@ -76,6 +78,7 @@
                         <input type="text" class="form-control" id="custom_address" name="custom_address" placeholder="請輸入地址">
                     </div>
                 </div>
+
 
                 <!-- 服務項目選擇 -->
                 <div class="form-group">
@@ -151,11 +154,11 @@
 
             // 用來清除資料的函式
             function clearSelectedData() {
-                const someElement = document.getElementById('some-element');  // 確保這個元素存在
-                if (someElement) {
-                    someElement.reset();  // 如果存在則執行
+                const formElement = document.getElementById('schedule-form');  // 假設你要重置的是整個表單
+                if (formElement) {
+                    formElement.reset();  // 重置表單的所有資料
                 } else {
-                    console.error('Element not found');
+                    console.error('Form element not found');
                 }
             }
 
@@ -186,7 +189,7 @@
                     serviceAddress = '{{ Auth::user()->address }}'; // 重新設定為預設地址
                 }
                 addressField.value = serviceAddress;  // 更新隱藏欄位
-                console.log('目前選擇的服務地址:', serviceAddress);
+               // console.log('目前選擇的服務地址:', serviceAddress);
             }
 
             // 監聽 radio 切換事件
@@ -198,7 +201,7 @@
                 if (customRadio.checked) {
                     serviceAddress = this.value.trim();
                     addressField.value = serviceAddress;
-                    console.log('目前手動輸入的服務地址:', serviceAddress);
+                   // console.log('目前手動輸入的服務地址:', serviceAddress);
                 }
             });
 
@@ -209,8 +212,8 @@
                     window.location.href = '/users/personal_information/edit';  // 重定向到個人資訊頁面
                     return; // 如果地址未設定，阻止繼續選擇服務項目
                 }
-                console.log('服務項目選擇了:', this.value);
-                console.log('選擇的服務地址:', serviceAddress);
+               // console.log('服務項目選擇了:', this.value);
+                //console.log('選擇的服務地址:', serviceAddress);
             });
 
             // 預設執行一次，確保畫面初始狀態
@@ -260,8 +263,8 @@
                     return { html: `<div style="text-align: center;">${arg.event.title}</div>` };
                 },
                 dateClick: function(info) {
-                    console.log('Date clicked:', info.dateStr);
-                    const selectedDate = new Date(info.dateStr);
+                   // console.log('Date clicked:', info.dateStr);
+                    selectedDate = new Date(info.dateStr)
                     const today = new Date();
                     today.setHours(0, 0, 0, 0); // 設置今天的零點時間，便於比較
 
@@ -277,7 +280,8 @@
                         month: 'long',
                         day: 'numeric'
                     });
-                    selectedDateInput.value = selectedDate;
+                    selectedDate = info.dateStr;
+                    document.getElementById('selected_date').value = info.dateStr;
                     modal.classList.remove('hidden'); // 顯示彈出視窗
                 }
             });
@@ -288,8 +292,8 @@
             serviceSelect.addEventListener('change', function () {
                 const serviceId = this.value;
 
-                console.log('Service ID:', serviceId);
-                console.log('selected_date:', selected_date)
+               // console.log('Service ID:', serviceId);
+                //console.log('selected_date:', document.getElementById('selected_date').value);
                 if (!selectedDate) {
                     alert('請先選擇日期');
                     return;
@@ -435,5 +439,33 @@
             margin: 0 auto;
             height: 600px;
         }
+        .address-option {
+            display: flex;
+            flex-direction: column; /* 垂直排列整個地址選項 */
+            gap: 10px; /* 選項間的間距 */
+        }
+
+        .address-option-group {
+            display: flex; /* 讓選項群組在同一行 */
+            gap: 20px; /* 選項之間的間距 */
+            flex-wrap: wrap; /* 如果內容太長，允許換行 */
+        }
+
+        .address-item {
+            display: inline-flex; /* 讓 input 和 label 在同一行顯示 */
+            align-items: center; /* 垂直置中對齊 */
+            gap: 10px; /* radio button 和文字之間的間距 */
+        }
+
+        .address-option input[type="radio"] {
+            margin-right: 5px; /* 讓 radio button 和文字有些間距 */
+        }
+
+        .address-option label {
+            white-space: normal; /* 允許文字換行 */
+            word-wrap: break-word; /* 文字過長會換行 */
+            overflow-wrap: break-word; /* 防止長字串擠壓 */
+        }
+
     </style>
 @endpush

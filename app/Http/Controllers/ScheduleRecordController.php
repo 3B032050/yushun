@@ -12,6 +12,8 @@ use App\Models\ScheduleRecord;
 use App\Http\Requests\StoreschedulerecordRequest;
 use App\Http\Requests\UpdateschedulerecordRequest;
 use App\Models\User;
+use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -91,9 +93,15 @@ class ScheduleRecordController extends Controller
         $date = $request->input('date', '');
         $serviceId = $request->input('service_id', '');
         $address = $request->input('address', '');
-        dd($date);
         if (empty($date)) {
             return response()->json(['status' => 'error', 'message' => '請提供日期']);
+        }
+
+        // 使用 Carbon 解析日期，並且檢查是否有效
+        try {
+            $carbonDate = Carbon::parse($date);  // 解析日期
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => '無效的日期格式']);
         }
 
         if (empty($serviceId)) {
