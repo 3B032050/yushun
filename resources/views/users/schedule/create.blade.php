@@ -62,7 +62,7 @@
                 <div class="form-group">
                     <label>選擇服務地址：</label>
                     <div>
-                        <input type="radio" name="address_option" id="use_profile_address" value="profile" checked disabled>
+                        <input type="radio" name="address_option" id="use_profile_address" value="profile" checked>
                         <label for="use_profile_address">使用個人地址（{{ Auth::user()->address }}）</label>
                     </div>
                     <div>
@@ -134,55 +134,77 @@
             const scheduleForm = document.getElementById('schedule-form');
             const servicePriceElement = document.getElementById('service_price');
             let selectedDate = null;
+            //定期客戶選擇
             document.getElementById('is_recurring').addEventListener('change', function () {
                 document.getElementById('recurring_options').style.display = this.checked ? 'block' : 'none';
             });
-            // 取消按鈕關閉模態框
-            closeModalButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    modal.classList.add('hidden'); // 在這裡隱藏模態框
-                });
-            });
-            const addressField = document.getElementById('address');
-            const addressOptionProfile = document.getElementById('use_profile_address');
-            const customRadio = document.getElementById('enter_new_address');
-            const customAddressInput = document.getElementById('custom_address_input');
-            const customAddress = document.getElementById('custom_address');  // 手動輸入地址的input元素
-            let serviceAddress = '{{ Auth::user()->address }}';  // 預設為用戶的個人地址
+            //取消
+            document.querySelector('.close-modal').addEventListener('click', function(event) {
+                event.preventDefault();  // 防止表單提交
 
-            // 切換顯示地址輸入框
-            function toggleAddressInput() {
-                if (customRadio.checked) {
-                    customAddressInput.style.display = 'block';  // 顯示手動輸入地址欄位
-                    serviceAddress = '';  // 當手動輸入地址時，服務地址設為空
+                // 清除選擇的資料或返回到初始狀態
+                clearSelectedData();
+
+                // 關閉模態視窗
+                $('#modalId').modal('hide');  // 假設這是用來關閉模態視窗的代碼
+            });
+
+            // 用來清除資料的函式
+            function clearSelectedData() {
+                const someElement = document.getElementById('some-element');  // 確保這個元素存在
+                if (someElement) {
+                    someElement.reset();  // 如果存在則執行
                 } else {
-                    customAddressInput.style.display = 'none';  // 隱藏手動輸入地址欄位
-                    serviceAddress = '{{ Auth::user()->address }}';  // 否則使用預設的地址
+                    console.error('Element not found');
                 }
-                addressField.value = serviceAddress;  // 更新隱藏的地址欄位
-                console.log('目前選擇的服務地址:', serviceAddress);  // 打印當前選擇的地址
             }
 
-        // 監聽 radio 點擊事件
+            // 如果有多個取消按鈕，使用下面的程式碼來遍歷並關閉模態框
+            document.querySelectorAll('.close-modal').forEach(button => {
+                button.addEventListener('click', function() {
+                    modal.classList.add('hidden');  // 假設這是用來隱藏模態框的代碼
+                });
+            });
+            const addressField = document.getElementById('address'); // 隱藏的地址欄位
+            const addressOptionProfile = document.getElementById('use_profile_address'); // 預設地址選項
+            const customRadio = document.getElementById('enter_new_address'); // 自訂地址選項
+            const customAddressInput = document.getElementById('custom_address_input'); // 自訂地址輸入區塊
+            const customAddress = document.getElementById('custom_address'); // 自訂地址輸入框
+
+
+            // 設定預設地址
+            let serviceAddress = '{{ Auth::user()->address }}';
+
+            // 切換地址輸入方式
+            function toggleAddressInput() {
+                if (customRadio.checked) {
+                    customAddressInput.style.display = 'block';
+                    serviceAddress = customAddress.value.trim();  // 如果有輸入，使用輸入的地址
+                } else {
+                    customAddressInput.style.display = 'none';
+                    customAddress.value = '';  // 清空輸入框，避免錯誤保留
+                    serviceAddress = '{{ Auth::user()->address }}'; // 重新設定為預設地址
+                }
+                addressField.value = serviceAddress;  // 更新隱藏欄位
+                console.log('目前選擇的服務地址:', serviceAddress);
+            }
+
+            // 監聽 radio 切換事件
             addressOptionProfile.addEventListener('change', toggleAddressInput);
             customRadio.addEventListener('change', toggleAddressInput);
 
-        // 預設執行一次
-            toggleAddressInput();
+            // 監聽手動輸入變化
+            customAddress.addEventListener('input', function() {
+                if (customRadio.checked) {
+                    serviceAddress = this.value.trim();
+                    addressField.value = serviceAddress;
+                    console.log('目前手動輸入的服務地址:', serviceAddress);
+                }
+            });
 
-            if (customAddress) {
-                // 當手動輸入地址時，更新 serviceAddress
-                customAddress.addEventListener('input', function() {
-                    serviceAddress = this.value.trim();  // 獲取手動輸入的地址並更新
-                    addressField.value = serviceAddress; // 更新隱藏欄位的值
-                    console.log('目前手動輸入的服務地址:', serviceAddress);  // 打印手動輸入的服務地址
-                });
-            } else {
-                console.log('找不到 custom_address 元素！');
-            }
-            // 當用戶選擇服務項目時，檢查是否設置了地址
+                // 當用戶選擇服務項目時，檢查是否設置了地址
             serviceSelect.addEventListener('change', function() {
-                if (!serviceAddress || (customRadio.checked && !document.getElementById('custom_address').value.trim())) {
+                if (!serviceAddress || (customRadio.checked && !customAddress.value.trim())) {
                     alert('請先選擇或輸入地址');
                     window.location.href = '/users/personal_information/edit';  // 重定向到個人資訊頁面
                     return; // 如果地址未設定，阻止繼續選擇服務項目
@@ -190,6 +212,9 @@
                 console.log('服務項目選擇了:', this.value);
                 console.log('選擇的服務地址:', serviceAddress);
             });
+
+            // 預設執行一次，確保畫面初始狀態
+            toggleAddressInput();
 
             const calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
@@ -203,30 +228,29 @@
                     const events = [];
 
                     @if($appointmenttimes && $appointmenttimes->count() > 0)
-                        {{-- 先收集所有有可預約時段的日期 --}}
-                        @php
-                            $availableDates = $appointmenttimes->pluck('service_date')->unique();
-                        @endphp
+                    {{-- 先收集所有有可預約時段的日期 --}}
+                    @php
+                        $availableDates = $appointmenttimes->pluck('service_date')->unique();
+                    @endphp
 
-                        {{-- 為每個日期添加一個 "可預約" 事件 --}}
-                        @foreach($availableDates as $date)
-                        events.push({
-                            title: '可預約',
-                            start: '{{ $date }}', // 只使用日期
-                            end: '{{ $date }}',
-                            color: '#28a745', // 綠色表示可預約
-                            textColor: '#ffffff', // 白色文字
-                        });
-                        @endforeach
+                    {{-- 為每個日期添加一個 "可預約" 事件 --}}
+                    @foreach($availableDates as $date)
+                    events.push({
+                        title: '點選',
+                        start: '{{ $date }}', // 只使用日期
+                        end: '{{ $date }}',
+                        color: '#28a745', // 綠色表示可預約
+                        textColor: '#ffffff', // 白色文字
+                    });
+                    @endforeach
                     @else
                     // 無可預約師傅，添加無法預約事件
-                        events.push({
-                            title: '無可預約師傅',
-                            color: '#dc3545', // 紅色表示無法預約
-                            textColor: '#ffffff', // 白色文字
-                        });
+                    events.push({
+                        title: '無可預約師傅',
+                        color: '#dc3545', // 紅色表示無法預約
+                        textColor: '#ffffff', // 白色文字
+                    });
                     @endif
-
 
                     // 使用 successCallback 返回事件
                     successCallback(events);
@@ -236,25 +260,36 @@
                     return { html: `<div style="text-align: center;">${arg.event.title}</div>` };
                 },
                 dateClick: function(info) {
-                    selectedDate = info.dateStr;
-                    modalDate.textContent = new Date(selectedDate).toLocaleDateString('zh-TW', {
+                    console.log('Date clicked:', info.dateStr);
+                    const selectedDate = new Date(info.dateStr);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // 設置今天的零點時間，便於比較
+
+                    // 比較所選日期是否是今天或之後的日期
+                    if (selectedDate < today) {
+                        alert('選擇的日期不能是過去的日期，請選擇今天或之後的日期');
+                        return; // 阻止顯示彈出視窗
+                    }
+
+                    // 如果日期合法，顯示彈出視窗
+                    modalDate.textContent = selectedDate.toLocaleDateString('zh-TW', {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric'
                     });
                     selectedDateInput.value = selectedDate;
-                    modal.classList.remove('hidden');
+                    modal.classList.remove('hidden'); // 顯示彈出視窗
                 }
             });
 
             calendar.render();
 
+
             serviceSelect.addEventListener('change', function () {
                 const serviceId = this.value;
 
                 console.log('Service ID:', serviceId);
-
-                // 確認是否已選擇日期
+                console.log('selected_date:', selected_date)
                 if (!selectedDate) {
                     alert('請先選擇日期');
                     return;

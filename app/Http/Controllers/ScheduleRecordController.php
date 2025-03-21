@@ -63,12 +63,16 @@ class ScheduleRecordController extends Controller
         //dd($appointmenttimes);
         $items = AdminServiceItem::all();
 
-        $data = ['appointmenttimes' => $appointmenttimes,
-            'items' => $items];
+        $data = [
+            'appointmenttimes' => $appointmenttimes,
+            'items' => $items,
+        ];
 
         return view('users.schedule.create', $data);
 
     }
+
+
 
     public function getServicePrice(Request $request)
     {
@@ -87,7 +91,7 @@ class ScheduleRecordController extends Controller
         $date = $request->input('date', '');
         $serviceId = $request->input('service_id', '');
         $address = $request->input('address', '');
-
+        dd($date);
         if (empty($date)) {
             return response()->json(['status' => 'error', 'message' => '請提供日期']);
         }
