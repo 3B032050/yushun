@@ -15,6 +15,7 @@ class Master extends Authenticatable // 修改這裡
         'phone',
         'email',
         'password',
+        'introduction',
         'position',
         'total_hours',
     ];

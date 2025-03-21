@@ -4,12 +4,21 @@
 
 @section('content')
     <div class="content-wrapper">
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
                 <p style="font-size: 1.8em;">
                     <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('masters.personal_information.index') }}" class="custom-link">個人資料</a> >
-                    編輯個人資料
+                    個人資料
                 </p>
             </div>
         </div>
@@ -18,18 +27,18 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header text-center">{{ __('編輯個人資料') }}</div>
+                    <div class="card-header text-center">{{ __('個人資料') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('masters.personal_information.update',$master->id) }}">
+                        <form method="GET" action="{{ route('masters.personal_information.edit') }}">
                             @csrf
-                            @method('PATCH')
+                            @method('GET')
 
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名 / Name') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $master->name }}" required autocomplete="name" placeholder="必填" autofocus>
+                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $master->name }}" required autocomplete="name" placeholder="必填" readonly>
 
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -43,7 +52,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱 / Email') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $master->email }}" required autocomplete="email" placeholder="必填" autofocus>
+                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $master->email }}" required autocomplete="email" placeholder="必填" readonly>
 
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -57,7 +66,7 @@
                                 <label for="phone" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('電話 / Phone') }}</label>
 
                                 <div class="col-md-6">
-                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $master->phone }}" required autocomplete="current-password" placeholder="必填">
+                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $master->phone }}" required autocomplete="current-password" placeholder="必填" readonly>
 
                                     @error('phone')
                                     <span class="invalid-feedback" role="alert">
@@ -70,11 +79,8 @@
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
-                                        {{ __('儲存') }}
+                                        {{ __('編輯') }}
                                     </button>
-                                    <a href="javascript:history.back()" class="btn btn-secondary ml-2">
-                                        {{ __('取消') }}
-                                    </a>
                                 </div>
                             </div>
                         </form><hr>
@@ -84,24 +90,24 @@
                                 @csrf
 
                                 <div class="form-group mb-3 text-center"><strong>{{ __('請選擇制服尺寸和數量') }}</strong></div>
-                                    <label for="quantity" >尺寸</label>
-                                    <select name="size" id="size" class="form-control">
-                                        <option value="S">
-                                            S
-                                        </option>
-                                        <option value="M" >
-                                            M
-                                        </option>
-                                        <option value="L" >
-                                            L
-                                        </option>
-                                        <option value="XL" >
-                                            XL
-                                        </option>
-                                        <option value="XXL" >
-                                            XXL
-                                        </option>
-                                    </select>
+                                <label for="quantity" >尺寸</label>
+                                <select name="size" id="size" class="form-control">
+                                    <option value="S">
+                                        S
+                                    </option>
+                                    <option value="M" >
+                                        M
+                                    </option>
+                                    <option value="L" >
+                                        L
+                                    </option>
+                                    <option value="XL" >
+                                        XL
+                                    </option>
+                                    <option value="XXL" >
+                                        XXL
+                                    </option>
+                                </select>
 
 
                                 <div class="form-group mb-3">
