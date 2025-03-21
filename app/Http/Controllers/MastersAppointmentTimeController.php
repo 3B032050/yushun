@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AppointmentConfirmation;
+use App\Models\AdminServiceItem;
 use App\Models\AppointmentTime;
 use App\Http\Requests\StoreappointmenttimeRequest;
 use App\Http\Requests\UpdateappointmenttimeRequest;
 use App\Models\Master;
+use App\Models\MasterServiceArea;
 use App\Models\ScheduleRecord;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +37,16 @@ class MastersAppointmentTimeController extends Controller
      */
     public function create()
     {
+        $masterId = Auth::guard('master')->id();
+        $serviceAreas = MasterServiceArea::where('master_id', $masterId)
+            ->orderBy('admin_service_item_id')
+            ->get();
+
+        if ($serviceAreas->isEmpty()) {
+            return redirect()->route('masters.service_areas.create_item')
+                ->with('error', '您尚未新增任何服務地區，請先選擇您的服務地區。');
+        }
+
         return view('masters.appointmenttime.create');
     }
 
