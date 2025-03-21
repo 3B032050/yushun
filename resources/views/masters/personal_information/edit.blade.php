@@ -67,6 +67,22 @@
                                 </div>
                             </div>
 
+                            <div class="row mb-3">
+                                <label for="self_introduction" class="col-md-4 col-form-label text-md-end">
+                                    {{ __('自我介紹 / Self Introduction') }}
+                                </label>
+                                <div class="col-md-6">
+                                    <textarea id="self_introduction" class="form-control @error('self_introduction') is-invalid @enderror"
+                                    name="self_introduction" rows="4" placeholder="請輸入您的自我介紹">{{ old('self_introduction', $master->self_introduction) }}</textarea>
+
+                                    @error('self_introduction')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
                                     <button type="submit" class="btn btn-primary">

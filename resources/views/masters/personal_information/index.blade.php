@@ -7,7 +7,7 @@
         @if(session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
-            </div>
+            </div>a
         @endif
         @if(session('success'))
             <div class="alert alert-success">
@@ -73,6 +73,15 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="self_introduction" class="col-md-4 col-form-label text-md-end">
+                                    {{ __('自我介紹 / Self Introduction') }}
+                                </label>
+                                <div class="col-md-6">
+                                    <textarea id="self_introduction" class="form-control" rows="5" readonly>{{ $master->introduction }}</textarea>
                                 </div>
                             </div>
 
