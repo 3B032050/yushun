@@ -223,23 +223,21 @@ class ScheduleRecordController extends Controller
     public function getTotalPrice(Request $request)
     {
         $serviceId = $request->query('service_id');
-        $time = $request->query('available_times');
-
+        $appointmentTimeId = $request->query('appointment_time');
+        $time = AppointmentTime::where('id', $appointmentTimeId)->first();
         $totalAmount = 0;
-        $price = session()->get("service_price_$serviceId", 0); // 預設 0
+        $AdminServiceItem =AdminServiceItem::where('id', $serviceId)->first();
+        $price =$AdminServiceItem->price;
         //計算選擇時段的時數
         if ($time) {
-            list($start, $end) = explode('-', $time);
-            $startTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($start));
-            $endTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($end));
+           // list($start, $end) = explode('-', $time);
+            $startTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($time->start_time));
+            $endTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($time->end_time));
 
             $totalHours = $endTime->diffInHours($startTime); // 計算時數
-            $extraHours = max(0, $totalHours - 3); // 超過3小時的部分
-            $extraCharge = $extraHours * 50; // 每小時加 50 元
+            $totalAmount = ($totalHours < 4) ? $totalHours * ($price + 50) : 0;
 
-            $totalAmount += $extraCharge;
         }
-        $totalAmount+=$price;
         return response()->json([
             'status' => 'success',
             'price' => $totalAmount,

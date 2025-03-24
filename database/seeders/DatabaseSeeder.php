@@ -22,14 +22,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('admin123'),
-            'mobile' => 'admin123',
+            'phone' => 'admin123',
             'position' => 0,
         ]);
         $master = Master::factory()->create([
             'name' => 'master',
             'email' => 'master@gmail.com',
             'password' => bcrypt('master123'),
-            'mobile' => 'master123',
+            'phone' => 'master123',
             'position' => 1,
         ]);
         $user = User::factory()->create([

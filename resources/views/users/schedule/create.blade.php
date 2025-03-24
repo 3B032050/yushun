@@ -522,20 +522,31 @@
                         console.error('Error:', error);
                     });
 
+                // ⭐⭐ 當使用者選擇時段後，再去請求價格 ⭐⭐
+                availableTimesSelect.addEventListener('change', function () {
+                    const appointment_time = this.value; // 取得選擇的時段
+                    const serviceId = this.value;
+                    console.log('選擇的時段:', appointment_time);
 
-                fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&time=${time}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            TotalPriceElement.textContent = `NT$ ${data.price}`;
-                        } else {
-                            TotalPriceElement.textContent = '無法獲取價格';
-                        }
-                    })
-                    .catch(error => {
-                        TotalPriceElement.textContent = '錯誤: 無法獲取價格';
-                        console.error('Error:', error);
-                    });
+                    if (!appointment_time) {
+                        TotalPriceElement.textContent = '請選擇時段';
+                        return;
+                    }
+                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}`)
+
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                TotalPriceElement.textContent = `NT$ ${data.price}`;
+                            } else {
+                                TotalPriceElement.textContent = '無法獲取價格';
+                            }
+                        })
+                        .catch(error => {
+                            TotalPriceElement.textContent = '錯誤: 無法獲取價格';
+                            console.error('Error:', error);
+                        });
+                });
             });
         });
 
