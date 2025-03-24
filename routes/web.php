@@ -49,7 +49,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/personal_information/index', [App\Http\Controllers\MasterPersonalInformationController::class, 'index'])->name("personal_information.index");
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterPersonalInformationController::class, 'edit'])->name("personal_information.edit");
         Route::patch('}/personal_information/update/{master}', [App\Http\Controllers\MasterPersonalInformationController::class, 'update'])->name('personal_information.update');
-        
+
         //可服務地區
         Route::get('/service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
         Route::get('/service_areas/index', [MasterServiceAreaController::class, 'index'])->name('service_areas.index');
