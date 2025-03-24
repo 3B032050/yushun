@@ -76,16 +76,62 @@ class ScheduleRecordController extends Controller
 
 
 
+//    public function getServicePrice(Request $request)
+//    {
+//        $serviceId = $request->query('service_id');
+//        $service = AdminServiceItem::find($serviceId);
+//
+//        if (!$service) {
+//            return response()->json(['status' => 'error', 'message' => '找不到服務項目'], 404);
+//        }
+//
+//        return response()->json(['status' => 'success', 'price' => $service->price]);
+//    }
+
     public function getServicePrice(Request $request)
     {
         $serviceId = $request->query('service_id');
+        $address = $request->query('address', ''); // 取得使用者輸入的地址
         $service = AdminServiceItem::find($serviceId);
 
         if (!$service) {
             return response()->json(['status' => 'error', 'message' => '找不到服務項目'], 404);
         }
 
-        return response()->json(['status' => 'success', 'price' => $service->price]);
+        if (empty($address)) {
+            return response()->json(['status' => 'error', 'message' => '請提供服務地點']);
+        }
+
+        // 取得地址前六個字，並進行格式轉換 (台 → 臺)
+        $areaKeyword = mb_substr($address, 0, 6, "UTF-8");
+        $areaKeyword = str_replace(['台', '臺'], '臺', $areaKeyword);
+
+        // 查詢該地址是否在 AdminServiceArea
+        $serviceArea = AdminServiceArea::where(DB::raw("CONCAT(TRIM(major_area), TRIM(minor_area))"), 'LIKE', $areaKeyword . '%')->first();
+
+        if (!$serviceArea) {
+            return response()->json([
+                'status' => 'error',
+                'message' => '找不到該地址的服務區域',
+                'areaKeyword' => $areaKeyword
+            ]);
+        }
+
+        $price = $service->price;
+
+        // 如果該區域是蛋黃區 (status == 1)，則加價 30
+        if ($serviceArea->status == 1) {
+            $price += 30;
+        }
+
+        session()->put("service_price_$serviceId", $price);
+
+        return response()->json([
+            'status' => 'success',
+            'price' => $price,
+//            'areaKeyword' => $areaKeyword,
+//            'isPremium' => $serviceArea->status == 1 ? true : false
+        ]);
     }
 
     public function available_masters(Request $request)
@@ -172,6 +218,32 @@ class ScheduleRecordController extends Controller
         Log::info('Available appointment times:', ['times' => $times]);
         //dd($times);
         return response()->json($times);
+    }
+
+    public function getTotalPrice(Request $request)
+    {
+        $serviceId = $request->query('service_id');
+        $time = $request->query('available_times');
+
+        $totalAmount = 0;
+        $price = session()->get("service_price_$serviceId", 0); // 預設 0
+        //計算選擇時段的時數
+        if ($time) {
+            list($start, $end) = explode('-', $time);
+            $startTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($start));
+            $endTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($end));
+
+            $totalHours = $endTime->diffInHours($startTime); // 計算時數
+            $extraHours = max(0, $totalHours - 3); // 超過3小時的部分
+            $extraCharge = $extraHours * 50; // 每小時加 50 元
+
+            $totalAmount += $extraCharge;
+        }
+        $totalAmount+=$price;
+        return response()->json([
+            'status' => 'success',
+            'price' => $totalAmount,
+        ]);
     }
 
 

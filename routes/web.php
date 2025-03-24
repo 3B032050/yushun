@@ -140,6 +140,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('schedule/available_masters', [App\Http\Controllers\ScheduleRecordController::class, 'available_masters'])->name('schedule.available_masters');
         Route::get('schedule/available_times', [App\Http\Controllers\ScheduleRecordController::class, 'available_times'])->name('schedule.available_times');
         Route::get('schedule/getServicePrice', [App\Http\Controllers\ScheduleRecordController::class, 'getServicePrice'])->name('schedule.getServicePrice');
+        Route::get('schedule/getTotalPrice', [App\Http\Controllers\ScheduleRecordController::class, 'getTotalPrice'])->name('schedule.getTotalPrice');
+
         Route::get('schedule/check', [App\Http\Controllers\ScheduleRecordController::class, 'check'])->name('schedule.check');
         Route::get('schedule/create', [App\Http\Controllers\ScheduleRecordController::class, 'create'])->name('schedule.create');
         Route::post('schedule/store', [App\Http\Controllers\ScheduleRecordController::class, 'store'])->name("schedule.store");

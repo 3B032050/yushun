@@ -60,7 +60,19 @@ class MastersAppointmentTimeController extends Controller
         $validated = $request->validate([
             'service_date' => 'required|date|after_or_equal:today',
             'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'end_time' => [
+                'required',
+                'date_format:H:i',
+                'after:start_time',
+                function ($attribute, $value) use ($request) {
+                    $startTime = \Carbon\Carbon::createFromFormat('H:i', $request->start_time);
+                    $endTime = \Carbon\Carbon::createFromFormat('H:i', $value);
+
+                    if ($startTime->diffInHours($endTime) < 3) {
+                        return back()->with('error', '開始與結束時間必須至少相隔 3 小時。');
+                    }
+                }
+            ],
         ], [
             'end_time.after' => '結束時間必須晚於開始時間。',
         ]);

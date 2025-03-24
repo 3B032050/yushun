@@ -47,7 +47,13 @@
                         <tr>
                             <td>{{ $area->major_area }}</td>
                             <td>{{ $area->minor_area }}</td>
-                            <td>{{ $area->status }}</td>
+                            <td>
+                                @if($area->status == 1)
+                                    <span style="color: #fd7e14">蛋黃區</span>
+                                @elseif($area->status == 0)
+                                    <span style="color: #343a40">蛋白區</span>
+                                @endif
+                            </td>
                             <td>
                                 <a href="{{ route('admins.service_areas.edit', $area->id) }}" class="btn btn-warning btn-sm">編輯</a>
                                 <form action="{{ route('admins.service_areas.destroy', $area->id) }}" method="POST" style="display:inline;">

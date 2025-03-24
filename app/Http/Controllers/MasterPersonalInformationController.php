@@ -71,14 +71,12 @@ class MasterPersonalInformationController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:masters,email,' . $master->id . ',id',
             'phone' => 'required|digits:10',
-            'self_introduction' => 'nullable|string|max:1000',
-        ]);
+            ]);
 
         $master->update([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
-            'introduction' => $request->input('self_introduction'),
         ]);
 
         return redirect()->route('masters.personal_information.index')->with('success', '個人資料更新成功');

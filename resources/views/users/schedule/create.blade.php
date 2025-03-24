@@ -109,6 +109,11 @@
                         <option value="">請先選擇師傅</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="total_price">總金額</label>
+                    <p id="total_price" class="form-control-static">請選擇服務項目與時段</p>
+                </div>
                 <button type="submit" class="btn btn-primary">確認</button>
                 <button class="btn btn-secondary close-modal">取消</button>
             </form>
@@ -136,6 +141,8 @@
             const confirmButton = document.getElementById('confirm-schedule');
             const scheduleForm = document.getElementById('schedule-form');
             const servicePriceElement = document.getElementById('service_price');
+            const TotalPriceElement = document.getElementById('total_price');
+
             let selectedDate = null;
             //定期客戶選擇
             document.getElementById('is_recurring').addEventListener('change', function () {
@@ -231,12 +238,10 @@
                     const events = [];
 
                     @if($appointmenttimes && $appointmenttimes->count() > 0)
-                    {{-- 先收集所有有可預約時段的日期 --}}
                     @php
                         $availableDates = $appointmenttimes->pluck('service_date')->unique();
                     @endphp
 
-                    {{-- 為每個日期添加一個 "可預約" 事件 --}}
                     @foreach($availableDates as $date)
                     events.push({
                         title: '點選',
@@ -292,7 +297,7 @@
             serviceSelect.addEventListener('change', function () {
                 const serviceId = this.value;
 
-               // console.log('Service ID:', serviceId);
+                // console.log('Service ID:', serviceId);
                 //console.log('selected_date:', document.getElementById('selected_date').value);
                 if (!selectedDate) {
                     alert('請先選擇日期');
@@ -306,7 +311,7 @@
                 availableTimesSelect.disabled = true;
 
                 // 透過 AJAX 獲取對應的價格
-                fetch(`{{ url('users/schedule/getServicePrice') }}?service_id=${serviceId}`)
+                fetch(`{{ url('users/schedule/getServicePrice') }}?service_id=${serviceId}&date=${selectedDate}&address=${serviceAddress}`)
                     .then(response => response.json())
                     .then(data => {
                         if (data.status === 'success') {
@@ -358,6 +363,7 @@
             });
             masterSelect.addEventListener('change', function () {
                 const masterId = this.value;
+                const time = availableTimesSelect.value;
                 availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
                 availableTimesSelect.disabled = true;  // 每次變更時先鎖定
 
@@ -389,6 +395,21 @@
                     .catch(error => {
                         availableTimesSelect.innerHTML = '<option value="">無法加載時段</option>';
                         availableTimesSelect.disabled = true;  // 發生錯誤時禁用
+                        console.error('Error:', error);
+                    });
+
+
+                fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&time=${time}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            TotalPriceElement.textContent = `NT$ ${data.price}`;
+                        } else {
+                            TotalPriceElement.textContent = '無法獲取價格';
+                        }
+                    })
+                    .catch(error => {
+                        TotalPriceElement.textContent = '錯誤: 無法獲取價格';
                         console.error('Error:', error);
                     });
             });
