@@ -296,6 +296,10 @@ class ScheduleRecordController extends Controller
                 }
             }
         }
+        elseif($request->recurring_times == 0)
+        {
+            return redirect()->back()->with('error', '定器客戶預約次數至少為1');
+        }
             // **建立當天的排程紀錄**
 
 

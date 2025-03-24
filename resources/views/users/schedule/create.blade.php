@@ -48,13 +48,13 @@
                     <div>
                         <label for="recurring_times">請選擇您希望的預約次數：</label>
                         <select id="recurring_times" name="recurring_times">
-                            <option value="1">1 次</option>
-                            <option value="2">2 次</option>
-                            <option value="3">3 次</option>
-                            <option value="4">4 次</option>
+{{--                            <option value="1">1 次</option>--}}
+{{--                            <option value="2">2 次</option>--}}
+{{--                            <option value="3">3 次</option>--}}
+{{--                            <option value="4">4 次</option>--}}
                         </select>
                     </div>
-{{--                    <div id="recurring_dates"></div>--}}
+                    <div id="recurring_dates"></div>
                 </div>
                 <!-- 隱藏欄位，用來傳遞服務地址 -->
                 <input type="hidden" id="address" name="address">
@@ -169,19 +169,46 @@
                 let year = startDate.getFullYear();
                 let month = startDate.getMonth(); // 0-11 表示月份
 
-                // 計算該月最多能安排的預約次數
-                let maxWeeksInMonth = new Date(year, month + 1, 0).getDate() / 7; // 計算該月的週數
-                let maxRecurringTimes = Math.floor(maxWeeksInMonth / recurringInterval); // 根據間隔週數計算最多可以預約多少次
+                // 計算當月的最後一天
+                let monthEndDate = new Date(year, month + 1, 0); // 計算當月最後一天
+                let daysInMonth = monthEndDate.getDate(); // 當月的天數
+
+                // 計算距離月底的天數
+                let daysToEndOfMonth = daysInMonth - startDate.getDate();
+
+                // 計算當月最多有多少周（每週7天）
+                let maxWeeksInMonth = Math.floor(daysToEndOfMonth / 7);
+
+                // 根據間隔週數計算最大預約次數
+                let maxRecurringTimes = Math.floor(maxWeeksInMonth / recurringInterval);
+
+                // 確認最大預約次數
+                console.log(`Max recurring times calculated: ${maxRecurringTimes}`);
+                console.log(`Days to end of month: ${daysToEndOfMonth}`);
 
                 // 動態生成預約次數選項
-                for (let i = 1; i <= maxRecurringTimes; i++) {
+                // 如果 maxRecurringTimes 是 0，顯示提示文字
+                if (maxRecurringTimes === 0) {
                     let option = document.createElement('option');
-                    option.value = i;
-                    option.textContent = `${i} 次`;
+                    option.value = 0;
+                    option.textContent = "當月不滿足間隔天數，請重新選擇日期";
                     recurringTimesContainer.appendChild(option);
+                } else {
+                    // 根據最大預約次數生成選項
+                    for (let i = 1; i <= maxRecurringTimes; i++) {
+                        let option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = `${i} 次`;
+                        recurringTimesContainer.appendChild(option);
+                    }
+                }
+                // 如果已選的次數大於最大次數，則設為最大次數
+                let currentSelectedTimes = document.getElementById('recurring_times').value;
+                if (currentSelectedTimes > maxRecurringTimes) {
+                    document.getElementById('recurring_times').value = maxRecurringTimes;
                 }
 
-                // 再次調用日期計算函數以更新顯示的日期
+                // 更新預約日期顯示
                 calculateRecurringDates();
             }
 
@@ -203,30 +230,33 @@
 
                 let weeksAdded = 0;
                 let addedDates = [];
+                let monthEndDate = new Date(year, month + 1, 0); // 取得當月的最後一天
 
-                while (weeksAdded < recurringTimes) {
+                // 計算當月最多有多少週
+                let maxPossibleTimes = Math.floor((monthEndDate.getDate() + (7 - monthEndDate.getDay())) / 7);
+
+                // 限制最大預約次數不超過當月的最大週數
+                while (weeksAdded < recurringTimes && weeksAdded < maxPossibleTimes) {
                     let nextDate = new Date(startDate);
                     nextDate.setDate(startDate.getDate() + (weeksAdded * recurringInterval * 7)); // 計算下一次的日期
 
-                    if (nextDate.getMonth() !== month) {
-                        break; // 若超出當月，則不再加入
+                    // 如果 nextDate 超過了當月的最後一天，則不再計算
+                    if (nextDate > monthEndDate) {
+                        break;
                     }
 
                     addedDates.push(nextDate.toISOString().split('T')[0]); // 存入 YYYY-MM-DD 格式
                     weeksAdded++;
                 }
 
-                // // 動態新增隱藏 input 傳送到表單
-                // addedDates.forEach(date => {
-                //     let input = document.createElement('input');
-                //     input.type = 'hidden';
-                //     input.name = 'recurring_dates[]';
-                //     input.value = date;
-                //     recurringContainer.appendChild(input);
-                // });
-                // 計算應該顯示的預約次數
-                let maxPossibleTimes = addedDates.length;
-                document.getElementById('recurring_times').value = maxPossibleTimes;
+                // 更新預約次數
+                if (addedDates.length === 0) {
+                    document.getElementById('recurring_times').value = 0;
+                } else {
+                    // 更新預約次數
+                    document.getElementById('recurring_times').value = addedDates.length;
+                }
+
                 console.log("預約產生的日期:", addedDates); // 可在 console 查看產生的日期
             }
 
