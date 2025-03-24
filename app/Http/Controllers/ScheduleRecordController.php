@@ -152,7 +152,7 @@ class ScheduleRecordController extends Controller
         }
 
         // 查詢該師傅於該日期的所有預約時段
-        $appointmentTimes = AppointmentTime::where('service_date', $date)
+        $appointmentTimes = AppointmentTime::whereNull('user_id')->where('service_date', $date)
             ->where('master_id', $masterId)
             ->where('status', 0)
             ->get();
