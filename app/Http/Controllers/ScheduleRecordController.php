@@ -198,7 +198,7 @@ class ScheduleRecordController extends Controller
         }
 
         // 查詢該師傅於該日期的所有預約時段
-        $appointmentTimes = AppointmentTime::where('service_date', $date)
+        $appointmentTimes = AppointmentTime::whereNull('user_id')->where('service_date', $date)
             ->where('master_id', $masterId)
             ->where('status', 0)
             ->get();
@@ -367,6 +367,10 @@ class ScheduleRecordController extends Controller
                         ]);
                 }
             }
+        }
+        elseif($request->recurring_times == 0)
+        {
+            return redirect()->back()->with('error', '定器客戶預約次數至少為1');
         }
             // **建立當天的排程紀錄**
 

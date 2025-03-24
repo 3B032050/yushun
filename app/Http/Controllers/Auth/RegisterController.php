@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -51,8 +52,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => 'required|string|email|max:255|unique:users',
-            'mobile' => ['required', 'regex:/^09[0-9]{8}$/', 'size:10'], // 手機號碼必須為 10 碼
-            'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/'] ,// 市話選填
+            'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/',   Rule::unique('users')] ,// 市話選填
             'address' => ['nullable', 'string', 'max:255'],
             'line_id' => ['nullable', 'string', 'max:255'],
         ]);

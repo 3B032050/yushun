@@ -40,22 +40,21 @@
                 @if ($errors->has('recurring_interval'))
                     <p class="text-danger">{{ $errors->first('recurring_interval') }}</p>
                 @endif
-                <div class="form-group">
+                <div class="form-group" id="recurring_options" style="display: none;">
+                    <div>
+                        <label for="recurring_interval">每次預約間隔（週）：</label>
+                        <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="4" value="1">
+                    </div>
                     <div>
                         <label for="recurring_times">請選擇您希望的預約次數：</label>
                         <select id="recurring_times" name="recurring_times">
-                            <option value="1">1 次</option>
-                            <option value="2">2 次</option>
-                            <option value="3">3 次</option>
-                            <option value="4">4 次</option>
-                            <option value="5">5 次</option>
+{{--                            <option value="1">1 次</option>--}}
+{{--                            <option value="2">2 次</option>--}}
+{{--                            <option value="3">3 次</option>--}}
+{{--                            <option value="4">4 次</option>--}}
                         </select>
                     </div>
-
-                    <div>
-                        <label for="recurring_interval">每次預約間隔（週）：</label>
-                        <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="12" value="1">
-                    </div>
+                    <div id="recurring_dates"></div>
                 </div>
                 <!-- 隱藏欄位，用來傳遞服務地址 -->
                 <input type="hidden" id="address" name="address">
@@ -145,9 +144,129 @@
 
             let selectedDate = null;
             //定期客戶選擇
+
             document.getElementById('is_recurring').addEventListener('change', function () {
-                document.getElementById('recurring_options').style.display = this.checked ? 'block' : 'none';
+                let recurringOptions = document.getElementById('recurring_options');
+                recurringOptions.style.display = this.checked ? 'block' : 'none';
+
+                // 當選擇定期客戶時，重新計算預約次數
+                if (this.checked) {
+                    updateRecurringTimes();
+                } else {
+                    // 如果取消選擇定期客戶，清除選項
+                    document.getElementById('recurring_times').innerHTML = '<option value="1">1 次</option>';
+                }
             });
+
+            document.getElementById('recurring_interval').addEventListener('change', updateRecurringTimes);
+            document.getElementById('recurring_times').addEventListener('change', calculateRecurringDates);
+
+            function updateRecurringTimes() {
+                let selectedDate = document.getElementById('selected_date').value; // 選擇的日期
+                let recurringInterval = parseInt(document.getElementById('recurring_interval').value); // 間隔週數
+
+                let recurringTimesContainer = document.getElementById('recurring_times');
+                recurringTimesContainer.innerHTML = ''; // 清空現有選項
+
+                if (!selectedDate || isNaN(recurringInterval)) {
+                    return;
+                }
+
+                let startDate = new Date(selectedDate);
+                let year = startDate.getFullYear();
+                let month = startDate.getMonth(); // 0-11 表示月份
+
+                // 計算當月的最後一天
+                let monthEndDate = new Date(year, month + 1, 0); // 計算當月最後一天
+                let daysInMonth = monthEndDate.getDate(); // 當月的天數
+
+                // 計算距離月底的天數
+                let daysToEndOfMonth = daysInMonth - startDate.getDate();
+
+                // 計算當月最多有多少周（每週7天）
+                let maxWeeksInMonth = Math.floor(daysToEndOfMonth / 7);
+
+                // 根據間隔週數計算最大預約次數
+                let maxRecurringTimes = Math.floor(maxWeeksInMonth / recurringInterval);
+
+                // 確認最大預約次數
+                console.log(`Max recurring times calculated: ${maxRecurringTimes}`);
+                console.log(`Days to end of month: ${daysToEndOfMonth}`);
+
+                // 動態生成預約次數選項
+                // 如果 maxRecurringTimes 是 0，顯示提示文字
+                if (maxRecurringTimes === 0) {
+                    let option = document.createElement('option');
+                    option.value = 0;
+                    option.textContent = "當月不滿足間隔天數，請重新選擇日期";
+                    recurringTimesContainer.appendChild(option);
+                } else {
+                    // 根據最大預約次數生成選項
+                    for (let i = 1; i <= maxRecurringTimes; i++) {
+                        let option = document.createElement('option');
+                        option.value = i;
+                        option.textContent = `${i} 次`;
+                        recurringTimesContainer.appendChild(option);
+                    }
+                }
+                // 如果已選的次數大於最大次數，則設為最大次數
+                let currentSelectedTimes = document.getElementById('recurring_times').value;
+                if (currentSelectedTimes > maxRecurringTimes) {
+                    document.getElementById('recurring_times').value = maxRecurringTimes;
+                }
+
+                // 更新預約日期顯示
+                calculateRecurringDates();
+            }
+
+            function calculateRecurringDates() {
+                let selectedDate = document.getElementById('selected_date').value; // 選擇的日期
+                let recurringInterval = parseInt(document.getElementById('recurring_interval').value); // 間隔週數
+                let recurringTimes = parseInt(document.getElementById('recurring_times').value); // 預約次數
+
+                let recurringContainer = document.getElementById('recurring_dates');
+                recurringContainer.innerHTML = ''; // 清空舊的紀錄
+
+                if (!selectedDate || isNaN(recurringInterval) || isNaN(recurringTimes)) {
+                    return;
+                }
+
+                let startDate = new Date(selectedDate);
+                let year = startDate.getFullYear();
+                let month = startDate.getMonth(); // 0-11 表示月份
+
+                let weeksAdded = 0;
+                let addedDates = [];
+                let monthEndDate = new Date(year, month + 1, 0); // 取得當月的最後一天
+
+                // 計算當月最多有多少週
+                let maxPossibleTimes = Math.floor((monthEndDate.getDate() + (7 - monthEndDate.getDay())) / 7);
+
+                // 限制最大預約次數不超過當月的最大週數
+                while (weeksAdded < recurringTimes && weeksAdded < maxPossibleTimes) {
+                    let nextDate = new Date(startDate);
+                    nextDate.setDate(startDate.getDate() + (weeksAdded * recurringInterval * 7)); // 計算下一次的日期
+
+                    // 如果 nextDate 超過了當月的最後一天，則不再計算
+                    if (nextDate > monthEndDate) {
+                        break;
+                    }
+
+                    addedDates.push(nextDate.toISOString().split('T')[0]); // 存入 YYYY-MM-DD 格式
+                    weeksAdded++;
+                }
+
+                // 更新預約次數
+                if (addedDates.length === 0) {
+                    document.getElementById('recurring_times').value = 0;
+                } else {
+                    // 更新預約次數
+                    document.getElementById('recurring_times').value = addedDates.length;
+                }
+
+                console.log("預約產生的日期:", addedDates); // 可在 console 查看產生的日期
+            }
+
             //取消
             document.querySelector('.close-modal').addEventListener('click', function(event) {
                 event.preventDefault();  // 防止表單提交
@@ -161,11 +280,16 @@
 
             // 用來清除資料的函式
             function clearSelectedData() {
-                const formElement = document.getElementById('schedule-form');  // 假設你要重置的是整個表單
+                const formElement = document.getElementById('schedule-form');// 假設你要重置的是整個表單
+                const recurringOptions = document.getElementById('recurring_options');
                 if (formElement) {
                     formElement.reset();  // 重置表單的所有資料
                 } else {
                     console.error('Form element not found');
+                }
+                // 隱藏定期選項
+                if (recurringOptions) {
+                    recurringOptions.style.display = 'none';
                 }
             }
 

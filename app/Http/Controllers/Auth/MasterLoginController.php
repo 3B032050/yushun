@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -73,7 +74,7 @@ class MasterLoginController extends Controller
 
         $request->session()->invalidate(); // 清除 session 資料
         $request->session()->regenerateToken(); // 重新生成 CSRF token
-
+        Cookie::queue(Cookie::forget('remember_web'));
         return redirect()->route('masters_login'); // 重定向到登入頁面
     }
 //    public function login(Request $request)
