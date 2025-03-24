@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -37,7 +39,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'mobile' => ['required', 'regex:/^09\d{8}$/', 'size:10'], // 手機號碼 10 碼
+            'mobile' => ['required', 'regex:/^09\d{8}$/', 'size:10', Rule::unique('users')->ignore($user->id)], // 手機號碼 10 碼
             'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/'], // 市話選填
             'address' => 'required|string|max:255',
             'line_id' => ['nullable', 'string', 'max:255'], // LINE ID 選填
@@ -50,6 +52,7 @@ class UserController extends Controller
             'phone' => $request->input('phone'),
             'address' => $request->input('address'),
             'line_id' => $request->input('line_id'),
+            'password' =>Hash::make($request->input('mobile')),// 密碼加密
 
         ]);
 
