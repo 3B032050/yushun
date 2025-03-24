@@ -141,7 +141,9 @@
             const scheduleForm = document.getElementById('schedule-form');
             const servicePriceElement = document.getElementById('service_price');
             const TotalPriceElement = document.getElementById('total_price');
-
+            let isRecurring = document.getElementById('is_recurring').checked;
+            // 設定預設地址
+            let serviceAddress = '{{ Auth::user()->address }}';
             let selectedDate = null;
             //定期客戶選擇
 
@@ -306,8 +308,7 @@
             const customAddress = document.getElementById('custom_address'); // 自訂地址輸入框
 
 
-            // 設定預設地址
-            let serviceAddress = '{{ Auth::user()->address }}';
+
 
             // 切換地址輸入方式
             function toggleAddressInput() {
@@ -526,13 +527,15 @@
                 availableTimesSelect.addEventListener('change', function () {
                     const appointment_time = this.value; // 取得選擇的時段
                     const serviceId = this.value;
+                    isRecurring = document.getElementById('is_recurring').checked;
                     console.log('選擇的時段:', appointment_time);
-
+                    console.log('定期:', isRecurring);
+                    console.log('服務地點:',serviceAddress);
                     if (!appointment_time) {
                         TotalPriceElement.textContent = '請選擇時段';
                         return;
                     }
-                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}`)
+                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&is_recurring=${isRecurring}&address=${serviceAddress}`)
 
                         .then(response => response.json())
                         .then(data => {

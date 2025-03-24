@@ -228,16 +228,33 @@ class ScheduleRecordController extends Controller
         $totalAmount = 0;
         $AdminServiceItem =AdminServiceItem::where('id', $serviceId)->first();
         $price =$AdminServiceItem->price;
+        $is_recurring =$request->query('is_recurring');
+        $address=$request->query('address');
+        $areaKeyword = mb_substr($address, 0, 6, "UTF-8");
+        // 替換 '台' 為 '臺'
+        $areaKeyword = str_replace(['台', '臺'], '臺', $areaKeyword);
+        Log::info("Address: $address, Area Keyword: $areaKeyword");  // 將查詢的關鍵字輸出到日誌中
+
+        $serviceArea = AdminServiceArea::where(DB::raw("CONCAT(TRIM(major_area), TRIM(minor_area))"), 'LIKE', $areaKeyword . '%')->first();
         //計算選擇時段的時數
         if ($time) {
            // list($start, $end) = explode('-', $time);
             $startTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($time->start_time));
             $endTime = \Carbon\Carbon::createFromFormat('H:i:s', trim($time->end_time));
 
-            $totalHours = $endTime->diffInHours($startTime); // 計算時數
-            $totalAmount = ($totalHours < 4) ? $totalHours * ($price + 50) : 0;
-
+            // 計算總分鐘數
+            $totalMinutes = $endTime->diffInMinutes($startTime); // 計算分鐘差
+            // 計算總時數（可以取小數，避免使用 diffInHours）
+            $totalHours = $totalMinutes / 60;
+            $price += 50;
         }
+        if($is_recurring==false){
+            $price += 50;
+        }
+        if($serviceArea->status==1){
+            $price += 30;
+        }
+        $totalAmount = ($totalHours < 4) ? $totalHours * ($price + 50) : 0;
         return response()->json([
             'status' => 'success',
             'price' => $totalAmount,
