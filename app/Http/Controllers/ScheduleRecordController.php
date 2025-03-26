@@ -277,7 +277,7 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
-        dd($request);
+        //dd($request);
         // 檢查該時段是否已被預約
         $appointmentTime = AppointmentTime::find($request->appointment_time_id);
 
@@ -396,7 +396,7 @@ class ScheduleRecordController extends Controller
         }
         elseif($request->recurring_times == 0)
         {
-            return redirect()->back()->with('error', '定器客戶預約次數至少為1');
+            return redirect()->back()->with('error', '定期客戶預約次數至少為1');
         }
             // **建立當天的排程紀錄**
 

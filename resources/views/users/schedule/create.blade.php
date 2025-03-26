@@ -524,10 +524,11 @@
                         availableTimesSelect.disabled = true;  // 發生錯誤時禁用
                         console.error('Error:', error);
                     });
-
+                const TotalPriceElement = document.getElementById('total_price');
+                TotalPriceElement.textContent = 'NT$ 0';
                 // ⭐⭐ 當使用者選擇時段後，再去請求價格 ⭐⭐
                 availableTimesSelect.addEventListener('change', function () {
-                    //const TotalPriceElement = document.getElementById('total-price');
+
                     const appointment_time = this.value  // 取得選擇的時段
                     const serviceId = document.getElementById('service_id').value;
                     isRecurring = document.getElementById('is_recurring').checked;
