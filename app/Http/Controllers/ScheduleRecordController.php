@@ -277,10 +277,6 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
-<<<<<<< HEAD
-        //dd($request);
-=======
->>>>>>> refs/remotes/origin/master
         // 檢查該時段是否已被預約
         $appointmentTime = AppointmentTime::find($request->appointment_time_id);
 
