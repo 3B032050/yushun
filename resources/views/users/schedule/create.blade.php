@@ -394,7 +394,8 @@
                 },
                 dateClick: function(info) {
                    // console.log('Date clicked:', info.dateStr);
-                    selectedDate = new Date(info.dateStr)
+                    selectedDate = new Date(info.dateStr);
+                    selectedDate.setHours(0, 0, 0, 0);
                     const today = new Date();
                     today.setHours(0, 0, 0, 0); // 設置今天的零點時間，便於比較
 
@@ -403,8 +404,8 @@
                         alert('選擇的日期不能是過去的日期，請選擇今天之後的日期');
                         return; // 阻止顯示彈出視窗
                     }
-                    console.log('選擇的日期:', selectedDate);
-                    console.log('今天的日期:', today);
+                    // console.log('選擇的日期:', selectedDate);
+                    // console.log('今天的日期:', today);
                     // 如果日期合法，顯示彈出視窗
                     modalDate.textContent = selectedDate.toLocaleDateString('zh-TW', {
                         year: 'numeric',
