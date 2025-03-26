@@ -124,7 +124,7 @@
                         ($schedule->status == 4 ? "取消" : "待確認")))) !!}`,
                         start: '{{ $schedule->service_date }}',
                         end: '{{ $schedule->service_date }}',
-                        price: '{{ $schedule->service->price }}',
+                        price: '{{ $schedule->price }}',
                         service: '{{ $schedule->service->name }}',
                         appointmentTime: '{{ $schedule->appointment_time }}',
                         service_address: '{{ $schedule->service_address }}',

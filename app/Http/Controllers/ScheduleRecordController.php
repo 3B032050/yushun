@@ -277,7 +277,10 @@ class ScheduleRecordController extends Controller
      */
     public function store(StoreschedulerecordRequest $request)
     {
+<<<<<<< HEAD
         //dd($request);
+=======
+>>>>>>> refs/remotes/origin/master
         // 檢查該時段是否已被預約
         $appointmentTime = AppointmentTime::find($request->appointment_time_id);
 
@@ -315,6 +318,7 @@ class ScheduleRecordController extends Controller
             'service_id' => $request->service_id,
             'service_address'=>$address,
             'service_date' => $request->service_date,
+            'price' => $request->total_price,
             'appointment_time_id' => $request->appointment_time_id,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
             'status' => 1 // 已確認
@@ -378,6 +382,7 @@ class ScheduleRecordController extends Controller
                         'user_id' => $user->id,
                         'service_id' => $request->service_id,
                         'service_date' => $futureDate->toDateString(),
+                        'price' => $request->total_price,
                         'service_address'=>$address,
                         'appointment_time_id' => $newAppointment->id, // 使用 `appointment_time_id`
                         'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time, // 使用 start_time 和 end_time

@@ -112,6 +112,7 @@
                 <div class="form-group">
                     <label for="total_price">總金額</label>
                     <p id="total_price" class="form-control-static">請選擇服務項目與時段</p>
+                    <input type="hidden" id="total_price_input" name="total_price" value="">
                 </div>
                 <button type="submit" class="btn btn-primary">確認</button>
                 <button class="btn btn-secondary close-modal">取消</button>
@@ -488,11 +489,11 @@
                         console.error('Error:', error);
                     });
             });
+            // 監聽師傅選擇
             masterSelect.addEventListener('change', function () {
                 const masterId = this.value;
-                const time = availableTimesSelect.value;
                 availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
-                availableTimesSelect.disabled = true;  // 每次變更時先鎖定
+                availableTimesSelect.disabled = true;
 
                 if (!masterId) return;
 
@@ -502,59 +503,63 @@
                         availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
 
                         if (data.length === 0) {
-                            // 如果沒有可預約時段，顯示「無可預約時段」
                             const option = document.createElement('option');
                             option.value = "";
                             option.textContent = "無可預約時段";
                             availableTimesSelect.appendChild(option);
-                            availableTimesSelect.disabled = true;  // 無資料時保持禁用
+                            availableTimesSelect.disabled = true;
                         } else {
-                            // 有可預約時段時，顯示時段選項
                             data.forEach(time => {
                                 const option = document.createElement('option');
                                 option.value = time.id;
                                 option.textContent = `${time.start_time} - ${time.end_time}`;
                                 availableTimesSelect.appendChild(option);
                             });
-                            availableTimesSelect.disabled = false;  // 有資料時啟用
+                            availableTimesSelect.disabled = false;
                         }
                     })
                     .catch(error => {
                         availableTimesSelect.innerHTML = '<option value="">無法加載時段</option>';
-                        availableTimesSelect.disabled = true;  // 發生錯誤時禁用
+                        availableTimesSelect.disabled = true;
                         console.error('Error:', error);
                     });
-                const TotalPriceElement = document.getElementById('total_price');
-                TotalPriceElement.textContent = 'NT$ 0';
-                // ⭐⭐ 當使用者選擇時段後，再去請求價格 ⭐⭐
-                availableTimesSelect.addEventListener('change', function () {
 
-                    const appointment_time = this.value  // 取得選擇的時段
-                    const serviceId = document.getElementById('service_id').value;
-                    isRecurring = document.getElementById('is_recurring').checked;
-                    console.log('選擇的時段:', appointment_time);
-                    console.log('定期:', isRecurring);
-                    console.log('服務地點:',serviceAddress);
-                    if (!appointment_time) {
-                        TotalPriceElement.textContent = '請選擇時段';
-                        return;
-                    }
-                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&is_recurring=${isRecurring}&address=${serviceAddress}`)
+// ⭐⭐ 監聽時段選擇，請求價格 ⭐⭐
+            availableTimesSelect.addEventListener('change', function () {
+                const appointment_time = this.value;
+                const serviceId = document.getElementById('service_id').value;
+                const isRecurring = document.getElementById('is_recurring').checked ? 1 : 0;
+                const totalPriceElement = document.getElementById('total_price');
+                const totalPriceInput = document.getElementById('total_price_input'); // 隱藏輸入欄位
 
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.status === 'success') {
-                                TotalPriceElement.textContent = `NT$ ${data.price}`;
-                            } else {
-                                TotalPriceElement.textContent = '無法獲取價格';
-                            }
-                        })
-                        .catch(error => {
-                            TotalPriceElement.textContent = '錯誤: 無法獲取價格';
-                            console.error('Error:', error);
-                        });
-                });
+                console.log('選擇的時段:', appointment_time);
+                console.log('定期:', isRecurring);
+                console.log('服務地點:', serviceAddress);
+
+                if (!appointment_time || !serviceId) {
+                    totalPriceElement.textContent = '請選擇服務項目與時段';
+                    totalPriceInput.value = '';
+                    return;
+                }
+
+                fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&is_recurring=${isRecurring}&address=${serviceAddress}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            totalPriceElement.textContent = `NT$ ${data.price}`;
+                            totalPriceInput.value = data.price; // ✅ 確保表單有提交總金額
+                        } else {
+                            totalPriceElement.textContent = '無法獲取價格';
+                            totalPriceInput.value = '';
+                        }
+                    })
+                    .catch(error => {
+                        totalPriceElement.textContent = '錯誤: 無法獲取價格';
+                        totalPriceInput.value = '';
+                        console.error('Error:', error);
+                    });
             });
+
         });
 
 
