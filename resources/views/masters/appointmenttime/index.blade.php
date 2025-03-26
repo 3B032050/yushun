@@ -107,10 +107,13 @@
                         title: {!! json_encode('<b>客戶名稱：</b>' . ($appointmenttime->user ? $appointmenttime->user->name : "暫無客戶") .
                             '<br><b>時段：</b>' . $appointmenttime->start_time . ' - ' . $appointmenttime->end_time .
                             '<br><b>狀態：</b>' .
-                            ($appointmenttime->status == 1 ? "已確認" :
-                            ($appointmenttime->status == 2 ? "已完成" :
-                            ($appointmenttime->status == 3 ? "不成立" :
-                            ($appointmenttime->status == 4 ? "取消" : "待確認"))))
+                               ($appointmenttime->status == 1 ? "已確認" :
+                                ($appointmenttime->status == 2 ? "已完成" :
+                                ($appointmenttime->status == 3 ? "不成立" :
+                                ($appointmenttime->status == 4 ? "取消" :
+                                ($appointmenttime->status == 0
+                                    ? ($appointmenttime->user_id === null ? "無預約" : "待確認")
+                                    : "未知狀態")))))
                         ) !!},
 
                         start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',

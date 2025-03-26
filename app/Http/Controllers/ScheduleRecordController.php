@@ -256,15 +256,12 @@ class ScheduleRecordController extends Controller
         if ($is_recurring == false) {
             $extraFee += 50;
         }
-//        if (isset($serviceArea) && $serviceArea->status == 1) {
-//            $extraFee += 30;
-//        }
-        // 計算總價
-        if ($totalHours < 4) {
-            $totalAmount = $totalHours * ($basePrice + $extraFee);
-        } else {
-            $totalAmount = $totalHours * $basePrice + $extraFee;
+        if (!empty($serviceArea) && isset($serviceArea->status) && $serviceArea->status == 1)
+        {
+            $extraFee += 30;
         }
+        // 計算總價
+            $totalAmount = $totalHours * ($basePrice + $extraFee);
         return response()->json([
             'status' => 'success',
             'price' => $totalAmount,
@@ -395,7 +392,7 @@ class ScheduleRecordController extends Controller
                 }
             }
         }
-        elseif($request->recurring_times == 0)
+        elseif ($request->boolean('is_recurring') && $request->recurring_times == 0)
         {
             return redirect()->back()->with('error', '定期客戶預約次數至少為1');
         }
