@@ -525,41 +525,41 @@
                     });
 
 // ⭐⭐ 監聽時段選擇，請求價格 ⭐⭐
-            availableTimesSelect.addEventListener('change', function () {
-                const appointment_time = this.value;
-                const serviceId = document.getElementById('service_id').value;
-                const isRecurring = document.getElementById('is_recurring').checked ? 1 : 0;
-                const totalPriceElement = document.getElementById('total_price');
-                const totalPriceInput = document.getElementById('total_price_input'); // 隱藏輸入欄位
+                availableTimesSelect.addEventListener('change', function () {
+                    const appointment_time = this.value;
+                    const serviceId = document.getElementById('service_id').value;
+                    const isRecurring = document.getElementById('is_recurring').checked ? 1 : 0;
+                    const totalPriceElement = document.getElementById('total_price');
+                    const totalPriceInput = document.getElementById('total_price_input'); // 隱藏輸入欄位
 
-                console.log('選擇的時段:', appointment_time);
-                console.log('定期:', isRecurring);
-                console.log('服務地點:', serviceAddress);
+                    console.log('選擇的時段:', appointment_time);
+                    console.log('定期:', isRecurring);
+                    console.log('服務地點:', serviceAddress);
 
-                if (!appointment_time || !serviceId) {
-                    totalPriceElement.textContent = '請選擇服務項目與時段';
-                    totalPriceInput.value = '';
-                    return;
-                }
-
-                fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&is_recurring=${isRecurring}&address=${serviceAddress}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            totalPriceElement.textContent = `NT$ ${data.price}`;
-                            totalPriceInput.value = data.price; // ✅ 確保表單有提交總金額
-                        } else {
-                            totalPriceElement.textContent = '無法獲取價格';
-                            totalPriceInput.value = '';
-                        }
-                    })
-                    .catch(error => {
-                        totalPriceElement.textContent = '錯誤: 無法獲取價格';
+                    if (!appointment_time || !serviceId) {
+                        totalPriceElement.textContent = '請選擇服務項目與時段';
                         totalPriceInput.value = '';
-                        console.error('Error:', error);
-                    });
-            });
+                        return;
+                    }
 
+                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&is_recurring=${isRecurring}&address=${serviceAddress}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                totalPriceElement.textContent = `NT$ ${data.price}`;
+                                totalPriceInput.value = data.price; // ✅ 確保表單有提交總金額
+                            } else {
+                                totalPriceElement.textContent = '無法獲取價格';
+                                totalPriceInput.value = '';
+                            }
+                        })
+                        .catch(error => {
+                            totalPriceElement.textContent = '錯誤: 無法獲取價格';
+                            totalPriceInput.value = '';
+                            console.error('Error:', error);
+                        });
+                });
+            });
         });
 
 
