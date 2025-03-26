@@ -275,7 +275,7 @@
 
                 // 清除選擇的資料或返回到初始狀態
                 clearSelectedData();
-
+                TotalPriceElement.textContent = '請選擇服務項目與時段';
                 // 關閉模態視窗
                 $('#modalId').modal('hide');  // 假設這是用來關閉模態視窗的代碼
             });
@@ -399,11 +399,12 @@
                     today.setHours(0, 0, 0, 0); // 設置今天的零點時間，便於比較
 
                     // 比較所選日期是否是今天或之後的日期
-                    if (selectedDate < today) {
-                        alert('選擇的日期不能是過去的日期，請選擇今天或之後的日期');
+                    if (selectedDate <= today) {
+                        alert('選擇的日期不能是過去的日期，請選擇今天之後的日期');
                         return; // 阻止顯示彈出視窗
                     }
-
+                    console.log('選擇的日期:', selectedDate);
+                    console.log('今天的日期:', today);
                     // 如果日期合法，顯示彈出視窗
                     modalDate.textContent = selectedDate.toLocaleDateString('zh-TW', {
                         year: 'numeric',
@@ -525,8 +526,9 @@
 
                 // ⭐⭐ 當使用者選擇時段後，再去請求價格 ⭐⭐
                 availableTimesSelect.addEventListener('change', function () {
-                    const appointment_time = this.value; // 取得選擇的時段
-                    const serviceId = this.value;
+                    //const TotalPriceElement = document.getElementById('total-price');
+                    const appointment_time = this.value  // 取得選擇的時段
+                    const serviceId = document.getElementById('service_id').value;
                     isRecurring = document.getElementById('is_recurring').checked;
                     console.log('選擇的時段:', appointment_time);
                     console.log('定期:', isRecurring);

@@ -23,9 +23,8 @@ use App\Http\Controllers\Auth\GoogleController;
 //});
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
 Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::get('/home', function () {
-    return redirect()->route('users.index');
-})->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+
 Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
 Route::post('logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
