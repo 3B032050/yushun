@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
         $user = User::factory()->create([
             'name' => 'user',
             'email' => 'user@gmail.com',
-            'password' => bcrypt('user123'),
-            'mobile' => 'user123',
-            'address'=>'111',
+            'password' => bcrypt('0912345678'),
+            'mobile' => '0912345678',
+            'address'=>'桃園市龜山區文化一路261號',
         ]);
         $this->call(ServiceAreaSeeder::class);
 

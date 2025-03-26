@@ -26,14 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected function redirectTo()
-    {
-        if (Auth::guard('web')->check()) {
-            return route('users.index');
-        }
-
-        return '/login';
-    }
+    protected $redirectTo = '/users/index';
 
     /**
      * Create a new controller instance.
