@@ -34,16 +34,18 @@ class AdminServiceAreaController extends Controller
         $request->validate([
             'major_area' => 'required|string',
             'minor_area' => 'required|string',
+            'area_type'  => 'required|in:egg_yolk,egg_white', // 確保只能擇一
         ]);
 
         AdminServiceArea::create([
             'major_area' => $request->major_area,
             'minor_area' => $request->minor_area,
-            'status' => 1, // 預設狀態
+            'status'     => $request->area_type === 'egg_yolk' ? 1 : 0, // 蛋黃區=1, 蛋白區=0
         ]);
 
         return redirect()->route('admins.service_areas.index');
     }
+
 
     public function create()
     {
@@ -72,22 +74,23 @@ class AdminServiceAreaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceareaRequest $request, AdminServiceArea $service_area)
+    public function update(Request $request, AdminServiceArea $service_area)
     {
-        $this->validate($request,[
-            'major_area' => 'required|max:50',
-            'minor_area' => 'required',
+        $request->validate([
+            'major_area' => 'required|string',
+            'minor_area' => 'required|string',
+            'area_type'  => 'required|in:egg_yolk,egg_white', // 限定只能選擇蛋黃區或蛋白區
         ]);
-        // 更新 servicearea 資料
-        $service_area->major_area = $request->input('major_area');
-        $service_area->minor_area = $request->input('minor_area');
 
-        // 儲存更新後的資料
-        $service_area->save();
+        $service_area->update([
+            'major_area' => $request->major_area,
+            'minor_area' => $request->minor_area,
+            'status'     => $request->area_type === 'egg_yolk' ? 1 : 0, // 蛋黃區=1，蛋白區=0
+        ]);
 
-        // 成功後重新導向並顯示訊息
-        return redirect()->route('admins.service_areas.index')->with('success', '服務區域更新成功！');
+        return redirect()->route('admins.service_areas.index')->with('success', '地區更新成功');
     }
+
 
     /**
      * Remove the specified resource from storage.

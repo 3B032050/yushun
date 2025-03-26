@@ -40,7 +40,7 @@
                                         <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名：') }}</label>
 
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autocomplete="name" placeholder="必填" autofocus>
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autocomplete="name" placeholder="必填">
 
                                             @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -54,7 +54,7 @@
                                         <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱：') }}</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email" placeholder="必填" autofocus>
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email" placeholder="必填">
 
                                             @error('email')
                                             <span class="invalid-feedback" role="alert">

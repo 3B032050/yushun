@@ -25,13 +25,25 @@
                     <div class="form-group">
                         <label for="major_area">縣市</label>
                         <input type="text" class="form-control" id="major_area" name="major_area" required>
-                    </div>
+                    </div><br>
 
                     <div class="form-group">
                         <label for="minor_area">鄉鎮</label>
                         <input type="text" class="form-control" id="minor_area" name="minor_area" required>
-                    </div>
+                    </div><br>
 
+                    <div class="form-group">
+                        <label>區域類別</label>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="egg_yolk_area" name="area_type" value="egg_yolk" required>
+                            <label class="form-check-label" for="egg_yolk_area">蛋黃區</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" id="egg_white_area" name="area_type" value="egg_white" required>
+                            <label class="form-check-label" for="egg_white_area">蛋白區</label>
+                        </div>
+                    </div>
+                    
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">新增地區</button>
                     </div>
@@ -40,4 +52,3 @@
         </div>
     </div>
 @endsection
-

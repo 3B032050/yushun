@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('service_id');
             $table->string('appointment_time')->nullable();
             $table->datetime('payment_date')->nullable();
+            $table->integer('price')->nullable();
             $table->datetime('service_date')->nullable();
             $table->string('service_address')->nullable();
             $table->boolean('is_recurring')->default(false);
