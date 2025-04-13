@@ -56,7 +56,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::post('/service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
         Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
-        Route::get('s/ervice_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
+        Route::get('/ervice_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
         Route::post('/service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
 
         //可預約時段
@@ -140,6 +140,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('schedule/available_times', [App\Http\Controllers\ScheduleRecordController::class, 'available_times'])->name('schedule.available_times');
         Route::get('schedule/getServicePrice', [App\Http\Controllers\ScheduleRecordController::class, 'getServicePrice'])->name('schedule.getServicePrice');
         Route::get('schedule/getTotalPrice', [App\Http\Controllers\ScheduleRecordController::class, 'getTotalPrice'])->name('schedule.getTotalPrice');
+        Route::post('/schedule/copy', [ScheduleRecordController::class, 'copy'])->name('schedule.copy');
+
 
         Route::get('schedule/check', [App\Http\Controllers\ScheduleRecordController::class, 'check'])->name('schedule.check');
         Route::get('schedule/create', [App\Http\Controllers\ScheduleRecordController::class, 'create'])->name('schedule.create');

@@ -475,4 +475,81 @@ class ScheduleRecordController extends Controller
         // 你也可以加上一個訊息來確認郵件是否發送
         return response()->json(['message' => '郵件已發送']);
     }
+
+    public function copy(Request $request)
+    {
+        $user = Auth::user();
+
+        // 取得目前日期，抓出本月
+        $now = Carbon::now();
+        $startOfMonth = $now->copy()->startOfMonth();
+        $endOfMonth = $now->copy()->endOfMonth();
+
+        // 找出本月這位客戶所有已預約的排程
+        $scheduleRecords = ScheduleRecord::where('user_id', $user->id)
+            ->whereBetween('service_date', [$startOfMonth, $endOfMonth])
+            ->get();
+
+        if ($scheduleRecords->isEmpty()) {
+            return redirect()->back()->with('error', '本月無可複製的預約紀錄');
+        }
+
+        foreach ($scheduleRecords as $record) {
+            $originalDate = Carbon::parse($record->service_date);
+            $weekOfMonth = (int) floor(($originalDate->day - 1) / 7); // 第幾個星期幾（0-based）
+
+            // 下個月的同一個星期幾
+            $monthOffset = intval($request->input('target_month', 1));
+            $targetMonth = $originalDate->copy()->addMonth($monthOffset);
+            $firstDayOfMonth = $targetMonth->copy()->startOfMonth();
+
+            $targetWeekday = $originalDate->dayOfWeek;
+
+            // 找下個月第 N 個相同星期幾
+            $count = 0;
+            $targetDate = null;
+            for ($day = 1; $day <= $targetMonth->daysInMonth; $day++) {
+                $current = $targetMonth->copy()->day($day);
+                if ($current->dayOfWeek == $targetWeekday) {
+                    if ($count == $weekOfMonth) {
+                        $targetDate = $current;
+                        break;
+                    }
+                    $count++;
+                }
+            }
+
+            if (!$targetDate) {
+                continue; // 如果下個月沒有這個星期幾（例如本月有五個週三、下個月只有四個）
+            }
+
+            // 接下來與前面邏輯相同：新增 AppointmentTime、ScheduleRecord，並避免重複
+            $appointmentTime = AppointmentTime::firstOrCreate([
+                'master_id' => $record->master_id,
+                'service_date' => $targetDate->toDateString(),
+                'start_time' => explode(' - ', $record->appointment_time)[0],
+                'end_time' => explode(' - ', $record->appointment_time)[1],
+            ], [
+                'status' => 0,
+                'user_id' => $user->id,
+                'service_address' => $record->service_address,
+            ]);
+
+            ScheduleRecord::firstOrCreate([
+                'user_id' => $user->id,
+                'service_date' => $targetDate->toDateString(),
+                'appointment_time_id' => $appointmentTime->id,
+            ], [
+                'master_id' => $record->master_id,
+                'service_id' => $record->service_id,
+                'price' => $record->price,
+                'service_address' => $record->service_address,
+                'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
+                'status' => 0,
+            ]);
+        }
+
+        return redirect()->route('users.schedule.index')->with('success', '本月預約已成功複製到下個月（待確認）');
+    }
+
 }

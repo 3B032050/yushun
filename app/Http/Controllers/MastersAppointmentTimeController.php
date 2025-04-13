@@ -232,57 +232,74 @@ class MastersAppointmentTimeController extends Controller
     }
     public function copy(Request $request)
     {
-        // 獲取當前登入的師傅 ID
         $masterId = Auth::guard('master')->id();
 
-        // 當前月的第一天和最後一天
         $currentMonthStart = Carbon::now()->startOfMonth();
         $currentMonthEnd = Carbon::now()->endOfMonth();
-        $targetMonth = $request->input('target_month', 1); // 1 表示下個月，2 表示下下個月，依此類推
-        // 根據選擇的目標月份來確定複製的時間範圍
-        $targetMonthOffset = $request->input('target_month', 1);
-        $targetMonthStart = $currentMonthStart->copy()->addMonths($targetMonthOffset);
-        $targetMonthEnd = $targetMonthStart->copy()->endOfMonth();
 
-        // 獲取當前月師傅的可預約時段
-        $currentMonthTimes = AppointmentTime::where('master_id', $masterId)
+        // ✅ 使用表單選擇的目標月份
+        $monthOffset = intval($request->input('target_month', 1));
+        $targetMonth = Carbon::now()->startOfMonth()->addMonthsNoOverflow($monthOffset);
+
+        $sourceTimes = AppointmentTime::where('master_id', $masterId)
             ->whereBetween('service_date', [$currentMonthStart, $currentMonthEnd])
             ->get();
 
-        // 檢查是否有需要複製的時段
-        if ($currentMonthTimes->isEmpty()) {
+        if ($sourceTimes->isEmpty()) {
             return redirect()->route('masters.appointmenttime.index')->with('error', '本月無可複製的時段！');
         }
 
-        foreach ($currentMonthTimes as $time) {
-            // 檢查下個月是否已經存在相同的時段
+        $createdCount = 0;
+
+        foreach ($sourceTimes as $time) {
+            $sourceDate = Carbon::parse($time->service_date);
+            $weekday = $sourceDate->dayOfWeek; // 0-6
+            $weekOfMonth = intval(($sourceDate->day - 1) / 7) + 1;
+
+            // ✅ 根據選擇月份進行週次比對
+            $nextMonthDate = $targetMonth->copy();
+            $count = 0;
+            $targetDate = null;
+
+            while ($nextMonthDate->month === $targetMonth->month) {
+                if ($nextMonthDate->dayOfWeek === $weekday) {
+                    $count++;
+                    if ($count === $weekOfMonth) {
+                        $targetDate = $nextMonthDate->copy();
+                        break;
+                    }
+                }
+                $nextMonthDate->addDay();
+            }
+
+            if (!$targetDate) {
+                continue; // 找不到相同週次就略過
+            }
+
+            // 檢查是否已有重複時段
             $exists = AppointmentTime::where('master_id', $masterId)
-                ->where('service_date', Carbon::parse($time->service_date)->addMonths($targetMonthOffset)) // 同一天的預約，檢查下個月
+                ->where('service_date', $targetDate->toDateString())
                 ->where(function ($query) use ($time) {
-                    // 檢查新預約的時間範圍是否與現有預約重疊
                     $query->whereBetween('start_time', [$time->start_time, $time->end_time])
                         ->orWhereBetween('end_time', [$time->start_time, $time->end_time])
                         ->orWhere(function ($query) use ($time) {
-                            // 檢查現有預約的時間範圍是否包含新預約的時間範圍
                             $query->where('start_time', '<', $time->start_time)
                                 ->where('end_time', '>', $time->end_time);
                         });
-                })
-                ->exists();
+                })->exists();
 
             if (!$exists) {
-                // 複製到下個月
                 AppointmentTime::create([
-                    'master_id' => $time->master_id,
-                    'service_date' => Carbon::parse($time->service_date)->addMonths($targetMonthOffset),
+                    'master_id' => $masterId,
+                    'service_date' => $targetDate->toDateString(),
                     'start_time' => $time->start_time,
                     'end_time' => $time->end_time,
-                    'status' => '0', // 預設為可預約狀態
+                    'status' => '0',
                 ]);
+                $createdCount++;
             }
         }
 
-        // 返回到時段管理頁面並顯示成功消息
-        return redirect()->route('masters.appointmenttime.index')->with('success', '時段已成功複製到下個月！');
+        return redirect()->route('masters.appointmenttime.index')->with('success', "成功複製 {$createdCount} 筆時段到下個月相同週次與星期！");
     }
 }

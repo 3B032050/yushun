@@ -28,11 +28,54 @@
                 </p>
             </div>
         </div>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <!-- 下拉選單 -->
+                <div class="dropdown">
+                    <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        操作選單
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li>
+                            <a class="dropdown-item" href="{{ route('users.schedule.create') }}">
+                                <i class="fas fa-plus-circle me-2"></i> 新增預約時段
+                            </a>
+                        </li>
+                        <li>
+                            <!-- 複製時段的觸發按鈕 -->
+                            <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#copyModal">
+                                <i class="fas fa-copy me-2"></i> 複製當月時段
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <a class="btn btn-success btn-sm" href="{{ route('users.schedule.create') }}">新增預約時段</a>
+
+            <div class="modal fade" id="copyModal" tabindex="-1" aria-labelledby="copyModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="copyModalLabel">選擇目標月份</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- 複製時段的表單 -->
+                        <form method="POST" action="{{ route('users.schedule.copy') }}">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="target_month" class="form-label">選擇目標月份：</label>
+                                <select id="target_month" name="target_month" class="form-select">
+                                    <option value="1">複製到一個月後</option>
+                                    <option value="2">複製到兩個月後</option>
+                                    <option value="3">複製到三個月後</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success">複製時段</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-
         <!-- 日曆顯示區域 -->
         <div id="calendar"></div>
 
