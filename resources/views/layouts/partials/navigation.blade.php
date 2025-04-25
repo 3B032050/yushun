@@ -1,22 +1,24 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-custom">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="{{ url('/index') }}">
-            <p style="font-size: 35px; font-weight: bold;">豫順清潔</p>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="container-fluid px-3 px-lg-5">
+        <a class="navbar-brand fw-bold fs-3" href="{{ url('/index') }}">豫順清潔</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+
+        <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center gap-2">
+
                 @if (Auth::guard('web')->check())
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                        <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             使用者：{{ Auth::user()->name }}
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();" style="color:black">
+                                <a class="dropdown-item text-dark" href="{{ route('logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                     {{ __('登出') }}
                                 </a>
                             </li>
@@ -27,20 +29,14 @@
                     </li>
                 @elseif (Auth::guard('master')->check())
                     <li class="nav-item dropdown">
-                        @if(Auth::guard('master')->user()->position == '0')
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
-                                管理員：{{ Auth::guard('master')->user()->name }}
-                            </a>
-                        @elseif(Auth::guard('master')->user()->position == '1')
-                            <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
-                                師傅：{{ Auth::guard('master')->user()->name }}
-                            </a>
-                        @endif
-
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ Auth::guard('master')->user()->position == '0' ? '管理員' : '師傅' }}：{{ Auth::guard('master')->user()->name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ route('masters_logout') }}"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form-master').submit();" style="color:black">
+                                <a class="dropdown-item text-dark" href="{{ route('masters_logout') }}"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form-master').submit();">
                                     {{ __('登出') }}
                                 </a>
                             </li>
@@ -51,36 +47,42 @@
                     </li>
                 @else
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
-                            <span class="d-none d-md-inline">師傅端</span>
+                        <a class="nav-link dropdown-toggle text-dark" id="navbarDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            師傅端
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li>
-                                <a class="dropdown-item" href="{{ route('masters_login') }}" style="color:black">{{ __('師傅登入') }}</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="{{ route('masters_register') }}" style="color:black">{{ __('師傅註冊') }}</a>
-                            </li>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-dark" href="{{ route('masters_login') }}">{{ __('師傅登入') }}</a></li>
+                            <li><a class="dropdown-item text-dark" href="{{ route('masters_register') }}">{{ __('師傅註冊') }}</a></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}" style="color:black">{{ __('登入') }}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('register') }}" style="color:black">{{ __('註冊') }}</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="{{ route('login') }}">{{ __('登入') }}</a></li>
+                    <li class="nav-item"><a class="nav-link text-dark" href="{{ route('register') }}">{{ __('註冊') }}</a></li>
                 @endif
+
             </ul>
         </div>
     </div>
 </nav>
-<style>
-.bg-custom {
-background-color: #EEEDEC;
-}
-.navbar {
-height: 80px;
-border-bottom: 2px solid #b4b6b6;
-}
-</style>
 
+<style>
+    .bg-custom {
+        background-color: #EEEDEC;
+    }
+
+    .navbar {
+        height: auto;
+        border-bottom: 2px solid #b4b6b6;
+    }
+
+    @media (max-width: 991.98px) {
+        .navbar-nav .nav-link {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .dropdown-menu {
+            width: 100%;
+        }
+    }
+</style>
