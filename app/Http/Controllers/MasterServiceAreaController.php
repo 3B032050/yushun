@@ -47,7 +47,7 @@ class MasterServiceAreaController extends Controller
         $serviceItems = AdminServiceItem::all();
 
         $data = ['serviceItems' => $serviceItems];
-        return view('Masters.service_areas.create_item', $data);
+        return view('masters.service_areas.create_item', $data);
     }
 
     /**
@@ -64,7 +64,7 @@ class MasterServiceAreaController extends Controller
             ->pluck('admin_service_area_id')
             ->toArray();
 
-        return view('Masters.service_areas.create', compact('serviceAreas', 'selectedAreas'));
+        return view('masters.service_areas.create', compact('serviceAreas', 'selectedAreas'));
     }
 
     /**
