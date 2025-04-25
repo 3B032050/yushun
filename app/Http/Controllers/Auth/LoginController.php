@@ -26,6 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
+
     protected function authenticated($request, $user)
     {
         return redirect('/users/index');
