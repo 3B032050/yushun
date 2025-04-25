@@ -136,12 +136,14 @@
                 @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
                     <div class="d-flex justify-content-between">
                         <button type="submit" name="action" value="alter" class="btn btn-success w-100" >修改</button>
-                    </div>
+                    </div><br>
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
                 @elseif($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
                     <div class="d-flex justify-content-between">
                         <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
-                        <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
-                    </div>
+                        <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>\
+                    </div><br>
+                    <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
                 @else
                     <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
                 @endif
