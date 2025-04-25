@@ -73,32 +73,61 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                // events: function(fetchInfo, successCallback, failureCallback) {
+                //     let masterId = document.getElementById('master-select').value;
+                //
+                //     if (!masterId) {
+                //         successCallback([]);
+                //         return;
+                //     }
+                //
+                //     fetch(`/admins/schedules/getScheduleData?master_id=${masterId}`)
+                //         .then(response => response.json())
+                //         .then(data => successCallback(data))
+                //         .catch(error => {
+                //             console.error('Error fetching schedule data:', error);
+                //             failureCallback(error);
+                //         });
+                // },
                 events: function(fetchInfo, successCallback, failureCallback) {
                     let masterId = document.getElementById('master-select').value;
+                    console.log('選擇的師傅 ID:', masterId); // debug 用
 
                     if (!masterId) {
                         successCallback([]);
                         return;
                     }
 
-                    fetch(`/admins/schedules/getScheduleData?master_id=${masterId}`)
+                    fetch(`{{ url('/admins/schedules/getScheduleData') }}?master_id=${masterId}`)
                         .then(response => response.json())
-                        .then(data => successCallback(data))
+                        .then(data => {
+                            console.log('拿到的資料:', data); // debug
+                            successCallback(data);
+                        })
                         .catch(error => {
                             console.error('Error fetching schedule data:', error);
                             failureCallback(error);
                         });
                 },
+        //         eventContent: function(arg) {
+        //             return {
+        //                 html: `
+        //                     <div class="fc-event-content">
+        //                         <div><strong>客戶：</strong> ${arg.event.extendedProps.customer}</div>
+        //                         <div><strong>時段：</strong> ${arg.event.extendedProps.time ?? '未設定'}</div>
+        //                         <div><strong>狀態：</strong>${arg.event.extendedProps.description}</div>
+        //                     </div>
+        // `
+        //             };
+        //         },
                 eventContent: function(arg) {
-                    return {
-                        html: `
-                            <div class="fc-event-content">
-                                <div><strong>客戶：</strong> ${arg.event.extendedProps.customer}</div>
-                                <div><strong>時段：</strong> ${arg.event.extendedProps.time ?? '未設定'}</div>
-                                <div><strong>狀態：</strong>${arg.event.extendedProps.description}</div>
-                            </div>
-        `
-                    };
+                    const content = document.createElement('div');
+                    content.innerHTML = `
+                    <div><strong>客戶：</strong> ${arg.event.extendedProps.customer}</div>
+                    <div><strong>時段：</strong> ${arg.event.extendedProps.time ?? '未設定'}</div>
+                    <div><strong>狀態：</strong>${arg.event.extendedProps.description}</div>
+                       `;
+                    return { domNodes: [content] };
                 },
                 eventClick: function(info) {
                     document.getElementById('modal-title').innerText = "詳細資訊";
@@ -134,7 +163,10 @@
             });
 
             calendar.render();
-
+            //
+            // document.getElementById('master-select').addEventListener('change', function() {
+            //     calendar.refetchEvents();
+            // });
             document.getElementById('master-select').addEventListener('change', function() {
                 calendar.refetchEvents();
             });
