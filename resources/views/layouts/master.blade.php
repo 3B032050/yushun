@@ -1,80 +1,122 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-custom border-bottom">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand fw-bold fs-3" href="{{ url('/index') }}">豫順清潔</a>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>@yield('title', '豫順清潔')</title>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- 引入 CSS -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IcoFont/1.0.0/icofont.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
 
-        <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                @if (Auth::guard('web')->check())
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            使用者：{{ Auth::user()->name }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-dark">
-                                        {{ __('登出') }}
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
+    <!-- 自訂樣式 -->
+    <style>
+        .custom-link {
+            color: black;
+            text-decoration: none;
+        }
 
-                @elseif (Auth::guard('master')->check())
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            @if(Auth::guard('master')->user()->position == '0')
-                                管理員：{{ Auth::guard('master')->user()->name }}
-                            @else
-                                師傅：{{ Auth::guard('master')->user()->name }}
-                            @endif
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li>
-                                <form id="logout-form-master" action="{{ route('masters_logout') }}" method="POST">
-                                    @csrf
-                                    <button type="submit" class="dropdown-item text-dark">
-                                        {{ __('登出') }}
-                                    </button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
 
-                @else
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            師傅端
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item text-dark" href="{{ route('masters_login') }}">師傅登入</a></li>
-                            <li><a class="dropdown-item text-dark" href="{{ route('masters_register') }}">師傅註冊</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="{{ route('login') }}">登入</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="{{ route('register') }}">註冊</a>
-                    </li>
-                @endif
-            </ul>
-        </div>
-    </div>
-</nav>
 
-<style>
-    .bg-custom {
-        background-color: #EEEDEC;
-    }
-</style>
+
+
+
+
+
+
+
+
+
+
+
+        .button-name {
+            align-items: center;
+            appearance: none;
+            background-color: #fcfcfd;
+            border-radius: 25px;
+            margin: 10px;
+            border-width: 0;
+            box-shadow:
+                rgba(45, 35, 66, 0.2) 0 2px 4px,
+                rgba(45, 35, 66, 0.15) 0 7px 13px -3px,
+                #d6d6e7 0 -3px 0 inset;
+            color: #36395a;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 150px;
+            width: 150px;
+            justify-content: center;
+            padding: 16px;
+            text-align: center;
+            font-size: 18px;
+            transition: box-shadow 0.15s, transform 0.15s;
+        }
+
+        .button-name i {
+            margin-bottom: 10px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        .button-name:hover {
+            box-shadow:
+                rgba(45, 35, 66, 0.3) 0 4px 8px,
+                rgba(45, 35, 66, 0.2) 0 7px 13px -3px,
+                #d6d6e7 0 -3px 0 inset;
+            transform: translateY(-2px);
+        }
+
+        .button-name:active {
+            box-shadow: #d6d6e7 0 3px 7px inset;
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+<!-- 導覽列 -->
+@include('layouts.partials.navigation')
+
+<!-- 主內容 -->
+<div class="container mt-4">
+    @yield('content')
+</div>
+
+<!-- 頁腳 -->
+@include('layouts.partials.footer')
+
+<!-- 引入 JS -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{{ asset('library/dselect.js') }}"></script>
+</body>
+</html>
