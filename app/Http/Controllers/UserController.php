@@ -17,6 +17,12 @@ class UserController extends Controller
         return view('users.index');
     }
 
+
+    public function personal_index()
+    {
+        $user = auth()->user();
+        return view('users.personal_information.index', compact('user'));
+    }
     public function edit()
     {
         $user = Auth::user();
@@ -56,6 +62,6 @@ class UserController extends Controller
 
         ]);
 
-        return redirect()->route('users.personal_information.edit')->with('success', '個人資料更新成功');
+        return redirect()->route('users.personal_information.personal_index')->with('success', '個人資料更新成功');
     }
 }

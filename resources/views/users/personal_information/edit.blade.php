@@ -1,6 +1,6 @@
 @extends('users.layouts.master')
 
-@section('title','個人資料')
+@section('title','編輯個人資料')
 
 @section('content')
     <div class="content-wrapper">
@@ -19,7 +19,8 @@
             <div style="margin-top: 10px;">
                 <p style="font-size: 1.8em;">
                     <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    個人資料
+                    <a href="{{ route('users.personal_information.personal_index') }}" class="custom-link">個人資料</a> >
+                    編輯
                 </p>
             </div>
         </div>
@@ -29,107 +30,83 @@
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <div class="card">
-                            <div class="card-header">{{ __('個人資料') }}</div>
+                            <div class="card-header">{{ __('編輯個人資料') }}</div>
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('users.personal_information.update',$user->id) }}">
+                                <form method="POST" action="{{ route('users.personal_information.update', $user->id) }}">
                                     @csrf
                                     @method('PATCH')
 
                                     <div class="row mb-3">
-                                        <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名：') }}</label>
-
+                                        <label for="name" class="col-md-4 col-form-label text-md-end">姓名：</label>
                                         <div class="col-md-6">
-                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $user->name }}" required autocomplete="name" placeholder="必填">
-
+                                            <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                                   name="name" value="{{ old('name', $user->name) }}" required>
                                             @error('name')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱：') }}</label>
-
+                                        <label for="email" class="col-md-4 col-form-label text-md-end">信箱：</label>
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $user->email }}" required autocomplete="email" placeholder="必填">
-
+                                            <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                                   name="email" value="{{ old('email', $user->email) }}" required>
                                             @error('email')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="mobile" class="col-md-4 col-form-label text-md-end">{{ __('手機號碼：') }}</label>
-
+                                        <label for="mobile" class="col-md-4 col-form-label text-md-end">手機號碼：</label>
                                         <div class="col-md-6">
                                             <input id="mobile" type="text" class="form-control @error('mobile') is-invalid @enderror"
-                                                   name="mobile" value="{{ $user->mobile }}" required placeholder="必填">
-
+                                                   name="mobile" value="{{ old('mobile', $user->mobile) }}" required>
                                             @error('mobile')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('市話：') }}</label>
-
+                                        <label for="phone" class="col-md-4 col-form-label text-md-end">市話：</label>
                                         <div class="col-md-6">
                                             <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror"
-                                                   name="phone" value="{{ $user->phone }}" placeholder="選填">
-
+                                                   name="phone" value="{{ old('phone', $user->phone) }}">
                                             @error('phone')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="address" class="col-md-4 col-form-label text-md-end">{{ __('地址：') }}</label>
-
+                                        <label for="address" class="col-md-4 col-form-label text-md-end">地址：</label>
                                         <div class="col-md-6">
                                             <input id="address" type="text" class="form-control @error('address') is-invalid @enderror"
-                                                   name="address" value="{{ $user->address }}" required placeholder="必填">
-
+                                                   name="address" value="{{ old('address', $user->address) }}" required>
                                             @error('address')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="line_id" class="col-md-4 col-form-label text-md-end">{{ __('LINE ID：') }}</label>
-
+                                        <label for="line_id" class="col-md-4 col-form-label text-md-end">LINE ID：</label>
                                         <div class="col-md-6">
                                             <input id="line_id" type="text" class="form-control @error('line_id') is-invalid @enderror"
-                                                   name="line_id" value="{{ $user->line_id }}" placeholder="選填">
-
+                                                   name="line_id" value="{{ old('line_id', $user->line_id) }}">
                                             @error('line_id')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                             @enderror
                                         </div>
                                     </div>
-
 
                                     <div class="row mb-0">
                                         <div class="col-md-8 offset-md-4">
-                                            <button type="submit" class="btn btn-primary">
-                                                {{ __('儲存') }}
-                                            </button>
+                                            <button type="submit" class="btn btn-success">儲存</button>
+                                            <a href="{{ route('users.personal_information.personal_index') }}" class="btn btn-secondary">取消</a>
                                         </div>
                                     </div>
                                 </form>
@@ -140,11 +117,4 @@
             </div>
         </section>
     </div>
-    <style>
-        .required {
-            color: red;
-            margin-left: 5px;
-            font-weight: bold;
-        }
-    </style>
 @endsection
