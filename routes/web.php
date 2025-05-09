@@ -47,7 +47,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/index', [App\Http\Controllers\MasterPersonalInformationController::class, 'index'])->name("personal_information.index");
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterPersonalInformationController::class, 'edit'])->name("personal_information.edit");
-        Route::patch('}/personal_information/update/{master}', [App\Http\Controllers\MasterPersonalInformationController::class, 'update'])->name('personal_information.update');
+        Route::patch('/personal_information/update/{master}', [App\Http\Controllers\MasterPersonalInformationController::class, 'update'])->name('personal_information.update');
 
         //可服務地區
         Route::get('/service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
@@ -56,7 +56,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::post('/service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
         Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
-        Route::get('/ervice_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
+        Route::get('/service_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
         Route::post('/service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
 
         //可預約時段
