@@ -32,6 +32,9 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IcoFont/1.0.0/icofont.min.css">
 
+        <!--圖片縮放-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.css" integrity="sha512-QFxq9HoVrfCmeWIc9FVVGKDdY2SOqQ9Y1jHc8N/FgrZVfROi9tfrMGLVuzFu9KCTe4kmvy1ZrqluAV8b2nvARw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     </head>
     <body>
         @include('masters.layouts.partials.navigation')
@@ -53,6 +56,9 @@
         <!-- 引入 jQuery UI 库 -->
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+        <!--圖片縮放-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.js" integrity="sha512-KIb+gt0hV3z0E4M8vCR4iIeqg3CPN8xVthEyDPOET04FtSTvFqbAX6DC5nRyS26KLMQyt+c6H9bcOklmBI5r9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
         <style>
             a {

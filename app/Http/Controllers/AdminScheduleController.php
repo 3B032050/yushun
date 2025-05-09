@@ -32,7 +32,7 @@ class AdminScheduleController extends Controller
                 'color' => $schedule->status == 0 ? '#28a745' : '#dc3545',
                 'extendedProps' => [
                     'time' => $schedule->appointment_time ?? '未提供時間',
-                    'price' => $schedule->service->price ?? '未提供',
+                    'price' => $schedule->price ?? '未提供',
                     'service' => $schedule->service->name ?? '未提供',
                     'customer' => $schedule->user ? $schedule->user->name : '未知用戶',
                     'description' => match ($schedule->status) {
@@ -45,8 +45,8 @@ class AdminScheduleController extends Controller
                     },
                     'score' => $schedule->scheduledetail->score ?? null,
                     'comment' => $schedule->scheduledetail->comment ?? null,
-                    'before_photo' => $schedule->before_photo ?? null,
-                    'after_photo' => $schedule->after_photo ?? null,
+                    'before_photo' => $schedule->scheduledetail->before_photo ?? null,
+                    'after_photo' => $schedule->scheduledetail->after_photo ?? null,
                 ]
             ];
         });
