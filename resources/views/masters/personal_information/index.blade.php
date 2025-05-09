@@ -30,11 +30,7 @@
                     <div class="card-header text-center">{{ __('個人資料') }}</div>
 
                     <div class="card-body">
-                        <form method="GET" action="{{ route('masters.personal_information.edit') }}">
-                            @csrf
-                            @method('GET')
-
-                            <div class="row mb-3">
+                        <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名 / Name') }}</label>
 
                                 <div class="col-md-6">
@@ -78,12 +74,12 @@
 
                             <div class="row mb-0">
                                 <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('編輯') }}
-                                    </button>
+                                    <a href="{{ route('masters.personal_information.edit') }}" class="btn btn-primary">
+                                        編輯個人資料
+                                    </a>
                                 </div>
                             </div>
-                        </form><hr>
+                       <hr>
 
                         @if(!$rental)
                             <form method="POST" action="{{ route('masters.rent_uniforms.store') }}">
