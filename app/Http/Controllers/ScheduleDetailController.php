@@ -32,8 +32,9 @@ class ScheduleDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorescheduledetailRequest $request,AppointmentTime $appointmenttime)
+    public function store(StorescheduledetailRequest $request, AppointmentTime $appointmenttime)
     {
+        // 驗證圖片
         $request->validate([
             'before_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'after_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -42,13 +43,15 @@ class ScheduleDetailController extends Controller
         $scheduleRecord = $appointmenttime->scheduleRecord;
 
         $scheduleDetail = new ScheduleDetail();
-        $scheduleDetail->schedule_record_id = $appointmenttime->scheduleRecord->id;
+        $scheduleDetail->schedule_record_id = $scheduleRecord->id;
 
         // 儲存清潔前照片
         if ($request->hasFile('before_photo')) {
             $beforeImage = $request->file('before_photo');
             $beforeImageName = time() . '_before.' . $beforeImage->getClientOriginalExtension();
-            Storage::disk('public')->put('schedule_photos/' . $beforeImageName, file_get_contents($beforeImage));
+
+            // 存入 public 路徑
+            Storage::disk('schedule_photos')->put($beforeImageName, file_get_contents($beforeImage));
             $scheduleDetail->before_photo = $beforeImageName;
         }
 
@@ -56,15 +59,17 @@ class ScheduleDetailController extends Controller
         if ($request->hasFile('after_photo')) {
             $afterImage = $request->file('after_photo');
             $afterImageName = time() . '_after.' . $afterImage->getClientOriginalExtension();
-            Storage::disk('public')->put('schedule_photos/' . $afterImageName, file_get_contents($afterImage));
+
+            Storage::disk('schedule_photos')->put($afterImageName, file_get_contents($afterImage));
             $scheduleDetail->after_photo = $afterImageName;
         }
 
+        // 更新狀態
         $appointmenttime->update(['status' => 2]);
         $scheduleRecord->update(['status' => 2]);
 
+        // 歸還設備數量
         $borrowingRecords = BorrowingRecord::where('appointment_time_id', $appointmenttime->id)->get();
-
         foreach ($borrowingRecords as $record) {
             if ($record->status == 0) {
                 $equipment = Equipment::find($record->equipment_id);
@@ -80,6 +85,7 @@ class ScheduleDetailController extends Controller
 
         return redirect()->route('masters.appointmenttime.index')->with('success', '訂單已成功完成');
     }
+
 
     public function review(UpdatescheduledetailRequest $request)
     {

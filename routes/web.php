@@ -146,7 +146,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('schedule/check', [App\Http\Controllers\ScheduleRecordController::class, 'check'])->name('schedule.check');
         Route::get('schedule/create', [App\Http\Controllers\ScheduleRecordController::class, 'create'])->name('schedule.create');
         Route::post('schedule/store', [App\Http\Controllers\ScheduleRecordController::class, 'store'])->name("schedule.store");
-        Route::get('personal_information/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("personal_information.edit");
+        Route::get('personal_information', [App\Http\Controllers\UserController::class, 'personal_index'])->name('personal_information.personal_index');
+        Route::get('personal_information/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('personal_information.edit');
         Route::patch('personal_information/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('personal_information.update');
         Route::post('schedule_details/review', [App\Http\Controllers\ScheduleDetailController::class, 'review'])->name('schedule_details.review');
     });

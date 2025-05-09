@@ -57,7 +57,7 @@
                 {{--                </button>--}}
                 {{--            </div>--}}
                 <div class="col-4 col-md-3 mb-2">
-                    <a href="{{ route('users.personal_information.edit') }}" class="button-name w-100 text-decoration-none">
+                    <a href="{{ route('users.personal_information.personal_index') }}" class="button-name w-100 text-decoration-none">
                         <div>
                             <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                         </div>

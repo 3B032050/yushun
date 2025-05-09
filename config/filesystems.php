@@ -58,7 +58,7 @@ return [
 
         'equipments' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/equipments'),
+            'root' => public_path('storage/equipments'),
             'url' => env('APP_URL') . '/storage/equipments',
             'visibility' => 'public',
         ],
@@ -67,6 +67,13 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/public/uniforms'),
             'url' => env('APP_URL') . '/storage/uniforms',
+            'visibility' => 'public',
+        ],
+
+        'schedule_photos' => [
+            'driver' => 'local',
+            'root' => public_path('storage/schedule_photos'),
+            'url' => env('APP_URL') . '/storage/schedule_photos',
             'visibility' => 'public',
         ],
     ],
