@@ -85,7 +85,15 @@
                             </div>
                         </form><hr>
 
-                        @if(!$rental)
+                        <div class="row mb-3">
+                            <label class="col-md-4 col-form-label text-md-end">{{ __('累積總工時 / Total Hours') }}</label>
+
+                            <div class="col-md-6 pt-2">
+                                <div class="form-control-plaintext">{{ number_format($master->total_hours, 1) }} 小時</div>
+                            </div>
+                        </div>
+                        <hr>
+                    @if(!$rental)
                             <form method="POST" action="{{ route('masters.rent_uniforms.store') }}">
                                 @csrf
 

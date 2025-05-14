@@ -75,6 +75,17 @@ class ScheduleDetailController extends Controller
                 $record->update(['status' => 1]);
             }
         }
+// 解析工時
+        $start = \Carbon\Carbon::createFromFormat('H:i:s', $appointmenttime->start_time);
+        $end = \Carbon\Carbon::createFromFormat('H:i:s', $appointmenttime->end_time);
+        $hours = $end->diffInMinutes($start) / 60; // 換算成小時（可能有小數點）
+
+// 更新師傅總工時
+        $master = $scheduleRecord->master;
+        if ($master && is_numeric($hours)) {
+            $master->total_hours += $hours;
+            $master->save();
+        }
 
         $scheduleDetail->save();
 
