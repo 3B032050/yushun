@@ -18,7 +18,7 @@
             <div class="col-md-6 col-12">
                 <h2 class="text-center mb-4">編輯服務地區</h2>
 
-                <form action="{{ route('admins.service_areas.update', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" method="POST" role="form">
+                <form action="{{ route('admins.service_areas.update', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($service_area->id)]) }}" method="POST" role="form">
                     @csrf
                     @method('PATCH')
 

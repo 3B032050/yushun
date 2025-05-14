@@ -10,6 +10,7 @@ use App\Http\Requests\StorescheduledetailRequest;
 use App\Http\Requests\UpdatescheduledetailRequest;
 use App\Models\ScheduleRecord;
 use Illuminate\Support\Facades\Storage;
+use Vinkla\Hashids\Facades\Hashids;
 
 class ScheduleDetailController extends Controller
 {
@@ -24,8 +25,15 @@ class ScheduleDetailController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(AppointmentTime $appointmenttime)
+    public function create(AppointmentTime $hash_appointmenttime)
     {
+        $id = Hashids::decode($hash_appointmenttime)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $appointmenttime = AppointmentTime::findOrFail($id);
         return view('masters.schedule_details.create', compact('appointmenttime'));
     }
 
