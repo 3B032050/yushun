@@ -145,9 +145,9 @@ class MastersAppointmentTimeController extends Controller
             abort(404); // 無效 ID
         }
 
-        $appointmentTime = AppointmentTime::findOrFail($id);
+        $appointmenttime = AppointmentTime::findOrFail($id);
 
-        return view('masters.appointmenttime.edit', compact('appointmentTime'));
+        return view('masters.appointmenttime.edit', compact('appointmenttime'));
     }
 
     /**
