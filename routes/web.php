@@ -99,7 +99,7 @@ Route::group(['middleware' => 'master'], function() {
         Route::post('service_areas', [AdminServiceAreaController::class, 'store'])->name('service_areas.store');
         Route::get('/service_areas/{hash_service_area}/edit', [AdminServiceAreaController::class, 'edit'])->name("service_areas.edit");
         Route::patch('/service_areas/{hash_service_area}/update',[AdminServiceAreaController::class,'update'])->name('service_areas.update');
-        Route::delete('/service_areas/{hash_service_areas}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+        Route::delete('/service_areas/{hash_service_area}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
         //服務項目
         Route::get('/service_items/index', [App\Http\Controllers\AdminServiceItemController::class, 'index'])->name('service_items.index');

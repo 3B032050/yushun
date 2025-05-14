@@ -73,7 +73,8 @@
             </div>
 
             <div class="d-flex justify-content-center mt-3">
-                {{ $serviceAreas->links() }} <!-- 分頁連結 -->
+{{--                分裂連結--}}
+                {{ $serviceAreas->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
