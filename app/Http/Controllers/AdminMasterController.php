@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Master;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Vinkla\Hashids\Facades\Hashids;
 
 class AdminMasterController extends Controller
 {
@@ -66,8 +67,16 @@ class AdminMasterController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Master $master)
+    public function edit($hash_master)
     {
+        $id = Hashids::decode($hash_master)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $master = Master ::findOrFail($id);
+
         $data = [
             'master'=> $master,
         ];
@@ -78,8 +87,15 @@ class AdminMasterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Master $master)
+    public function update(Request $request,$hash_master)
     {
+        $id = Hashids::decode($hash_master)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $master = Master ::findOrFail($id);
         // 驗證表單輸入
         $request->validate([
             'name' => 'required|string|max:255',
@@ -101,8 +117,15 @@ class AdminMasterController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Master $master)
+    public function destroy($hash_master)
     {
+        $id = Hashids::decode($hash_master)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $master = Master ::findOrFail($id);
         $master->delete();
 
         return redirect()->route('admins.masters.index');

@@ -40,10 +40,10 @@
                         <td class="align-middle" style="text-align:center">{{ $item->description}}</td>
                         <td class="align-middle" style="text-align:center">{{ $item->price}}</td>
                         <td class="align-middle" style="text-align:center">
-                            <a href="{{ route('admins.service_items.edit', $item->id) }}" class="btn btn-secondary btn-sm">編輯</a>
+                            <a href="{{ route('admins.service_items.edit', ['{hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                         </td>
                         <td class="align-middle" style="text-align:center">
-                            <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.service_items.destroy', $item->id) }}" method="POST">
+                            <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.service_items.destroy',['{hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $item->name }}', {{ $index + 1 }})">刪除</button>

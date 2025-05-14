@@ -89,41 +89,41 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/equipment/index', [App\Http\Controllers\AdminEquipmentController::class, 'index'])->name('equipment.index');
         Route::get('/equipment/create',[App\Http\Controllers\AdminEquipmentController::class,'create'])->name('equipment.create');
         Route::post('/equipment/store', [App\Http\Controllers\AdminEquipmentController::class, 'store'])->name("equipment.store");
-        Route::get('/equipment/edit/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'edit'])->name('equipment.edit');
-        Route::patch('/equipment/update/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'update'])->name('equipment.update');
-        Route::delete('/equipment/destroy/{equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'destroy'])->name('equipment.destroy');
+        Route::get('/equipment/edit/{hash_equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'edit'])->name('equipment.edit');
+        Route::patch('/equipment/update/{hash_equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'update'])->name('equipment.update');
+        Route::delete('/equipment/destroy/{hash_equipment}', [App\Http\Controllers\AdminEquipmentController::class, 'destroy'])->name('equipment.destroy');
 
         //服務地區
         Route::get('service_areas/index', [AdminServiceAreaController::class, 'index'])->name('service_areas.index');
         Route::get('service_areas/create', [AdminServiceAreaController::class, 'create'])->name('service_areas.create');
         Route::post('service_areas', [AdminServiceAreaController::class, 'store'])->name('service_areas.store');
-        Route::get('/service_areas/{service_area}/edit', [AdminServiceAreaController::class, 'edit'])->name("service_areas.edit");
-        Route::patch('/service_areas/{service_area}/update',[AdminServiceAreaController::class,'update'])->name('service_areas.update');
-        Route::delete('/service_areas/{service_areas}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+        Route::get('/service_areas/{hash_service_area}/edit', [AdminServiceAreaController::class, 'edit'])->name("service_areas.edit");
+        Route::patch('/service_areas/{hash_service_area}/update',[AdminServiceAreaController::class,'update'])->name('service_areas.update');
+        Route::delete('/service_areas/{hash_service_areas}/destroy', [AdminServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
         //服務項目
         Route::get('/service_items/index', [App\Http\Controllers\AdminServiceItemController::class, 'index'])->name('service_items.index');
         Route::get('/service_items/create',[App\Http\Controllers\AdminServiceItemController::class,'create'])->name('service_items.create');
         Route::post('/service_items/store', [App\Http\Controllers\AdminServiceItemController::class, 'store'])->name("service_items.store");
-        Route::get('/service_items/edit/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'edit'])->name('service_items.edit');
-        Route::patch('/service_items/update/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'update'])->name('service_items.update');
-        Route::delete('/service_items/destroy/{service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'destroy'])->name('service_items.destroy');
+        Route::get('/service_items/edit/{hash_service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'edit'])->name('service_items.edit');
+        Route::patch('/service_items/update/{hash_service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'update'])->name('service_items.update');
+        Route::delete('/service_items/destroy/{hash_service_item}', [App\Http\Controllers\AdminServiceItemController::class, 'destroy'])->name('service_items.destroy');
 
         //制服管理
         Route::get('/uniforms/index', [App\Http\Controllers\AdminUniformController::class, 'index'])->name('uniforms.index');
         Route::get('/uniforms/create',[App\Http\Controllers\AdminUniformController::class,'create'])->name('uniforms.create');
         Route::post('/uniforms/store', [App\Http\Controllers\AdminUniformController::class, 'store'])->name("uniforms.store");
-        Route::get('/uniforms/edit/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'edit'])->name('uniforms.edit');
-        Route::patch('/uniforms/update/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'update'])->name('uniforms.update');
-        Route::delete('/uniforms/destroy/{uniform}', [App\Http\Controllers\AdminUniformController::class, 'destroy'])->name('uniforms.destroy');
+        Route::get('/uniforms/edit/{hash_uniform}', [App\Http\Controllers\AdminUniformController::class, 'edit'])->name('uniforms.edit');
+        Route::patch('/uniforms/update/{hash_uniform}', [App\Http\Controllers\AdminUniformController::class, 'update'])->name('uniforms.update');
+        Route::delete('/uniforms/destroy/{hash_uniform}', [App\Http\Controllers\AdminUniformController::class, 'destroy'])->name('uniforms.destroy');
 
         //師傅管理
         Route::get('/masters/index', [App\Http\Controllers\AdminMasterController::class, 'index'])->name('masters.index');
         Route::get('/masters/create',[App\Http\Controllers\AdminMasterController::class,'create'])->name('masters.create');
         Route::post('/masters/store', [App\Http\Controllers\AdminMasterController::class, 'store'])->name("masters.store");
-        Route::get('/masters/edit/{master}', [App\Http\Controllers\AdminMasterController::class, 'edit'])->name('masters.edit');
-        Route::patch('/masters/update/{master}', [App\Http\Controllers\AdminMasterController::class, 'update'])->name('masters.update');
-        Route::delete('/masters/destroy/{master}', [App\Http\Controllers\AdminMasterController::class, 'destroy'])->name('masters.destroy');
+        Route::get('/masters/edit/{hash_master}', [App\Http\Controllers\AdminMasterController::class, 'edit'])->name('masters.edit');
+        Route::patch('/masters/update/{hash_master}', [App\Http\Controllers\AdminMasterController::class, 'update'])->name('masters.update');
+        Route::delete('/masters/destroy/{hash_master}', [App\Http\Controllers\AdminMasterController::class, 'destroy'])->name('masters.destroy');
 
         Route::get('schedules/index', [App\Http\Controllers\AdminScheduleController::class, 'index'])->name('schedules.index');
         Route::get('schedules/getScheduleData', [App\Http\Controllers\AdminScheduleController::class, 'getScheduleData'])->name('schedules.getScheduleData');

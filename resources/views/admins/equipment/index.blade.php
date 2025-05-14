@@ -42,10 +42,10 @@
                             <img src="{{ asset( 'storage/equipments/' . $equipment->photo) }}" height="90px" width="150px">
                         </td>
                         <td class="align-middle" style="text-align:center">
-                            <a href="{{ route('admins.equipment.edit', $equipment->id) }}" class="btn btn-secondary btn-sm">編輯</a>
+                            <a href="{{ route('admins.equipment.edit',['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                         </td>
                         <td class="align-middle" style="text-align:center">
-                            <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.equipment.destroy', $equipment->id) }}" method="POST">
+                            <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.equipment.destroy', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $equipment->name }}', {{ $index + 1 }})">刪除</button>

@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUniformRequest;
 use App\Http\Requests\UpdateUniformRequest;
 use App\Models\RentUniform;
 use Illuminate\Support\Facades\Storage;
+use Vinkla\Hashids\Facades\Hashids;
 
 class AdminUniformController extends Controller
 {
@@ -79,8 +80,16 @@ class AdminUniformController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AdminUniform $uniform)
+    public function edit( $hash_uniform)
     {
+        $id = Hashids::decode($hash_uniform)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $uniform = AdminUniform ::findOrFail($id);
+
         $data = [
             'uniform'=> $uniform,
         ];
@@ -91,8 +100,15 @@ class AdminUniformController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUniformRequest $request, AdminUniform $uniform)
+    public function update(UpdateUniformRequest $request, $hash_uniform)
     {
+        $id = Hashids::decode($hash_uniform)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $uniform = AdminUniform ::findOrFail($id);
         $request->validate([
             'name' => 'required|string|max:255',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -126,8 +142,15 @@ class AdminUniformController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AdminUniform $uniform)
+    public function destroy($hash_uniform)
     {
+        $id = Hashids::decode($hash_uniform)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $uniform = AdminUniform ::findOrFail($id);
         $this->destroy($uniform);
 
         return redirect()->route('admins.uniforms.index');

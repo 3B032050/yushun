@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Equipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Vinkla\Hashids\Facades\Hashids;
 
 class AdminEquipmentController extends Controller
 {
@@ -51,8 +52,15 @@ class AdminEquipmentController extends Controller
         return redirect()->route('admins.equipment.index')->with('success', '設備已成功新增');
     }
 
-    public function edit(Equipment $equipment)
+    public function edit($hash_equipment)
     {
+        $id = Hashids::decode($hash_equipment)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $equipment = Equipment::findOrFail($id);
         $data = [
             'equipment'=> $equipment,
         ];
@@ -60,9 +68,15 @@ class AdminEquipmentController extends Controller
         return view('admins.equipment.edit',$data);
     }
 
-    public function update(Request $request,Equipment $equipment)
+    public function update(Request $request,$hash_equipment)
     {
+        $id = Hashids::decode($hash_equipment)[0] ?? null;
 
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $equipment = Equipment::findOrFail($id);
         if ($request->hasFile('image_path')) {
 
             if ($equipment->photo) {
@@ -83,8 +97,15 @@ class AdminEquipmentController extends Controller
         return redirect()->route('admins.equipment.index');
     }
 
-    public function destroy(Equipment $equipment)
+    public function destroy($hash_equipment)
     {
+        $id = Hashids::decode($hash_equipment)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $equipment = Equipment::findOrFail($id);
         $equipment->delete();
 
         return redirect()->route('admins.equipment.index');

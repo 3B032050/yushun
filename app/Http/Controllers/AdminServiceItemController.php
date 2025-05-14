@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminServiceItem;
 use App\Http\Requests\StoreserviceitemRequest;
 use App\Http\Requests\UpdateserviceitemRequest;
+use Vinkla\Hashids\Facades\Hashids;
 
 class AdminServiceItemController extends Controller
 {
@@ -55,8 +56,15 @@ class AdminServiceItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AdminServiceItem $service_item)
+    public function edit( $hash_service_item)
     {
+        $id = Hashids::decode($hash_service_item)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $service_item = AdminServiceItem ::findOrFail($id);
         $data = [
             'service_item'=> $service_item,
         ];
@@ -67,9 +75,15 @@ class AdminServiceItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateserviceitemRequest $request, AdminServiceItem $service_item)
+    public function update(UpdateserviceitemRequest $request,  $hash_service_item)
     {
+        $id = Hashids::decode($hash_service_item)[0] ?? null;
 
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $service_item = AdminServiceItem ::findOrFail($id);
         $service_item->name = $request->name;
         $service_item->description = $request->description;
         $service_item->price = $request->price;
@@ -81,8 +95,15 @@ class AdminServiceItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AdminServiceItem $service_item)
+    public function destroy($hash_service_item)
     {
+        $id = Hashids::decode($hash_service_item)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $service_item = AdminServiceItem ::findOrFail($id);
         $service_item->delete();
 
         return redirect()->route('admins.service_items.index');

@@ -6,6 +6,7 @@ use App\Models\AdminServiceArea;
 use App\Http\Requests\StoreserviceareaRequest;
 use App\Http\Requests\UpdateserviceareaRequest;
 use Illuminate\Http\Request;
+use Vinkla\Hashids\Facades\Hashids;
 
 class AdminServiceAreaController extends Controller
 {
@@ -63,8 +64,15 @@ class AdminServiceAreaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AdminServiceArea $service_area)
+    public function edit($hash_service_area)
     {
+        $id = Hashids::decode($hash_service_area)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $service_area = AdminServiceArea ::findOrFail($id);
         $data = [
             'service_area'=> $service_area,
         ];
@@ -74,8 +82,16 @@ class AdminServiceAreaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AdminServiceArea $service_area)
+    public function update(Request $request, $hash_service_area)
     {
+        $id = Hashids::decode($hash_service_area)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $service_area = AdminServiceArea ::findOrFail($id);
+
         $request->validate([
             'major_area' => 'required|string',
             'minor_area' => 'required|string',
@@ -95,12 +111,15 @@ class AdminServiceAreaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AdminServiceArea $servicearea)
+    public function destroy($hash_service_area)
     {
-        $servicearea = AdminServiceArea::where('id', $servicearea->id)->first();
-        if ($servicearea) {
-            $servicearea->delete();
+        $id = Hashids::decode($hash_service_area)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
         }
+
+        $servicearea = AdminServiceArea ::findOrFail($id);
         $servicearea->delete();
         return redirect()->route('admins.service_areas.index');
     }

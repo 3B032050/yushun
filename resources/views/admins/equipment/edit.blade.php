@@ -19,7 +19,7 @@
                     <div class="card-header text-center">{{ __('編輯設備') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admins.equipment.update', $equipment->id) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('admins.equipment.update',['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
 
