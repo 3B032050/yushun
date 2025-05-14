@@ -147,7 +147,7 @@ class MastersAppointmentTimeController extends Controller
 
         $appointmentTime = AppointmentTime::findOrFail($id);
 
-        return view('masters.appointmenttime.edit', compact('appointmentTime', 'hash_appointmenttime'));
+        return view('masters.appointmenttime.edit', compact('appointmentTime', 'appointmenttime'));
     }
 
     /**

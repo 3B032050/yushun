@@ -130,7 +130,7 @@
                 @endif
 
                 {{-- 只有 "進行中" (status = 1) 時才顯示完成訂單按鈕 --}}
-                <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)] }}" class="btn btn-success w-100">完成訂單</a><br><br>
+                <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                 @endif
 
                 @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
