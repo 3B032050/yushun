@@ -8,6 +8,7 @@ use App\Http\Requests\StoreborrowingrecordRequest;
 use App\Http\Requests\UpdateborrowingrecordRequest;
 use App\Models\Equipment;
 use Illuminate\Support\Facades\Auth;
+use Vinkla\Hashids\Facades\Hashids;
 
 class BorrowingRecordController extends Controller
 {
@@ -22,10 +23,17 @@ class BorrowingRecordController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(AppointmentTime $appointmenttime)
+    public function create($hash_appointmenttime)
     {
         $equipments = Equipment::all();
+        $decoded = Hashids::decode($hash_appointmenttime);
+        $id = $decoded[0] ?? null;
 
+        if (!$id) {
+            abort(404);
+        }
+
+        $appointmenttime = AppointmentTime::findOrFail($id);
         $data = ['equipments' => $equipments];
 
         return view('masters.borrow_equipments.create',$data, compact('appointmenttime'));
@@ -34,10 +42,17 @@ class BorrowingRecordController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreborrowingrecordRequest $request,AppointmentTime $appointmenttime)
+    public function store(StoreborrowingrecordRequest $request,$hash_appointmenttime)
     {
         $masterId = Auth::guard('master')->id();
+        $decoded = Hashids::decode($hash_appointmenttime);
+        $id = $decoded[0] ?? null;
 
+        if (!$id) {
+            abort(404);
+        }
+
+        $appointmenttime = AppointmentTime::findOrFail($id);
         // 驗證請求資料（確保設備陣列正確）
         $validated = $request->validate([
             'equipment_ids' => 'required|array', // 多筆設備 ID

@@ -21,7 +21,7 @@
                     <div class="card-header text-center">{{ __('編輯個人資料') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('masters.personal_information.update',$master->id) }}">
+                        <form method="POST" action="{{ route('masters.personal_information.update', ['hashedMasterId' => $hashedMasterId]) }}">
                             @csrf
                             @method('PATCH')
 

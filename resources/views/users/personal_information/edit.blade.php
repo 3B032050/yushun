@@ -33,7 +33,7 @@
                             <div class="card-header">{{ __('編輯個人資料') }}</div>
 
                             <div class="card-body">
-                                <form method="POST" action="{{ route('users.personal_information.update', $user->id) }}">
+                                <form method="POST" action="{{ route('users.personal_information.update', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}">
                                     @csrf
                                     @method('PATCH')
 

@@ -118,7 +118,7 @@
 
                         start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
                         end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
-                        url: '{{ route('masters.appointmenttime.edit', $appointmenttime->id) }}',
+                        url: '{{ route('masters.appointmenttime.edit',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}',
 
                         color: {!! json_encode(
                             $appointmenttime->status == 1 ? "#28a745" :  // 綠色：已確認

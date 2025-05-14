@@ -10,6 +10,7 @@ use App\Http\Requests\UpdateMasterServiceAreaRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Vinkla\Hashids\Facades\Hashids;
 
 class MasterServiceAreaController extends Controller
 {
@@ -141,10 +142,17 @@ class MasterServiceAreaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(MasterServiceArea $masterServiceArea)
+    public function destroy($hashedId)
     {
         //dd($masterServiceArea);
         //先删除与 admin_master_area_relationship 的关系
+        $id = Hashids::decode($hashedId)[0] ?? null;
+
+        if (!$id) {
+            abort(404);
+        }
+
+        $masterServiceArea = MasterServiceArea::findOrFail($id);
             DB::table('admin_master_area_relationship')
                 ->where('master_service_area_id', $masterServiceArea->id)
                 ->delete();
