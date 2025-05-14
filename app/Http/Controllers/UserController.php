@@ -24,6 +24,7 @@ class UserController extends Controller
         $user = auth()->user();
         return view('users.personal_information.index', compact('user'));
     }
+
     public function edit($hash_user)
     {
         $id = Hashids::decode($hash_user)[0] ?? null;

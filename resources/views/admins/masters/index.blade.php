@@ -25,11 +25,12 @@
                 </tr>
                 <tr>
                     <th scope="col" style="text-align:center; width: 5%;">#</th>
-                    <th scope="col" style="text-align:center; width: 20%;">名稱</th>
-                    <th scope="col" style="text-align:center; width: 10%;">Email</th>
-                    <th scope="col" style="text-align:center; width: 30%;">電話</th>
-                    <th scope="col" style="text-align:center; width: 15%;">編輯</th>
-                    <th scope="col" style="text-align:center; width: 15%;">刪除</th>
+                    <th scope="col" style="text-align:center; width: 15%;">名稱</th>
+                    <th scope="col" style="text-align:center; width: 15%;">Email</th>
+                    <th scope="col" style="text-align:center; width: 15%;">電話</th>
+                    <th scope="col" style="text-align:center; width: 15%;">總工時</th>
+                    <th scope="col" style="text-align:center; width: 10%;">編輯</th>
+                    <th scope="col" style="text-align:center; width: 10%;">刪除</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,7 @@
                         <td class="align-middle" style="text-align:center">{{ $master->name}}</td>
                         <td class="align-middle" style="text-align:center">{{ $master->email}}</td>
                         <td class="align-middle" style="text-align:center">{{ $master->phone}}</td>
+                        <td class="align-middle" style="text-align:center">{{ number_format($master->total_hours, 1) }} 小時</td>
                         <td class="align-middle" style="text-align:center">
                             <a href="{{ route('admins.masters.edit', ['{hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                         </td>
