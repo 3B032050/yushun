@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Vinkla\Hashids\Facades\Hashids;
 
 class UserController extends Controller
 {
@@ -23,16 +24,31 @@ class UserController extends Controller
         $user = auth()->user();
         return view('users.personal_information.index', compact('user'));
     }
-    public function edit()
+
+    public function edit($hash_user)
     {
-        $user = Auth::user();
+        $id = Hashids::decode($hash_user)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+
+        $user = User::findOrFail($id);
 
         return view('users.personal_information.edit', ['user' => $user]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request,$hash_user)
     {
-        $user = Auth::user();
+        $id = Hashids::decode($hash_user)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+
+        $user = User::findOrFail($id);
 
 //        return Validator::make($data, [
 //            'name' => ['required', 'string', 'max:255'],

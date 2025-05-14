@@ -40,7 +40,7 @@
                                 <div class="mb-3"><strong>LINE ID：</strong> {{ $user->line_id }}</div>
 
                                 <div class="mt-4">
-                                    <a href="{{ route('users.personal_information.edit', $user->id) }}" class="btn btn-primary">
+                                    <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">
                                         編輯
                                     </a>
                                 </div>

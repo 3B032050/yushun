@@ -47,41 +47,41 @@ Route::group(['middleware' => 'master'], function() {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/index', [App\Http\Controllers\MasterPersonalInformationController::class, 'index'])->name("personal_information.index");
         Route::get('/personal_information/edit', [App\Http\Controllers\MasterPersonalInformationController::class, 'edit'])->name("personal_information.edit");
-        Route::patch('}/personal_information/update/{master}', [App\Http\Controllers\MasterPersonalInformationController::class, 'update'])->name('personal_information.update');
+        Route::patch('/personal_information/update/{hashedMasterId}', [App\Http\Controllers\MasterPersonalInformationController::class, 'update'])->name('personal_information.update');
 
         //可服務地區
         Route::get('/service_areas/testSession', [MasterServiceAreaController::class, 'testSession'])->name('service_areas.testSession');
         Route::get('/service_areas/index', [MasterServiceAreaController::class, 'index'])->name('service_areas.index');
         Route::get('/service_areas/create', [MasterServiceAreaController::class, 'create'])->name('service_areas.create');
         Route::post('/service_areas', [MasterServiceAreaController::class, 'store'])->name('service_areas.store');
-        Route::delete('/service_areas/{masterServiceArea}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
+       // Route::delete('/service_areas/{hashedId}/destroy', [MasterServiceAreaController::class, 'destroy'])->name("service_areas.destroy");
 
-        Route::get('/ervice_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
+        Route::get('/service_areas/create_item', [MasterServiceAreaController::class, 'create_item'])->name('service_areas.create_item');
         Route::post('/service_areas/storeServiceSelection', [MasterServiceAreaController::class, 'storeServiceSelection'])->name('service_areas.storeServiceSelection');
 
         //可預約時段
         Route::get('/appointmenttime/index', [\App\Http\Controllers\MastersAppointmentTimeController::class, 'index'])->name('appointmenttime.index');
         Route::get('/appointmenttime/create', [MastersAppointmentTimeController::class, 'create'])->name('appointmenttime.create');
         Route::post('/appointmenttime', [MastersAppointmentTimeController::class, 'store'])->name('appointmenttime.store');
-        Route::get('/appointmenttime/edit/{appointmenttime}', [App\Http\Controllers\MastersAppointmentTimeController::class, 'edit'])->name('appointmenttime.edit');
-        Route::patch('/appointmenttime/{appointmenttime}/update', [App\Http\Controllers\MastersAppointmentTimeController::class, 'update'])->name('appointmenttime.update');
-        Route::delete('/appointmenttime/{appointmenttime}/destroy', [MastersAppointmentTimeController::class, 'destroy'])->name("appointmenttime.destroy");
+        Route::get('/appointmenttime/edit/{hash_appointmenttime}', [App\Http\Controllers\MastersAppointmentTimeController::class, 'edit'])->name('appointmenttime.edit');
+        Route::patch('/appointmenttime/{hash_appointmenttime}/update', [App\Http\Controllers\MastersAppointmentTimeController::class, 'update'])->name('appointmenttime.update');
+        Route::delete('/appointmenttime/{hash_appointmenttime}/destroy', [MastersAppointmentTimeController::class, 'destroy'])->name("appointmenttime.destroy");
         Route::post('/appointmenttime/copy', [MastersAppointmentTimeController::class, 'copy'])->name('appointmenttime.copy');
 
         //租借制服
-        Route::get('/rent_uniforms/index', [\App\Http\Controllers\MasterRentUniformController::class, 'index'])->name('rent_uniforms.index');
-        Route::get('/rent_uniforms/create/{uniform}', [\App\Http\Controllers\MasterRentUniformController::class, 'create'])->name('rent_uniforms.create');
+//        Route::get('/rent_uniforms/index', [\App\Http\Controllers\MasterRentUniformController::class, 'index'])->name('rent_uniforms.index');
+//        Route::get('/rent_uniforms/create/{uniform}', [\App\Http\Controllers\MasterRentUniformController::class, 'create'])->name('rent_uniforms.create');
         Route::post('/rent_uniforms/store', [\App\Http\Controllers\MasterRentUniformController::class, 'store'])->name('rent_uniforms.store');
-        Route::get('/rent_uniforms/history', [\App\Http\Controllers\MasterRentUniformController::class, 'history'])->name('rent_uniforms.history');
-        Route::post('/rentals/{rental}/return', [\App\Http\Controllers\MasterRentUniformController::class, 'return'])->name('rent_uniforms.return');
+//        Route::get('/rent_uniforms/history', [\App\Http\Controllers\MasterRentUniformController::class, 'history'])->name('rent_uniforms.history');
+//        Route::post('/rentals/{rental}/return', [\App\Http\Controllers\MasterRentUniformController::class, 'return'])->name('rent_uniforms.return');
 
         //借用設備
-        Route::get('borrow_equipments/{appointmenttime}/create', [\App\Http\Controllers\BorrowingRecordController::class, 'create'])->name('borrow_equipments.create');
-        Route::post('borrow_equipments/{appointmenttime}', [\App\Http\Controllers\BorrowingRecordController::class, 'store'])->name('borrow_equipments.store');
+        Route::get('borrow_equipments/{hash_appointmenttime}/create', [\App\Http\Controllers\BorrowingRecordController::class, 'create'])->name('borrow_equipments.create');
+        Route::post('borrow_equipments/{hash_appointmenttime}', [\App\Http\Controllers\BorrowingRecordController::class, 'store'])->name('borrow_equipments.store');
 
-        Route::get('schedule_details/{appointmenttime}/create', [\App\Http\Controllers\ScheduleDetailController::class, 'create'])->name('schedule_details.create');
+        Route::get('schedule_details/{hash_appointmenttime}/create', [\App\Http\Controllers\ScheduleDetailController::class, 'create'])->name('schedule_details.create');
 
-        Route::post('schedule_details/{appointmenttime}/store', [\App\Http\Controllers\ScheduleDetailController::class, 'store'])->name('schedule_details.store');
+        Route::post('schedule_details/{hash_appointmenttime}/store', [\App\Http\Controllers\ScheduleDetailController::class, 'store'])->name('schedule_details.store');
     });
 
     Route::prefix('admins')->name('admins.')->group(function () {
@@ -147,8 +147,8 @@ Route::group(['middleware' => 'auth'], function() {
         Route::get('schedule/create', [App\Http\Controllers\ScheduleRecordController::class, 'create'])->name('schedule.create');
         Route::post('schedule/store', [App\Http\Controllers\ScheduleRecordController::class, 'store'])->name("schedule.store");
         Route::get('personal_information', [App\Http\Controllers\UserController::class, 'personal_index'])->name('personal_information.personal_index');
-        Route::get('personal_information/{user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('personal_information.edit');
-        Route::patch('personal_information/{user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('personal_information.update');
+        Route::get('personal_information/{hash_user}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name('personal_information.edit');
+        Route::patch('personal_information/{hash_user}/update', [App\Http\Controllers\UserController::class, 'update'])->name('personal_information.update');
         Route::post('schedule_details/review', [App\Http\Controllers\ScheduleDetailController::class, 'review'])->name('schedule_details.review');
     });
 });

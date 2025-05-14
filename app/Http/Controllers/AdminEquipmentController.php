@@ -25,13 +25,20 @@ class AdminEquipmentController extends Controller
 
     public function store(Request $request)
     {
+        // 驗證輸入
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'quantity' => 'required|integer|min:1',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
         $equipment = new Equipment;
 
         if ($request->hasFile('image_path')) {
             $image = $request->file('image_path');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            // 存储原始图片
+            // 存到 public/storage/equipments
             Storage::disk('equipments')->put($imageName, file_get_contents($image));
 
             $equipment->photo = $imageName;
@@ -41,7 +48,6 @@ class AdminEquipmentController extends Controller
         $equipment->quantity = $request->quantity;
         $equipment->save();
 
-        // 4. 返回設備列表，並顯示成功訊息
         return redirect()->route('admins.equipment.index')->with('success', '設備已成功新增');
     }
 

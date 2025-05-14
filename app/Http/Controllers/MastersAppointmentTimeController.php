@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Vinkla\Hashids\Facades\Hashids;
 
 class MastersAppointmentTimeController extends Controller
 {
@@ -136,21 +137,32 @@ class MastersAppointmentTimeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(AppointmentTime $appointmenttime)
+    public function edit($hash_appointmenttime)
     {
-//        $data = [
-//            'appointmenttime'=> $appointmenttime,
-//        ];
-//
-//        return view('masters.appointmenttime.edit',$data);
-        return view('masters.appointmenttime.edit', compact('appointmenttime'));
+        $id = Hashids::decode($hash_appointmenttime)[0] ?? null;
+
+        if (!$id) {
+            abort(404); // 無效 ID
+        }
+
+        $appointmentTime = AppointmentTime::findOrFail($id);
+
+        return view('masters.appointmenttime.edit', compact('appointmentTime', 'hash_appointmenttime'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, AppointmentTime $appointmenttime)
+    public function update(Request $request, $hash_appointmenttime)
     {
+        $decoded = Hashids::decode($hash_appointmenttime);
+        $id = $decoded[0] ?? null;
+
+        if (!$id) {
+            abort(404);
+        }
+
+        $appointmenttime = AppointmentTime::findOrFail($id);
         // 檢查按鈕提交的行為
         if ($request->has('action')) {
             if ($request->action == 'alter')
@@ -224,8 +236,16 @@ class MastersAppointmentTimeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AppointmentTime $appointmenttime)
+    public function destroy($hash_appointmenttime)
     {
+        $decoded = Hashids::decode($hash_appointmenttime);
+        $id = $decoded[0] ?? null;
+
+        if (!$id) {
+            abort(404);
+        }
+
+        $appointmenttime = AppointmentTime::findOrFail($id);
         $appointmenttime->delete();
 
         return redirect()->route('masters.appointmenttime.index')->with('success', '刪除成功');

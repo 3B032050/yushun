@@ -8,6 +8,7 @@ use App\Models\Master;
 use App\Models\RentUniform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Vinkla\Hashids\Facades\Hashids;
 
 class MasterPersonalInformationController extends Controller
 {
@@ -52,10 +53,10 @@ class MasterPersonalInformationController extends Controller
     public function edit()
     {
         $master = Auth::guard('master')->user();
-
+        $hashedMasterId = Hashids::encode($master->id);
         $rental = RentUniform::where('master_id', $master->id)->first();;
         $data = ['rental' => $rental,
-            'master' => $master];
+            'master' => $master,'hashedMasterId' => $hashedMasterId];
 
         return view('masters.personal_information.edit',$data);
     }
@@ -63,9 +64,15 @@ class MasterPersonalInformationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatemasterRequest $request, master $master)
+    public function update(UpdatemasterRequest $request,$hashedMasterId)
     {
-        $master = Auth::guard('master')->user();
+        $masterId = Hashids::decode($hashedMasterId)[0] ?? null;
+
+        if (!$masterId) {
+            abort(404);
+        }
+
+        $master = Master::findOrFail($masterId);
 
         $request->validate([
             'name' => 'required|string|max:255',

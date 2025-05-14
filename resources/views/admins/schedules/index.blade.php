@@ -44,6 +44,19 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="photoModal" tabindex="-1" aria-labelledby="photoModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">清潔照片</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+                    </div>
+                    <div class="modal-body text-center" id="photoModalBody">
+                        <!-- 圖片會透過 JS 填入 -->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 @push('styles')
@@ -73,22 +86,6 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                // events: function(fetchInfo, successCallback, failureCallback) {
-                //     let masterId = document.getElementById('master-select').value;
-                //
-                //     if (!masterId) {
-                //         successCallback([]);
-                //         return;
-                //     }
-                //
-                //     fetch(`/admins/schedules/getScheduleData?master_id=${masterId}`)
-                //         .then(response => response.json())
-                //         .then(data => successCallback(data))
-                //         .catch(error => {
-                //             console.error('Error fetching schedule data:', error);
-                //             failureCallback(error);
-                //         });
-                // },
                 events: function(fetchInfo, successCallback, failureCallback) {
                     let masterId = document.getElementById('master-select').value;
                     console.log('選擇的師傅 ID:', masterId); // debug 用
@@ -109,17 +106,6 @@
                             failureCallback(error);
                         });
                 },
-        //         eventContent: function(arg) {
-        //             return {
-        //                 html: `
-        //                     <div class="fc-event-content">
-        //                         <div><strong>客戶：</strong> ${arg.event.extendedProps.customer}</div>
-        //                         <div><strong>時段：</strong> ${arg.event.extendedProps.time ?? '未設定'}</div>
-        //                         <div><strong>狀態：</strong>${arg.event.extendedProps.description}</div>
-        //                     </div>
-        // `
-        //             };
-        //         },
                 eventContent: function(arg) {
                     const content = document.createElement('div');
                     content.innerHTML = `
@@ -148,6 +134,16 @@
                         `;
                     }
 
+                    let photoButton = "";
+                    if (info.event.extendedProps.before_photo || info.event.extendedProps.after_photo) {
+                        photoButton = `
+                        <hr>
+                        <button class="btn btn-outline-primary" onclick="showPhotos('${info.event.extendedProps.before_photo}', '${info.event.extendedProps.after_photo}')">
+                            查看清潔前後照片
+                        </button>
+                        `;
+                    }
+
                     document.getElementById('modal-body').innerHTML = `
                     <p><strong>預約日期：</strong> ${eventDate}</p>
                     <p><strong>預約時間：</strong> ${info.event.extendedProps.time}</p>
@@ -155,6 +151,7 @@
                     <p><strong>金額：</strong> ${info.event.extendedProps.price}</p>
                     <p><strong>狀態：</strong> ${info.event.extendedProps.description}</p>
                     ${reviewContent}
+                    ${photoButton}
                     `;
 
                     var myModal = new bootstrap.Modal(document.getElementById('eventDetailModal'));
@@ -163,13 +160,44 @@
             });
 
             calendar.render();
-            //
-            // document.getElementById('master-select').addEventListener('change', function() {
-            //     calendar.refetchEvents();
-            // });
             document.getElementById('master-select').addEventListener('change', function() {
                 calendar.refetchEvents();
             });
         });
+
+        function showPhotos(before, after) {
+            const baseUrl = "{{ asset('storage/schedule_photos') }}";
+            let content = '<div id="photo-viewer">';
+
+            if (before) {
+                content += `<img src="${baseUrl}/${before}" class="img-fluid mb-3" style="max-height: 300px;">`;
+            }
+            if (after) {
+                content += `<img src="${baseUrl}/${after}" class="img-fluid" style="max-height: 300px;">`;
+            }
+
+            content += '</div>';
+
+            document.getElementById('photoModalBody').innerHTML = content;
+
+            const modal = new bootstrap.Modal(document.getElementById('photoModal'));
+            modal.show();
+
+            // 啟用 Viewer.js
+            setTimeout(() => {
+                new Viewer(document.getElementById('photo-viewer'), {
+                    navbar: false,
+                    toolbar: true,
+                    movable: true,
+                    zoomable: true,
+                    scalable: false,
+                    fullscreen: false,
+                    title: false,
+                    transition: false
+                });
+            }, 300); // 等 modal 動畫跑完再初始化
+        }
+
+
     </script>
 @endpush

@@ -27,7 +27,7 @@
         <div class="d-flex justify-content-center align-items-start" style="min-height: 100vh; width: 100%;">
             <div class="w-100" style="max-width: 800px;">
             <!-- 更新時段表單 -->
-            <form method="POST" action="{{ route('masters.appointmenttime.update', $appointmenttime->id) }}" class="mb-3">
+            <form method="POST" action="{{ route('masters.appointmenttime.update', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="mb-3">
                 @csrf
                 @method('PATCH')
 
@@ -126,11 +126,11 @@
                         </div>
                     </div><br>
                 @else
-                    <a href="{{ route('masters.borrow_equipments.create', $appointmenttime->id) }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
+                    <a href="{{ route('masters.borrow_equipments.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-primary w-100 mb-2">借用設備</a><br><br>
                 @endif
 
                 {{-- 只有 "進行中" (status = 1) 時才顯示完成訂單按鈕 --}}
-                <a href="{{ route('masters.schedule_details.create', $appointmenttime->id) }}" class="btn btn-success w-100">完成訂單</a><br><br>
+                <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)] }}" class="btn btn-success w-100">完成訂單</a><br><br>
                 @endif
 
                 @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
@@ -149,11 +149,7 @@
                 @endif
             </form>
                 @if($appointmenttime->status == 0)  {{-- 只有在未接受的時段 (status = 0) 時才顯示刪除按鈕 --}}
-                <form action="{{ route('masters.appointmenttime.destroy', ['appointmenttime' => $appointmenttime->id]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger w-100" onclick="return confirm('確定要刪除這個時段嗎？')">刪除</button>
-                </form><br>
+                <form action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST"><br>
                 @endif
             </div>
         </div>
