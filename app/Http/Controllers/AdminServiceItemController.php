@@ -66,7 +66,7 @@ class AdminServiceItemController extends Controller
 
         $service_item = AdminServiceItem ::findOrFail($id);
         $data = [
-            'service_item'=> $service_item,
+            'item'=> $service_item,
         ];
 
         return view('admins.service_items.edit',$data);

@@ -74,7 +74,7 @@ class AdminServiceAreaController extends Controller
 
         $service_area = AdminServiceArea ::findOrFail($id);
         $data = [
-            'service_area'=> $service_area,
+            'area'=> $service_area,
         ];
         return view('admins.service_areas.edit',$data);
     }
