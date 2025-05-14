@@ -40,7 +40,7 @@
                         <td class="align-middle" style="text-align:center">{{ $master->name}}</td>
                         <td class="align-middle" style="text-align:center">{{ $master->email}}</td>
                         <td class="align-middle" style="text-align:center">{{ $master->phone}}</td>
-                        <td class="align-middle" style="text-align:center">{{ number_format($master->total_hours, 1) }} 小時</td>
+                        <td class="align-middle" style="text-align:center">{{ $master->total_hours }} 小時</td>
                         <td class="align-middle" style="text-align:center">
                             <a href="{{ route('admins.masters.edit', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                         </td>
