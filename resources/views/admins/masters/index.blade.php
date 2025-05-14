@@ -42,10 +42,10 @@
                         <td class="align-middle" style="text-align:center">{{ $master->phone}}</td>
                         <td class="align-middle" style="text-align:center">{{ number_format($master->total_hours, 1) }} 小時</td>
                         <td class="align-middle" style="text-align:center">
-                            <a href="{{ route('admins.masters.edit', ['{hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
+                            <a href="{{ route('admins.masters.edit', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                         </td>
                         <td class="align-middle" style="text-align:center">
-                            <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.masters.destroy', ['{hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST">
+                            <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST">
                                 @method('DELETE')
                                 @csrf
                                 <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $master->name }}', {{ $index + 1 }})">刪除</button>

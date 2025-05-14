@@ -20,7 +20,7 @@
                     <div class="card-header text-center">{{ __('編輯項目') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('admins.service_items.update', ['{hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" enctype="multipart/form-data">
+                        <form method="POST" action="{{ route('admins.service_items.update', ['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
 

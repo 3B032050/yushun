@@ -55,8 +55,8 @@
                                 @endif
                             </td>
                             <td>
-                                <a href="{{ route('admins.service_areas.edit', ['{hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" class="btn btn-warning btn-sm">編輯</a>
-                                <form action="{{ route('admins.service_areas.destroy', ['{hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" method="POST" style="display:inline;">
+                                <a href="{{ route('admins.service_areas.edit', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" class="btn btn-warning btn-sm">編輯</a>
+                                <form action="{{ route('admins.service_areas.destroy', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('確定要刪除這個項目嗎？')">刪除</button>
