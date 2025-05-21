@@ -204,7 +204,9 @@ class MastersAppointmentTimeController extends Controller
 
             } elseif ($request->action == 'reject') {
                 // 設置狀態為不成立
+                $user = $appointmenttime->user;
                 $appointmenttime->status = 3;
+                $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $user);
             }
             // 保存狀態更改
             $appointmenttime->save();
@@ -221,6 +223,7 @@ class MastersAppointmentTimeController extends Controller
             'master_name' => $master->name,
             'user_name' => $user->name,
             'service_date' => $appointmentTime->service_date,
+            'status'=>$appointmentTime->status,
             'appointment_time' => $appointmentTime->start_time . ' - ' . $appointmentTime->end_time,
             'service_address'=>$appointmentTime->service_address,
         ];
