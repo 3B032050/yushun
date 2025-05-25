@@ -23,32 +23,70 @@
                 </p>
             </div>
         </div>
+            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                <div class="text-size-controls">
+                    <button onclick="setFontSize('small')">小</button>
+                    <button onclick="setFontSize('medium')">中</button>
+                    <button onclick="setFontSize('large')">大</button>
+                </div>
+            </div>
 
-        <section id="location"><br>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header">{{ __('個人資料') }}</div>
+            <div id="content" class="medium">
+            <section id="location"><br>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-10 col-lg-8">
+                            <div class="card">
+                                <div class="card-header">{{ __('個人資料') }}</div>
 
-                            <div class="card-body">
-                                <div class="mb-3"><strong>姓名：</strong> {{ $user->name }}</div>
-                                <div class="mb-3"><strong>信箱：</strong> {{ $user->email }}</div>
-                                <div class="mb-3"><strong>手機號碼：</strong> {{ $user->mobile }}</div>
-                                <div class="mb-3"><strong>市話：</strong> {{ $user->phone }}</div>
-                                <div class="mb-3"><strong>地址：</strong> {{ $user->address }}</div>
-                                <div class="mb-3"><strong>LINE ID：</strong> {{ $user->line_id }}</div>
+                                <div class="card-body">
+                                    <div class="mb-3"><strong>姓名：</strong> {{ $user->name }}</div>
+                                    <div class="mb-3"><strong>信箱：</strong> {{ $user->email }}</div>
+                                    <div class="mb-3"><strong>手機號碼：</strong> {{ $user->mobile }}</div>
+                                    <div class="mb-3"><strong>市話：</strong> {{ $user->phone }}</div>
+                                    <div class="mb-3"><strong>地址：</strong> {{ $user->address }}</div>
+                                    <div class="mb-3"><strong>LINE ID：</strong> {{ $user->line_id }}</div>
 
-                                <div class="mt-4">
-                                    <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">
-                                        編輯
-                                    </a>
+                                    <div class="mt-4">
+                                        <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">
+                                            編輯
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
     </div>
 @endsection
+@push('styles')
+    <style>
+        #content.small { font-size: 14px; }
+        #content.medium { font-size: 22px; }
+        #content.large { font-size: 30px; }
+
+        .text-size-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .text-size-controls button {
+            margin-left: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+    </style>
+@endpush
+
+@push('scripts')
+    <script>
+        function setFontSize(size) {
+            const content = document.getElementById('content');
+            content.className = size;
+        }
+    </script>
+@endpush
