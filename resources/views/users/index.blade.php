@@ -19,6 +19,7 @@
                             <div><h3>個人資料</h3></div>
                         </a>
                     </div>
+                </div>
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-10 col-lg-8">
                         <a href="{{ route('users.schedule.index') }}" class="button-name w-100 text-decoration-none">
