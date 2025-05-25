@@ -415,6 +415,7 @@ class ScheduleRecordController extends Controller
             'master_name' => $master->name ?? '未知師傅',
             'user_name' => $user->name ?? '未知用戶',
             'service_date' => $request->service_date ?? '未指定日期',
+            'status'=>$appointmentTime->status,
             'appointment_time' => ($appointmentTime->start_time ?? '') . ' - ' . ($appointmentTime->end_time ?? ''),
             'service_address' => $request->address ?? '未提供地址',
         ];

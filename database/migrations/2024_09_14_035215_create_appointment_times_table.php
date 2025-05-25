@@ -25,7 +25,7 @@ return new class extends Migration
             $table->time('end_time')->nullable();
 
             // 如果 status 是狀態欄位，建議使用整數或枚舉類型
-            $table->tinyInteger('status')->default(0); // 0: 未確認, 1: 已確認, 2: 已完成
+            $table->tinyInteger('status')->default(0); // 0: 未確認, 1: 已確認, 2: 已完成 , 3: 未成立ˋ
 
             $table->timestamps();
         });
