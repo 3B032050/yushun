@@ -101,6 +101,12 @@
                     center: 'title',         // 顯示標題
                     right: 'dayGridMonth,timeGridWeek,timeGridDay' // 月視圖、周視圖、日視圖
                 },
+                buttonText: {
+                    today: '今日',
+                    month: '月',
+                    week: '週',
+                    day: '日'
+                },
                 events: [
                         @foreach($appointmenttimes as $index => $appointmenttime)
                     {

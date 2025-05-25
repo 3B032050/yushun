@@ -155,6 +155,12 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                buttonText: {
+                    today: '今日',
+                    month: '月',
+                    week: '週',
+                    day: '日'
+                },
                 events: [
                         @foreach($schedules as $schedule)
                     {
