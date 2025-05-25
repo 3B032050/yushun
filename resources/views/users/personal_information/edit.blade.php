@@ -30,7 +30,7 @@
                     <button onclick="setFontSize('medium')">中</button>
                     <button onclick="setFontSize('large')">大</button>
                 </div>
-            </div>\
+            </div>
             <div id="content" class="medium">
             <section id="location"><br>
                 <div class="container">
