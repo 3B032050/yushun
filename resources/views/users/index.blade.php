@@ -1,7 +1,5 @@
 @extends('users.layouts.master')
-
-@section('title', '')
-
+@section('title', '豫順家居')
 @section('content')
     <div class="content-wrapper">
         {{-- 字級按鈕：固定在右上角 --}}
@@ -12,6 +10,7 @@
         </div>
 
         <div class="container text-center my-5">
+
             <div id="content" class="medium">
                 <div class="row justify-content-center mb-4">
                     <div class="col-12 col-md-10 col-lg-8">
@@ -20,7 +19,6 @@
                             <div><h3>個人資料</h3></div>
                         </a>
                     </div>
-                </div>
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-10 col-lg-8">
                         <a href="{{ route('users.schedule.index') }}" class="button-name w-100 text-decoration-none">

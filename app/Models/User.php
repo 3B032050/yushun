@@ -19,6 +19,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'google_id',
+        'master_id',
         'name',
         'password',
         'email',
@@ -27,6 +28,11 @@ class User extends Authenticatable
         'address',
         'line_id',
     ];
+
+    public function master()
+    {
+        return $this->belongsTo(Master::class);
+    }
 
     public function appointmenttime()
     {

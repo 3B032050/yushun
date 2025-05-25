@@ -26,6 +26,11 @@ class Master extends Authenticatable // 修改這裡
         return true;
     }
 
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
     public function serviceAreas()
     {
         return $this->hasMany(MasterServiceArea::class, 'master_id');

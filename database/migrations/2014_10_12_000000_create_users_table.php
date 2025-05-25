@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('google_id')->nullable();
+            $table->unsignedBigInteger('master_id')->nullable(); // 客戶所屬的師傅
+//            $table->foreign('master_id')->references('id')->on('masters') ->onDelete('cascade');
             $table->string('name');
             $table->string('email')->unique();
             $table->string('phone')->nullable();
@@ -21,6 +23,8 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('address')->nullable();
             $table->string('line_id')->nullable();
+            $table->boolean('is_recurring')->default(false);
+            $table->integer('recurring_interval')->nullable(); // 存放間隔天數
 //            $table->timestamp('email_verified_at')->nullable();
 //            $table->string('password');
             $table->rememberToken();

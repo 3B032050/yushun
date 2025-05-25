@@ -1,6 +1,6 @@
 @extends('masters.layouts.master')
 
-@section('title', '豫順清潔')
+@section('title', '豫順家居')
 
 @section('content')
     <div class="content-wrapper">

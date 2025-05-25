@@ -1,7 +1,8 @@
 <div class="container-fluid bg-light text-black py-3 footer">
     <div class="row">
         <div class="col-lg-12 text-center">
-            <p>聯繫我們：example@example.com | 電話：123-456-7890</p>
+            <p>聯繫我們：豫順官網</p>
+            <p>電話：05-5881915</p>
             <p>&copy; 豫順清潔</p>
         </div>
     </div>
