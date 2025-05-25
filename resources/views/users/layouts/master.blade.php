@@ -38,7 +38,9 @@
 {{--        <div style="padding-left: 150px; background-color: #EEEDEC;" class="py-1">--}}
 {{--            @yield('page-path')--}}
 {{--        </div>--}}
-@yield('content')
+<div class="content-wrapper">
+    @yield('content')
+</div>
 @include('users.layouts.partials.footer')
 {{--        @include('layouts.partials.footer')--}}
 <!-- 引入 Flatpickr 样式 -->
