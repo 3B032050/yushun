@@ -1,5 +1,5 @@
 @extends('users.layouts.master')
-@section('title', '豫順家居')
+@section('title', '豫順家居媒合服務平台')
 @section('content')
     <div class="content-wrapper">
         <div class="row justify-content-center mb-4">

@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>@yield('title', '豫順清潔')</title>
+    <title>@yield('title', '豫順家居媒合服務平台')</title>
 
     <!-- 引入 CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">

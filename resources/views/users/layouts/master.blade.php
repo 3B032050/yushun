@@ -1,59 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
     <meta charset="utf-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title')</title>
+
+    {{-- 自訂樣式區塊 --}}
     @stack('styles')
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/favicon.ico')}}" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="{{asset('css/homepage-styles.css')}}" rel="stylesheet" />
 
+    {{-- Bootstrap & 標準 CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">
 
-    <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/main.min.css" rel="stylesheet">
-    <script src="{{ asset('js/index.global.min.js') }}"></script>
-    <script src="{{ asset('js/index.global.js') }}"></script>
-
-
-    <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
-    <script src="library/bootstrap-5/bootstrap.bundle.min.js"></script>
-    <script src="library/dselect.js"></script>
-
-    <!-- Google Fonts字型 -->
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-
+    {{-- 圖示字型 --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IcoFont/1.0.0/icofont.min.css">
 
+    {{-- Google Fonts --}}
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Great+Vibes&display=swap" rel="stylesheet">
+
+    {{-- Favicon --}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}">
+
 </head>
 <body>
+
+{{-- 導覽列 --}}
 @include('users.layouts.partials.navigation')
-{{--        <div style="padding-left: 150px; background-color: #EEEDEC;" class="py-1">--}}
-{{--            @yield('page-path')--}}
-{{--        </div>--}}
+
+{{-- 主要內容 --}}
 <div class="content-wrapper">
     @yield('content')
 </div>
+
+{{-- 頁尾 --}}
 @include('users.layouts.partials.footer')
-{{--        @include('layouts.partials.footer')--}}
-<!-- 引入 Flatpickr 样式 -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-<!-- 引入 Flatpickr JS -->
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+{{-- JS 套件 --}}
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- 引入 jQuery UI 库 -->
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+{{-- 自訂腳本區塊 --}}
+@stack('scripts')
 
 <style>
     a {
@@ -208,7 +197,6 @@
         vertical-align: middle; /* 垂直置中 */
         text-align: center;     /* 文字水平置中 */
     }
-    <style>
      #calendar {
          max-width: 100%;
          margin: 0 auto;
@@ -237,8 +225,5 @@
         background-color: #c82333;
     }
 </style>
-</style>
-
-@stack('scripts')
 </body>
 </html>

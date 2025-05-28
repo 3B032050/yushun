@@ -1,6 +1,6 @@
 @extends('masters.layouts.master')
 
-@section('title', '豫順清潔')
+@section('title', '豫順家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
@@ -43,7 +43,7 @@
                             <label class="form-check-label" for="egg_white_area">蛋白區</label>
                         </div>
                     </div>
-                    
+
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">新增地區</button>
                     </div>

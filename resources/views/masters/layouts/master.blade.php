@@ -1,66 +1,59 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>@yield('title')</title>
-        @stack('styles')
-        <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
-        <link rel="icon" type="image/x-icon" href="{{asset('assets/favicon.ico')}}" />
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <link href="{{asset('css/homepage-styles.css')}}" rel="stylesheet" />
+    <title>@yield('title')</title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.7/main.min.css" rel="stylesheet">
-        <script src="{{ asset('js/index.global.min.js') }}"></script>
-        <script src="{{ asset('js/index.global.js') }}"></script>
+    <!-- Font Awesome, IcoFont, Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IcoFont/1.0.0/icofont.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
+    <!-- ViewerJS 圖片縮放 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.css" />
 
-        <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
-        <script src="library/bootstrap-5/bootstrap.bundle.min.js"></script>
-        <script src="library/dselect.js"></script>
+    <!-- 其他樣式 -->
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">
 
-        <!-- Google Fonts字型 -->
-        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- 預留插入更多 CSS -->
+    @stack('styles')
+</head>
+<body>
+@include('masters.layouts.partials.navigation')
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IcoFont/1.0.0/icofont.min.css">
+<div class="content-wrapper">
+    @yield('content')
+</div>
 
-        <!--圖片縮放-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.css" integrity="sha512-QFxq9HoVrfCmeWIc9FVVGKDdY2SOqQ9Y1jHc8N/FgrZVfROi9tfrMGLVuzFu9KCTe4kmvy1ZrqluAV8b2nvARw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+@include('masters.layouts.partials.footer')
 
-    </head>
-    <body>
-        @include('masters.layouts.partials.navigation')
-{{--        <div style="padding-left: 150px; background-color: #EEEDEC;" class="py-1">--}}
-{{--            @yield('page-path')--}}
-{{--        </div>--}}
-        <div class="content-wrapper">
-            @yield('content')
-        </div>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-        @include('masters.layouts.partials.footer')
-{{--        @include('layouts.partials.footer')--}}
-        <!-- 引入 Flatpickr 样式 -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        <!-- 引入 Flatpickr JS -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<!-- jQuery UI -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-        <!-- 引入 jQuery UI 库 -->
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-        <!--圖片縮放-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.js" integrity="sha512-KIb+gt0hV3z0E4M8vCR4iIeqg3CPN8xVthEyDPOET04FtSTvFqbAX6DC5nRyS26KLMQyt+c6H9bcOklmBI5r9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- ViewerJS 圖片縮放 JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.js"></script>
+
+<!-- 預留插入更多 JS -->
+@stack('scripts')
 
         <style>
             a {
@@ -234,7 +227,5 @@
             }
 
         </style>
-
-        @stack('scripts')
     </body>
 </html>

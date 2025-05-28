@@ -39,15 +39,15 @@
                             <div class="card">
                                 <div class="card-header">{{ __('個人資料') }}</div>
 
-                                <div class="card-body">
-                                    <div class="mb-3"><strong>姓名：</strong> {{ $user->name }}</div>
-                                    <div class="mb-3"><strong>信箱：</strong> {{ $user->email }}</div>
-                                    <div class="mb-3"><strong>手機號碼：</strong> {{ $user->mobile }}</div>
-                                    <div class="mb-3"><strong>市話：</strong> {{ $user->phone }}</div>
-                                    <div class="mb-3"><strong>地址：</strong> {{ $user->address }}</div>
-                                    <div class="mb-3"><strong>LINE ID：</strong> {{ $user->line_id }}</div>
+                                <div class="card-body px-3 px-md-4">
+                                    <div class="mb-3 text-break"><strong>姓名：</strong> {{ $user->name }}</div>
+                                    <div class="mb-3 text-break"><strong>信箱：</strong> {{ $user->email }}</div>
+                                    <div class="mb-3 text-break"><strong>手機號碼：</strong> {{ $user->mobile }}</div>
+                                    <div class="mb-3 text-break"><strong>市話：</strong> {{ $user->phone }}</div>
+                                    <div class="mb-3 text-break"><strong>地址：</strong> {{ $user->address }}</div>
+                                    <div class="mb-3 text-break"><strong>LINE ID：</strong> {{ $user->line_id }}</div>
 
-                                    <div class="mt-4">
+                                    <div class="mb-3 text-break">
                                         <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">
                                             編輯
                                         </a>
@@ -86,7 +86,8 @@
     <script>
         function setFontSize(size) {
             const content = document.getElementById('content');
-            content.className = size;
+            content.classList.remove('small', 'medium', 'large');
+            content.classList.add(size);
         }
     </script>
 @endpush
