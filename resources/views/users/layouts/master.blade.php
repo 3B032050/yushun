@@ -197,10 +197,6 @@
         vertical-align: middle; /* 垂直置中 */
         text-align: center;     /* 文字水平置中 */
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> refs/remotes/origin/master
      #calendar {
          max-width: 100%;
          margin: 0 auto;
