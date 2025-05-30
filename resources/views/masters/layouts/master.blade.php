@@ -233,7 +233,43 @@
                 background-color: #f8f9fa; /* 可選，讓 hover 有明顯感 */
             }
 
+            html, body {
+                height: 100%;
+                margin: 0;
+            }
+            /* 控制字級的 class */
+            #content.small { font-size: 18px; }
+            #content.medium { font-size: 24px; }
+            #content.large { font-size: 30px; }
+
+            /* 字級按鈕排版 */
+            .text-size-controls {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            }
+
+            .text-size-controls button {
+                padding: 2px 8px;
+                font-size: 14px;
+            }
+
         </style>
+
+        @push('scripts')
+            <script>
+                function setFontSize(size) {
+                    const content = document.getElementById('content');
+                    content.className = size;
+                    localStorage.setItem('preferredFontSize', size);
+                }
+
+                document.addEventListener('DOMContentLoaded', () => {
+                    const savedSize = localStorage.getItem('preferredFontSize') || 'medium';
+                    document.getElementById('content').className = savedSize;
+                });
+            </script>
+        @endpush
 
         @stack('scripts')
     </body>

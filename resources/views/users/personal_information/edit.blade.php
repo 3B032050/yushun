@@ -16,23 +16,23 @@
         @endif
 
         <div class="container-fluid px-4">
-            <div style="margin-top: 10px;">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('users.personal_information.personal_index') }}" class="custom-link">個人資料</a> >
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <p class="fs-4 mb-0">
+                    <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
+                    <a href="{{ route('users.personal_information.personal_index') }}" class="custom-link">個人資料</a> &gt;
                     編輯
                 </p>
+
+                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
+                </div>
             </div>
         </div>
-            <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                <div class="text-size-controls">
-                    <button onclick="setFontSize('small')">小</button>
-                    <button onclick="setFontSize('medium')">中</button>
-                    <button onclick="setFontSize('large')">大</button>
-                </div>
-            </div>\
+
             <div id="content" class="medium">
-            <section id="location"><br>
+                <section id="location" class="text-content"><br>
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
@@ -126,32 +126,3 @@
         </div>
     </div>
 @endsection
-@push('styles')
-    <style>
-        #content.small { font-size: 14px; }
-        #content.medium { font-size: 22px; }
-        #content.large { font-size: 30px; }
-
-        .text-size-controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 999;
-        }
-
-        .text-size-controls button {
-            margin-left: 5px;
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-    </style>
-@endpush
-
-@push('scripts')
-    <script>
-        function setFontSize(size) {
-            const content = document.getElementById('content');
-            content.className = size;
-        }
-    </script>
-@endpush

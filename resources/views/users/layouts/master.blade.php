@@ -208,7 +208,7 @@
         vertical-align: middle; /* 垂直置中 */
         text-align: center;     /* 文字水平置中 */
     }
-    <style>
+
      #calendar {
          max-width: 100%;
          margin: 0 auto;
@@ -236,8 +236,42 @@
     .fc-event-delete:hover {
         background-color: #c82333;
     }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+    /* 控制字級的 class */
+    #content.small { font-size: 14px; }
+    #content.medium { font-size: 18px; }
+    #content.large { font-size: 24px; }
+
+    /* 字級按鈕排版 */
+    .text-size-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .text-size-controls button {
+        padding: 2px 8px;
+        font-size: 14px;
+    }
 </style>
-</style>
+@push('scripts')
+    <script>
+        function setFontSize(size) {
+            const content = document.getElementById('content');
+            content.className = size;
+            localStorage.setItem('preferredFontSize', size);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedSize = localStorage.getItem('preferredFontSize') || 'medium';
+            document.getElementById('content').className = savedSize;
+        });
+    </script>
+@endpush
 
 @stack('scripts')
 </body>
