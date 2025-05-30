@@ -60,8 +60,6 @@
         </div>
     </div>
 @endsection
-<<<<<<< HEAD
-=======
 @push('styles')
     <style>
         #content.small { font-size: 14px; }
@@ -92,4 +90,3 @@
         }
     </script>
 @endpush
->>>>>>> refs/remotes/origin/master
