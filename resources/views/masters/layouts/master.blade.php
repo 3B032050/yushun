@@ -19,8 +19,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.css" />
 
     <!-- 其他樣式 -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">
+{{--    <link rel="stylesheet" href="{{ asset('css/style.css') }}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">--}}
 
     <!-- 預留插入更多 CSS -->
     @stack('styles')

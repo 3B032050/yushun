@@ -9,12 +9,14 @@
     <title>@yield('title', '豫順家居媒合服務平台')</title>
 
     <!-- 引入 CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">
+{{--    <link rel="stylesheet" href="{{ asset('css/style.css') }}">--}}
+{{--    <link rel="stylesheet" href="{{ asset('css/homepage-styles.css') }}">--}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/IcoFont/1.0.0/icofont.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dselect@latest/dist/dselect.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
@@ -25,19 +27,6 @@
             color: black;
             text-decoration: none;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         .button-name {
             align-items: center;
@@ -66,25 +55,6 @@
         .button-name i {
             margin-bottom: 10px;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         .button-name:hover {
             box-shadow:
@@ -117,6 +87,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="{{ asset('library/dselect.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/dselect@latest/dist/dselect.js"></script>
+
 </body>
 </html>
