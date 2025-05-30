@@ -39,21 +39,21 @@
                         <div class="card-body">
                             <!-- 基本資料 -->
                             <div class="row mb-3">
-                                <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名 / Name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名') }}</label>
                                 <div class="col-md-6">
                                     <input id="name" type="text" class="form-control" value="{{ $master->name }}" readonly>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱 / Email') }}</label>
+                                <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱') }}</label>
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" value="{{ $master->email }}" readonly>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="phone" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('電話 / Phone') }}</label>
+                                <label for="phone" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('電話') }}</label>
                                 <div class="col-md-6">
                                     <input id="phone" type="text" class="form-control" value="{{ $master->phone }}" readonly>
                                 </div>
@@ -70,7 +70,7 @@
                             <hr>
 
                             <div class="row mb-3">
-                                <label class="col-md-4 col-form-label text-md-end">{{ __('累積總工時 / Total Hours') }}</label>
+                                <label class="col-md-4 col-form-label text-md-end">{{ __('累積總工時') }}</label>
                                 <div class="col-md-6 pt-2">
                                     <div class="form-control-plaintext">{{ $master->total_hours }} 小時</div>
                                 </div>

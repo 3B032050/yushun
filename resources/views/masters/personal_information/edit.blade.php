@@ -32,7 +32,7 @@
                                 @method('PATCH')
 
                                 <div class="row mb-3">
-                                    <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名 / Name') }}</label>
+                                    <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名') }}</label>
                                     <div class="col-md-6">
                                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ $master->name }}" required placeholder="必填" autofocus>
                                         @error('name')
@@ -42,7 +42,7 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱 / Email') }}</label>
+                                    <label for="email" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('信箱') }}</label>
                                     <div class="col-md-6">
                                         <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ $master->email }}" required placeholder="必填">
                                         @error('email')
@@ -52,7 +52,7 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <label for="phone" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('電話 / Phone') }}</label>
+                                    <label for="phone" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('電話') }}</label>
                                     <div class="col-md-6">
                                         <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ $master->phone }}" required placeholder="必填">
                                         @error('phone')
