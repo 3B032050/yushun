@@ -30,7 +30,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('手機號碼 / Mobile Phone number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="text" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" required autocomplete="password" autofocus>
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" value="{{ old('password') }}" required autocomplete="password" autofocus>
 
                                 @error('手機號碼 / Mobile Phone number')
                                 <span class="invalid-feedback" role="alert">

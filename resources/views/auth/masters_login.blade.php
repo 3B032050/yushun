@@ -30,7 +30,7 @@
                             <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('電話號碼/Phone number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                <input id="phone" type="password" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
 
                                 @error('手機號碼/ Mobile Phone number')
                                 <span class="invalid-feedback" role="alert">
