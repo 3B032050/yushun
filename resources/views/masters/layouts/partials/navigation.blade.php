@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-custom">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="{{ route('masters.index') }}">
-            <p style="font-size: 35px; font-weight: bold;">豫順家居服務媒合平台</p>
+            <span class="navbar-brand-text fw-bold">豫順家居服務媒合平台</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -78,8 +78,21 @@
         background-color: #EEEDEC;
     }
     .navbar {
-        height: 80px;
+        padding: 0.5rem 1rem;
         border-bottom: 2px solid #b4b6b6;
+    }
+    .navbar-brand-text {
+        font-size: 20px;
+    }
+    @media (min-width: 992px) {
+        .navbar-brand span {
+            font-size: 35px;
+        }
+    }
+    @media (max-width: 991px) {
+        .navbar-brand span {
+            font-size: 20px;
+        }
     }
 </style>
 

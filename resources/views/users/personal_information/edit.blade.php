@@ -30,7 +30,6 @@
                 </div>
             </div>
         </div>
-
             <div id="content" class="medium">
                 <section id="location" class="text-content"><br>
                 <div class="container">
