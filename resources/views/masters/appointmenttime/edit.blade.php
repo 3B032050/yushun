@@ -50,12 +50,12 @@
                     @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
                     <div class="form-group mb-3">
                         <label for="start_time">開始時間</label>
-                        <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1"  required>
+                        <input type="text" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1"  required>
                     </div>
 
                     <div class="form-group mb-3">
                         <label for="end_time">結束時間</label>
-                        <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1"  required>
+                        <input type="text" id="end_time" name="end_time" value="{{ old('end_time', $appointmenttime->end_time) }}" class="form-control" step="1"  required>
                     </div>
                     @else
                         <div class="form-group mb-3">
@@ -167,7 +167,27 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            flatpickr("#start_time", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                minuteIncrement: 30,
+                disableMobile: true
+            });
 
+            flatpickr("#end_time", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                minuteIncrement: 30,
+                disableMobile: true
+            });
+        </script>
+    @endpush
 @endsection
 <style>
     .breadcrumb-path {

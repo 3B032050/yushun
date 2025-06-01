@@ -22,7 +22,7 @@
                     個人資料
                 </p>
 
-                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
+                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字程調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
@@ -37,6 +37,14 @@
                         <div class="card-header text-center">{{ __('個人資料') }}</div>
 
                         <div class="card-body">
+                            <script>
+                                function setFontSize(size) {
+                                    const content = document.getElementById('content');
+                                    content.className = size;
+                                }
+                            </script>
+
+                            <!-- Existing content continues here -->
                             <!-- 基本資料 -->
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end"><span class="required"></span>{{ __('姓名') }}</label>
@@ -83,22 +91,34 @@
                                     @csrf
                                     <div class="form-group mb-3 text-center"><strong>{{ __('請選擇制服尺寸和數量') }}</strong></div>
 
-                                    <label for="size">尺寸</label>
-                                    <select name="size" id="size" class="form-control">
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                        <option value="XXL">XXL</option>
-                                    </select>
-
-                                    <div class="form-group mb-3 mt-2">
-                                        <label for="quantity">數量</label>
-                                        <input type="number" name="quantity" id="quantity" class="form-control" min="1" placeholder="請輸入數量">
+                                    <div class="row mb-3">
+                                        <label for="size" class="col-md-4 col-form-label text-md-end">
+                                            <span class="required">*</span>{{ __('尺寸') }}
+                                        </label>
+                                        <div class="col-md-6">
+                                            <select name="size" id="size" class="form-select" required>
+                                                <option value="S">S</option>
+                                                <option value="M">M</option>
+                                                <option value="L">L</option>
+                                                <option value="XL">XL</option>
+                                                <option value="XXL">XXL</option>
+                                            </select>
+                                        </div>
                                     </div>
 
-                                    <div class="form-group text-center">
-                                        <button type="submit" class="btn btn-primary">確認</button>
+                                    <div class="row mb-3">
+                                        <label for="quantity" class="col-md-4 col-form-label text-md-end">
+                                            <span class="required">*</span>{{ __('數量') }}
+                                        </label>
+                                        <div class="col-md-6">
+                                            <input type="number" name="quantity" id="quantity" class="form-control" min="1" placeholder="請輸入數量" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-0">
+                                        <div class="col-md-8 offset-md-4">
+                                            <button type="submit" class="btn btn-primary">確認</button>
+                                        </div>
                                     </div>
                                 </form>
                             @else
@@ -133,21 +153,4 @@
             </div>
         </div>
     </div>
-
-    <style>
-        .required {
-            color: red;
-            margin-left: 5px;
-            font-weight: bold;
-        }
-        .card {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .content-wrapper {
-            min-height: calc(100vh - 60px);
-        }
-    </style>
 @endsection
-

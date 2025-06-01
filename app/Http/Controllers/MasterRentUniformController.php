@@ -53,7 +53,7 @@ class MasterRentUniformController extends Controller
             'quantity' => $request->input('quantity'),
         ]);
 
-        return redirect()->route('masters.personal_information.edit');
+        return redirect()->route('masters.personal_information.index');
     }
 
 

@@ -30,9 +30,7 @@
 @include('users.layouts.partials.navigation')
 
 {{-- 主要內容 --}}
-<div class="content-wrapper">
-    @yield('content')
-</div>
+@yield('content')
 
 {{-- 頁尾 --}}
 @include('users.layouts.partials.footer')
@@ -230,9 +228,35 @@
         margin: 0;
     }
     /* 控制字級的 class */
-    #content.small { font-size: 14px; }
-    #content.medium { font-size: 18px; }
-    #content.large { font-size: 24px; }
+    #content.small {
+        font-size: 0.8rem;
+    }
+
+    #content.medium {
+        font-size: 1rem;
+    }
+
+    #content.large {
+        font-size: 1.25rem;
+    }
+
+    #content.small input,
+    #content.small select,
+    #content.small textarea,
+    #content.small label {
+        font-size: 0.8rem;
+    }
+    #content.medium input,
+    #content.medium select,
+    #content.medium textarea,
+    #content.medium label {
+        font-size: 1rem;
+    }
+    #content.large input,
+    #content.large select,
+    #content.large textarea,
+    #content.large label {
+        font-size: 1.2rem;
 
     /* 字級按鈕排版 */
     .text-size-controls {

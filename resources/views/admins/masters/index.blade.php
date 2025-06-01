@@ -66,6 +66,20 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function confirmDelete(name, id) {
+            if (confirm('確定要刪除師傅 ' + name + ' 嗎？')) {
+                document.getElementById('deleteForm' + id).submit();
+            }
+        }
+
+        function setFontSize(size) {
+            const content = document.getElementById('content');
+            content.classList.remove('small', 'medium', 'large');
+            content.classList.add(size);
+        }
+    </script>
 @endsection
 
 <style>

@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <!-- ViewerJS 圖片縮放 CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.css" />
 
@@ -51,6 +53,8 @@
 
 <!-- ViewerJS 圖片縮放 JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- 預留插入更多 JS -->
 @stack('scripts')
@@ -230,10 +234,25 @@
                 height: 100%;
                 margin: 0;
             }
+
             /* 控制字級的 class */
-            #content.small { font-size: 18px; }
-            #content.medium { font-size: 24px; }
-            #content.large { font-size: 30px; }
+            #content.small input,
+            #content.small select,
+            #content.small textarea,
+            #content.small label {
+                font-size: 0.8rem;
+            }
+            #content.medium input,
+            #content.medium select,
+            #content.medium textarea,
+            #content.medium label {
+                font-size: 1rem;
+            }
+            #content.large input,
+            #content.large select,
+            #content.large textarea,
+            #content.large label {
+                font-size: 1.2rem;
 
             /* 字級按鈕排版 */
             .text-size-controls {
@@ -246,7 +265,24 @@
                 padding: 2px 8px;
                 font-size: 14px;
             }
+        </style>
+        <style>
+            #content.small {
+                font-size: 0.8rem;
+            }
 
+            #content.medium {
+                font-size: 1rem;
+            }
+
+            #content.large {
+                font-size: 1.25rem;
+            }
+
+            #content .table th,
+            #content .table td {
+                font-size: inherit;
+            }
         </style>
         @push('scripts')
             <script>

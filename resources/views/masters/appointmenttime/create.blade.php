@@ -85,6 +85,51 @@
                 locale: "zh_tw"
             });
         </script>
+        <script>
+            flatpickr("#start_time", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                minuteIncrement: 30,
+                defaultDate: "00:00",
+                disableMobile: true,
+                onClose: function(selectedDates, dateStr, instance) {
+                    let minutes = parseInt(dateStr.split(":")[1]);
+                    if (minutes !== 0 && minutes !== 30) {
+                        let correctedMinutes = minutes < 15 ? '00' : '30';
+                        let hours = dateStr.split(":")[0];
+                        instance.setDate(`${hours}:${correctedMinutes}`, true);
+                    }
+                }
+            });
+
+            flatpickr("#end_time", {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                minuteIncrement: 30,
+                defaultDate: "02:00",
+                disableMobile: true,
+                onClose: function(selectedDates, dateStr, instance) {
+                    let minutes = parseInt(dateStr.split(":")[1]);
+                    if (minutes !== 0 && minutes !== 30) {
+                        let correctedMinutes = minutes < 15 ? '00' : '30';
+                        let hours = dateStr.split(":")[0];
+                        instance.setDate(`${hours}:${correctedMinutes}`, true);
+                    }
+                }
+            });
+        </script>
+
+        <style>
+            input.flatpickr-input {
+                background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="gray" class="bi bi-clock" viewBox="0 0 16 16"><path d="M8 3.5a.5.5 0 0 1 .5.5v4l2.5 1.5a.5.5 0 0 1-.5.866L8 8.707V4a.5.5 0 0 1 .5-.5z"/><path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm0-1A7 7 0 1 0 8 1a7 7 0 0 0 0 14z"/></svg>') no-repeat right 10px center;
+                background-size: 20px;
+                padding-right: 2.5rem;
+            }
+        </style>
     @endpush
 @endsection
 
