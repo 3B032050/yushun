@@ -15,6 +15,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
     <!-- ViewerJS 圖片縮放 CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.css" />
 
@@ -51,6 +53,8 @@
 
 <!-- ViewerJS 圖片縮放 JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.5/viewer.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- 預留插入更多 JS -->
 @stack('scripts')
