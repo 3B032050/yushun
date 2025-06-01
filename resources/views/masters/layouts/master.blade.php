@@ -230,10 +230,25 @@
                 height: 100%;
                 margin: 0;
             }
+
             /* 控制字級的 class */
-            #content.small { font-size: 18px; }
-            #content.medium { font-size: 24px; }
-            #content.large { font-size: 30px; }
+            #content.small input,
+            #content.small select,
+            #content.small textarea,
+            #content.small label {
+                font-size: 0.8rem;
+            }
+            #content.medium input,
+            #content.medium select,
+            #content.medium textarea,
+            #content.medium label {
+                font-size: 1rem;
+            }
+            #content.large input,
+            #content.large select,
+            #content.large textarea,
+            #content.large label {
+                font-size: 1.2rem;
 
             /* 字級按鈕排版 */
             .text-size-controls {
@@ -246,7 +261,24 @@
                 padding: 2px 8px;
                 font-size: 14px;
             }
+        </style>
+        <style>
+            #content.small {
+                font-size: 0.8rem;
+            }
 
+            #content.medium {
+                font-size: 1rem;
+            }
+
+            #content.large {
+                font-size: 1.25rem;
+            }
+
+            #content .table th,
+            #content .table td {
+                font-size: inherit;
+            }
         </style>
         @push('scripts')
             <script>

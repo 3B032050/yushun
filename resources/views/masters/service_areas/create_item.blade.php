@@ -28,22 +28,23 @@
 
         <div id="content" class="medium">
             <div class="row justify-content-center mt-3">
-                <div class="col-md-8 col-12">
+                <div class="col-md-6 col-12"> <!-- 調整卡片寬度：從 col-md-8 改為 col-md-6 -->
                     <div class="card">
-                        <div class="card-header text-center">{{ __('選擇服務項目') }}</div>
+                        <div class="card-header text-center d-flex justify-content-between align-items-center">
+                            <strong>{{ __('選擇服務項目') }}</strong>
+                        </div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('masters.service_areas.storeServiceSelection') }}" enctype="multipart/form-data">
                                 @csrf
 
                                 @foreach ($serviceItems as $item)
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="p-3 border rounded bg-light">
-                                                <input id="item_{{ $item->id }}" type="radio" name="service_item_id" value="{{ $item->id }}" class="form-check-input custom-radio">
-                                                <label for="item_{{ $item->id }}" class="form-check-label fw-bold"><h4>{{ $item->name }}</h4></label>
-                                                <br>
-                                                <label for="item_{{ $item->id }}" class="text-muted small">({{ $item->description }})</label>
+                                    <div class="mb-3">
+                                        <div class="p-3 border rounded bg-light d-flex align-items-start">
+                                            <input id="item_{{ $item->id }}" type="radio" name="service_item_id" value="{{ $item->id }}" class="form-check-input custom-radio mt-1 me-2">
+                                            <div>
+                                                <label for="item_{{ $item->id }}" class="form-check-label fw-bold d-block">{{ $item->name }}</label>
+                                                <small class="text-muted">({{ $item->description }})</small>
                                             </div>
                                         </div>
                                     </div>
@@ -51,7 +52,7 @@
 
                                 <div class="row mb-0">
                                     <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-primary w-50">
+                                        <button type="submit" class="btn btn-primary w-100">
                                             {{ __('確認') }}
                                         </button>
                                     </div>

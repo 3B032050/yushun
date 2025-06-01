@@ -1,6 +1,6 @@
 @extends('masters.layouts.master')
 
-@section('title', '新增設備')
+@section('title', '新增服務項目')
 
 @section('content')
     <div class="content-wrapper">
@@ -23,7 +23,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('新增設備') }}</div>
+                        <div class="card-header">{{ __('新增服務項目') }}</div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('admins.service_items.store') }}" enctype="multipart/form-data">

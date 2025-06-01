@@ -1,6 +1,6 @@
 @extends('masters.layouts.master')
 
-@section('title', '編輯項目')
+@section('title', '編輯服務項目')
 
 @section('content')
     <div class="content-wrapper">
