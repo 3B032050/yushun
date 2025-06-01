@@ -20,12 +20,12 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('users.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('users.personal_information.index') }}"> 個人資料</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('users.personal_information.personal_index') }}"> 個人資料</a></li>
                     </ol>
                 </nav>
 
                 {{-- 字體大小控制按鈕 --}}
-                <div class="text-size-controls">
+                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>

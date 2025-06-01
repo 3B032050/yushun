@@ -13,7 +13,7 @@
                         <li class="breadcrumb-item active" aria-current="page"> 編輯師傅</li>
                     </ol>
                 </nav>
-                <div class="text-size-controls btn-group btn-group-sm" role="group">
+                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>

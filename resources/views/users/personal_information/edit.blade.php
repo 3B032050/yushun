@@ -20,7 +20,7 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('users.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('users.schedule.index') }}"> 預約時段</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('users.personal_information.personal_index') }}"> 個人資料</a></li>
                         <li class="breadcrumb-item active" aria-current="page"> 編輯個人資料</li>
                     </ol>
                 </nav>
