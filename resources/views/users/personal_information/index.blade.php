@@ -1,6 +1,6 @@
 @extends('users.layouts.master')
 
-@section('title','個人資料')
+@section('title','豫順家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
@@ -17,10 +17,12 @@
 
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    個人資料
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('users.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('users.personal_information.index') }}"> 個人資料</a></li>
+                    </ol>
+                </nav>
 
                 {{-- 字體大小控制按鈕 --}}
                 <div class="text-size-controls">
@@ -59,3 +61,29 @@
         </div>
     </div>
 @endsection
+<style>
+    .breadcrumb-path {
+        font-size: 1.4em;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    @media (max-width: 768px) {
+        .breadcrumb-path {
+            font-size: 1.3em;
+        }
+        .text-size-controls {
+            margin-top: 0.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .breadcrumb-path {
+            font-size: 1.1em;
+        }
+        .d-flex.flex-column.flex-md-row > .btn-group {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>

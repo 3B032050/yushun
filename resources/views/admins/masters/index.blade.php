@@ -1,15 +1,17 @@
 @extends('masters.layouts.master')
 
-@section('title', '師傅管理')
+@section('title', '豫順家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                    師傅管理
-                </p>
+            <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.masters.index') }}">師傅管理</a></li>
+                    </ol>
+                </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
@@ -21,8 +23,8 @@
 
         <div id="content" class="medium">
             <div class="table-responsive d-flex justify-content-center">
-                <table class="table" style="width: 80%;" id="sortable-list">
-                    <thead>
+                <table class="table table-bordered table-hover" id="sortable-list" style="min-width: 700px;">
+                    <thead class="table-light">
                     <tr>
                         <td colspan="6"></td>
                         <td class="text-center">
@@ -65,3 +67,61 @@
         </div>
     </div>
 @endsection
+
+<style>
+    /* 麵包屑響應式字級與換行 */
+    .breadcrumb-path {
+        font-size: 1.4em;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    /* 表格與字級響應式 */
+    #sortable-list {
+        /* 保持一定最小寬度，手機滑動 */
+        min-width: 700px;
+    }
+
+    #sortable-list th, #sortable-list td {
+        vertical-align: middle;
+    }
+
+    /* 手機小螢幕字級調整 */
+    @media (max-width: 768px) {
+        .breadcrumb-path {
+            font-size: 1.2em;
+        }
+        #sortable-list {
+            min-width: 600px;
+        }
+        #sortable-list th, #sortable-list td {
+            font-size: 0.9em;
+        }
+        .text-size-controls .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.85em;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .breadcrumb-path {
+            font-size: 1em;
+        }
+        #sortable-list {
+            min-width: 500px;
+        }
+        #sortable-list th, #sortable-list td {
+            font-size: 0.8em;
+        }
+        /* 手機版字級按鈕組寬度縮小 */
+        .text-size-controls .btn {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.75em;
+        }
+    }
+
+    /* 按鈕微調 */
+    .btn-sm {
+        line-height: 1.2;
+    }
+</style>

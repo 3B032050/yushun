@@ -1,6 +1,6 @@
 @extends('users.layouts.master')
 
-@section('title','編輯個人資料')
+@section('title','豫順家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
@@ -17,11 +17,13 @@
 
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('users.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                    <a href="{{ route('users.personal_information.personal_index') }}" class="custom-link">個人資料</a> &gt;
-                    編輯
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('users.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('users.schedule.index') }}"> 預約時段</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"> 編輯個人資料</li>
+                    </ol>
+                </nav>
 
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
@@ -114,3 +116,29 @@
         </div>
     </div>
 @endsection
+<style>
+    .breadcrumb-path {
+        font-size: 1.4em;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    @media (max-width: 768px) {
+        .breadcrumb-path {
+            font-size: 1.3em;
+        }
+        .text-size-controls {
+            margin-top: 0.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .breadcrumb-path {
+            font-size: 1.1em;
+        }
+        .d-flex.flex-column.flex-md-row > .btn-group {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>

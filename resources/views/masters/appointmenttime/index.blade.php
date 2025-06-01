@@ -17,10 +17,16 @@
 
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                    可預約時段
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.appointmenttime.index') }}">可預約時段</a>
+                        </li>
+                    </ol>
+                </nav>
             </div>
         </div>
 
@@ -75,6 +81,32 @@
 @endsection
     @push('styles')
         <style>
+            .breadcrumb-path {
+                font-size: 1.4em;
+                white-space: normal;
+                word-break: break-word;
+            }
+
+            @media (max-width: 768px) {
+                .breadcrumb-path {
+                    font-size: 1.3em;
+                }
+
+                .text-size-controls {
+                    margin-top: 0.5rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .breadcrumb-path {
+                    font-size: 1.1em;
+                }
+
+                .text-size-controls {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
             #calendar {
                 max-width: 100%;
                 margin: 0 auto;

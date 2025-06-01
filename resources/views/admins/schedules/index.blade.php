@@ -6,10 +6,12 @@
     <div class="content-wrapper">
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    查看師傅排程
-                </p>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-path">
+                        <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.schedules.index') }}">排程管理</a></li>
+                    </ol>
+                </nav>
             </div>
             <h1 class="mt-4 text-center">查看師傅排程</h1>
         </div>
@@ -222,3 +224,22 @@
 
     </script>
 @endpush
+<style>
+    .breadcrumb-path {
+        font-size: 1.4em;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    @media (max-width: 768px) {
+        .breadcrumb-path {
+            font-size: 1.4em;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .breadcrumb-path {
+            font-size: 1.2em;
+        }
+    }
+</style>

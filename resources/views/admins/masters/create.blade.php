@@ -1,25 +1,27 @@
 @extends('masters.layouts.master')
 
-@section('title', '新增師傅')
+@section('title', '豫順家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center" style="margin-top: 10px;">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('admins.masters.index') }}" class="custom-link">師傅管理</a> >
-                    新增師傅
-                </p>
-                <div class="text-size-controls">
-                    <button onclick="setFontSize('small')" class="btn btn-outline-secondary btn-sm">小</button>
-                    <button onclick="setFontSize('medium')" class="btn btn-outline-secondary btn-sm">中</button>
-                    <button onclick="setFontSize('large')" class="btn btn-outline-secondary btn-sm">大</button>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path">
+                        <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.masters.index') }}">師傅管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">新增師傅</li>
+                    </ol>
+                </nav>
+                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
         </div>
 
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-3">
             <div class="col-md-8">
                 <div class="card" id="content">
                     <div class="card-header text-center">{{ __('師傅管理') }}</div>
@@ -27,20 +29,18 @@
                     <div class="card-body text-content">
                         <form method="POST" action="{{ route('admins.masters.store') }}" enctype="multipart/form-data">
                             @csrf
-                            @method('POST')
 
                             <div class="row mb-3">
                                 <label for="name" class="col-md-3 col-form-label text-md-end">
                                     <span class="required">*</span>{{ __('名稱') }}
                                 </label>
                                 <div class="col-md-9">
-                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror text-content"
+                                    <input id="name" type="text"
+                                           class="form-control @error('name') is-invalid @enderror text-content"
                                            name="name" value="{{ old('name') }}" required autocomplete="name"
                                            placeholder="請輸入師傅名稱" autofocus>
                                     @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
@@ -50,13 +50,12 @@
                                     <span class="required">*</span>{{ __('Email') }}
                                 </label>
                                 <div class="col-md-9">
-                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror text-content"
+                                    <input id="email" type="email"
+                                           class="form-control @error('email') is-invalid @enderror text-content"
                                            name="email" value="{{ old('email') }}" required
                                            placeholder="請輸入師傅Email">
                                     @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
@@ -66,22 +65,19 @@
                                     <span class="required">*</span>{{ __('電話') }}
                                 </label>
                                 <div class="col-md-9">
-                                    <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror text-content"
+                                    <input id="phone" type="text"
+                                           class="form-control @error('phone') is-invalid @enderror text-content"
                                            name="phone" value="{{ old('phone') }}" required
                                            placeholder="請輸入師傅電話">
                                     @error('phone')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                    <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                     @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-0">
                                 <div class="col-md-9 offset-md-3">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('儲存') }}
-                                    </button>
+                                    <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
                                 </div>
                             </div>
                         </form>
@@ -92,6 +88,24 @@
     </div>
 
     <style>
+        .breadcrumb-path {
+            font-size: 1.4em;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .breadcrumb-path {
+                font-size: 1.4em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .breadcrumb-path {
+                font-size: 1.2em;
+            }
+        }
+
         .required {
             color: red;
             margin-left: 5px;

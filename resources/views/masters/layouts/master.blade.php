@@ -262,7 +262,5 @@
                 });
             </script>
         @endpush
-
-        @stack('scripts')
     </body>
 </html>

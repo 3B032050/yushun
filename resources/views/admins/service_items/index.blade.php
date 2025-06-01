@@ -5,18 +5,22 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    服務項目管理
-                </p>
-                <div class="btn-group btn-group-sm" role="group" aria-label="字級調整">
+            <div class="d-flex justify-content-between align-items-center mt-2 flex-column flex-md-row">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">服務項目管理</li>
+                    </ol>
+                </nav>
+                <div class="btn-group btn-group-sm text-size-controls" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
-            <h1 class="mt-4 text-center">服務項目管理</h1>
+            <h1 class="mt-3 text-center">服務項目管理</h1>
         </div>
 
         <div class="table-responsive d-flex justify-content-center">
@@ -27,28 +31,28 @@
                 <table class="table" id="sortable-list">
                     <thead>
                     <tr>
-                        <th scope="col" style="text-align:center; width: 5%;">#</th>
-                        <th scope="col" style="text-align:center; width: 20%;">名稱</th>
-                        <th scope="col" style="text-align:center; width: 10%;">描述</th>
-                        <th scope="col" style="text-align:center; width: 10%;">價格</th>
-                        <th scope="col" style="text-align:center; width: 15%;">編輯</th>
-                        <th scope="col" style="text-align:center; width: 15%;">刪除</th>
+                        <th style="width: 5%;">#</th>
+                        <th style="width: 20%;">名稱</th>
+                        <th style="width: 10%;">描述</th>
+                        <th style="width: 10%;">價格</th>
+                        <th style="width: 15%;">編輯</th>
+                        <th style="width: 15%;">刪除</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($items as $index => $item)
                         <tr>
-                            <td class="align-middle">{{ $index + 1 }}</td>
-                            <td class="align-middle">{{ $item->name }}</td>
-                            <td class="align-middle text-truncate" style="max-width: 200px;">{{ $item->description }}</td>
-                            <td class="align-middle">{{ $item->price }}</td>
-                            <td class="align-middle">
+                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td class="text-truncate" style="max-width: 200px;">{{ $item->description }}</td>
+                            <td>{{ $item->price }}</td>
+                            <td>
                                 <a href="{{ route('admins.service_items.edit', ['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                             </td>
-                            <td class="align-middle">
+                            <td>
                                 <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.service_items.destroy',['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" method="POST">
-                                    @method('DELETE')
                                     @csrf
+                                    @method('DELETE')
                                     <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $item->name }}', {{ $index + 1 }})">刪除</button>
                                 </form>
                             </td>
@@ -62,7 +66,7 @@
 
     <script>
         function confirmDelete(name, id) {
-            if (confirm('確定要刪除項目 ' + name + ' 嗎？')) {
+            if (confirm('確定要刪除項目 "' + name + '" 嗎？')) {
                 document.getElementById('deleteForm' + id).submit();
             }
         }
@@ -75,14 +79,38 @@
     </script>
 
     <style>
+        .breadcrumb-path {
+            font-size: 1.4em;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .breadcrumb-path {
+                font-size: 1.3em;
+            }
+
+            .text-size-controls {
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .breadcrumb-path {
+                font-size: 1.1em;
+            }
+
+            .text-size-controls {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         .table th, .table td {
             vertical-align: middle;
             text-align: center;
         }
-        .table img {
-            display: block;
-            margin: auto;
-        }
+
         .text-truncate {
             overflow: hidden;
             text-overflow: ellipsis;

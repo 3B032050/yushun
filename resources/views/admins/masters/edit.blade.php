@@ -6,11 +6,13 @@
     <div class="content-wrapper">
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('admins.masters.index') }}" class="custom-link">師傅管理</a> >
-                    編輯師傅
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path">
+                        <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.masters.index') }}">師傅管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"> 編輯師傅</li>
+                    </ol>
+                </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
@@ -99,6 +101,23 @@
             color: red;
             margin-left: 4px;
             font-weight: bold;
+        }
+        .breadcrumb-path {
+            font-size: 1.4em;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .breadcrumb-path {
+                font-size: 1.4em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .breadcrumb-path {
+                font-size: 1.2em;
+            }
         }
     </style>
 @endsection
