@@ -12,7 +12,20 @@
                     <a href="{{ route('masters.service_areas.create_item') }}" class="custom-link">選擇服務項目</a> >
                     選擇服務地區
                 </p>
-
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.service_areas.index') }}">可服務地區</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.service_areas.create_item') }}">選擇服務項目</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">選擇服務地區</li>
+                    </ol>
+                </nav>
                 <div class="text-size-controls btn-group btn-group-sm">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>

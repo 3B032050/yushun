@@ -1,8 +1,8 @@
 @extends('masters.layouts.master')
 
 @section('title','豫順家居媒合服務平台')
-
 @section('content')
+
     <div class="content-wrapper">
         @if(session('error'))
             <div class="alert alert-danger">
@@ -17,10 +17,12 @@
 
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    個人資料
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('masters.personal_information.index') }}"> 個人資料</a></li>
+                    </ol>
+                </nav>
 
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字程調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
@@ -154,3 +156,51 @@
         </div>
     </div>
 @endsection
+@push('styles')
+    <style>
+        .breadcrumb-path {
+            font-size: 1.4em;
+            white-space: normal;
+            word-break: break-word;
+        }
+
+        @media (max-width: 768px) {
+            .breadcrumb-path {
+                font-size: 1.3em;
+            }
+
+            .text-size-controls {
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .breadcrumb-path {
+                font-size: 1.1em;
+            }
+
+            .text-size-controls {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
+            height: 600px;  /* 設置明確的高度 */
+        }  .required {
+               color: red;
+               margin-left: 5px;
+               font-weight: bold;
+           }
+
+        .card {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .content-wrapper {
+            min-height: calc(100vh - 60px);
+        }
+    </style>
+@endpush

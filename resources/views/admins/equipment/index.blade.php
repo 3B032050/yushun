@@ -3,21 +3,21 @@
 @section('title', '豫順家居媒合服務平台')
 
 @section('content')
-    <div id="content" class="medium">
+    <div id="content" class="font-medium">
         <div class="content-wrapper">
             <div class="container-fluid px-4">
-                <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap">
                     <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                         <ol class="breadcrumb breadcrumb-path">
                             <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
                             <li class="breadcrumb-item"><a href="{{ route('admins.equipment.index') }}">設備管理</a></li>
                         </ol>
                     </nav>
-                    <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
-                        <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
-                    </div>
+                        <div class="btn-group btn-group-sm text-size-controls mt-2" role="group" aria-label="字級調整">
+                            <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
+                        </div>
                 </div>
 
                 <h1 class="mt-4 text-center">設備管理</h1>
@@ -99,17 +99,27 @@
                 font-size: 1.2em;
             }
         }
-        .table-responsive {
-            max-width: 85%;
-            margin: auto;
+        .required {
+            color: red;
+            margin-left: 5px;
+            font-weight: bold;
         }
-        .table th, .table td {
-            vertical-align: middle;
-            text-align: center;
+
+        .font-small {
+            font-size: 0.85rem;
         }
-        .table img {
-            display: block;
-            margin: auto;
+
+        .font-medium {
+            font-size: 1rem;
+        }
+
+        .font-large {
+            font-size: 1.15rem;
+        }
+
+        .btn-group-sm .btn {
+            padding: 2px 6px;
+            font-size: 0.75rem;
         }
     </style>
 @endsection

@@ -16,10 +16,13 @@
         @endif
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> &gt;
-                    管理可服務地區
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">管理可服務地區</li>
+                    </ol>
             </div>
             <h1 class="mt-4 text-center">管理可服務地區</h1>
         </div>
