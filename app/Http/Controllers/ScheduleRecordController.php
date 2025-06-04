@@ -229,7 +229,7 @@ class ScheduleRecordController extends Controller
         $AdminServiceItem =AdminServiceItem::where('id', $serviceId)->first();
         // 基本價格
         $basePrice = $AdminServiceItem->price;
-        $is_recurring =$request->query('is_recurring');
+//        $is_recurring =$request->query('is_recurring');
         $address=$request->query('address');
         $areaKeyword = mb_substr($address, 0, 6, "UTF-8");
         // 替換 '台' 為 '臺'
@@ -253,9 +253,7 @@ class ScheduleRecordController extends Controller
         if ($totalHours < 4) {
             $extraFee += 50;
         }
-        if ($is_recurring == false) {
-            $extraFee += 50;
-        }
+        $extraFee += 50;
         if (!empty($serviceArea) && isset($serviceArea->status) && $serviceArea->status == 1)
         {
             $extraFee += 30;
@@ -326,7 +324,7 @@ class ScheduleRecordController extends Controller
                 'status' => 1, // 1 代表已預約
             ]);
         // **處理定期預約**
-        if ($request->boolean('is_recurring') && $request->recurring_times >= 1) {
+        if ($user->is_recurring == 1 && $request->recurring_times >= 1) {
             // 根據選擇的次數和間隔天數來新增排程
             $intervalWeeks = (int) $request->recurring_interval; // 每隔幾週預約一次
 
@@ -392,7 +390,7 @@ class ScheduleRecordController extends Controller
                 }
             }
         }
-        elseif ($request->boolean('is_recurring') && $request->recurring_times == 0)
+        elseif ($user->is_recurring == 1 && $request->recurring_times == 0)
         {
             return redirect()->back()->with('error', '定期客戶預約次數至少為1');
         }
