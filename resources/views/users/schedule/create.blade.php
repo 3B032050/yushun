@@ -34,30 +34,29 @@
             <form id="schedule-form" action="{{ route('users.schedule.store') }}" method="POST">
                 @csrf
                 <input type="hidden" id="selected_date" name="service_date">
-                <label>
-                    <input type="checkbox" name="is_recurring" id="is_recurring">
-                    是否為定期客戶
-                </label>
+{{--                <label>--}}
+{{--                    <input type="checkbox" name="is_recurring" id="is_recurring">--}}
+{{--                    是否為定期客戶--}}
+{{--                </label>--}}
                 <!-- 顯示錯誤訊息 -->
                 @if ($errors->has('recurring_interval'))
                     <p class="text-danger">{{ $errors->first('recurring_interval') }}</p>
                 @endif
-                <div class="form-group" id="recurring_options" style="display: none;">
-                    <div>
-                        <label for="recurring_interval">每次預約間隔（週）：</label>
-                        <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="4" value="1">
+                @if(Auth::user()->is_recurring == 1)
+                    <div class="form-group" id="recurring_options">
+                        <div>
+                            <label for="recurring_interval">每次預約間隔（週）：</label>
+                            <input type="number" id="recurring_interval" name="recurring_interval" min="1" max="4" value="1">
+                        </div>
+                        <div>
+                            <label for="recurring_times">請選擇您希望的預約次數：</label>
+                            <select id="recurring_times" name="recurring_times">
+                                {{-- 動態生成 --}}
+                            </select>
+                        </div>
+                        <div id="recurring_dates"></div>
                     </div>
-                    <div>
-                        <label for="recurring_times">請選擇您希望的預約次數：</label>
-                        <select id="recurring_times" name="recurring_times">
-{{--                            <option value="1">1 次</option>--}}
-{{--                            <option value="2">2 次</option>--}}
-{{--                            <option value="3">3 次</option>--}}
-{{--                            <option value="4">4 次</option>--}}
-                        </select>
-                    </div>
-                    <div id="recurring_dates"></div>
-                </div>
+                @endif
                 <!-- 隱藏欄位，用來傳遞服務地址 -->
                 <input type="hidden" id="address" name="address">
                 <div class="address-option">
@@ -77,7 +76,7 @@
                     <!-- 手動輸入地址的欄位，預設隱藏 -->
                     <div id="custom_address_input" style="display: none;">
                         <input type="text" class="form-control" id="custom_address" name="custom_address" placeholder="請輸入地址">
-                    </div>
+                    </div><br>
                 </div>
 
 
@@ -168,24 +167,24 @@
             const scheduleForm = document.getElementById('schedule-form');
             const servicePriceElement = document.getElementById('service_price');
             const TotalPriceElement = document.getElementById('total_price');
-            let isRecurring = document.getElementById('is_recurring').checked;
+            // let isRecurring = document.getElementById('is_recurring').checked;
             // 設定預設地址
             let serviceAddress = '{{ Auth::user()->address }}';
             let selectedDate = null;
             //定期客戶選擇
 
-            document.getElementById('is_recurring').addEventListener('change', function () {
-                let recurringOptions = document.getElementById('recurring_options');
-                recurringOptions.style.display = this.checked ? 'block' : 'none';
-
-                // 當選擇定期客戶時，重新計算預約次數
-                if (this.checked) {
-                    updateRecurringTimes();
-                } else {
-                    // 如果取消選擇定期客戶，清除選項
-                    document.getElementById('recurring_times').innerHTML = '<option value="1">1 次</option>';
-                }
-            });
+            // document.getElementById('is_recurring').addEventListener('change', function () {
+            //     let recurringOptions = document.getElementById('recurring_options');
+            //     recurringOptions.style.display = this.checked ? 'block' : 'none';
+            //
+            //     // 當選擇定期客戶時，重新計算預約次數
+            //     if (this.checked) {
+            //         updateRecurringTimes();
+            //     } else {
+            //         // 如果取消選擇定期客戶，清除選項
+            //         document.getElementById('recurring_times').innerHTML = '<option value="1">1 次</option>';
+            //     }
+            // });
 
             document.getElementById('recurring_interval').addEventListener('change', updateRecurringTimes);
             document.getElementById('recurring_times').addEventListener('change', calculateRecurringDates);
@@ -315,10 +314,6 @@
                     formElement.reset();  // 重置表單的所有資料
                 } else {
                     console.error('Form element not found');
-                }
-                // 隱藏定期選項
-                if (recurringOptions) {
-                    recurringOptions.style.display = 'none';
                 }
             }
 
@@ -556,16 +551,16 @@
                         console.error('Error:', error);
                     });
 
-// ⭐⭐ 監聽時段選擇，請求價格 ⭐⭐
+                // ⭐⭐ 監聽時段選擇，請求價格 ⭐⭐
                 availableTimesSelect.addEventListener('change', function () {
                     const appointment_time = this.value;
                     const serviceId = document.getElementById('service_id').value;
-                    const isRecurring = document.getElementById('is_recurring').checked ? 1 : 0;
+                    // const isRecurring = document.getElementById('is_recurring').checked ? 1 : 0;
                     const totalPriceElement = document.getElementById('total_price');
                     const totalPriceInput = document.getElementById('total_price_input'); // 隱藏輸入欄位
 
                     console.log('選擇的時段:', appointment_time);
-                    console.log('定期:', isRecurring);
+                    // console.log('定期:', isRecurring);
                     console.log('服務地點:', serviceAddress);
 
                     if (!appointment_time || !serviceId) {
@@ -574,7 +569,7 @@
                         return;
                     }
 
-                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&is_recurring=${isRecurring}&address=${serviceAddress}`)
+                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&address=${serviceAddress}`)
                         .then(response => response.json())
                         .then(data => {
                             if (data.status === 'success') {

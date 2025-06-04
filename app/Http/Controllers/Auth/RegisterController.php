@@ -73,6 +73,7 @@ class RegisterController extends Controller
             'phone' => $data['phone'],
             'address' => $data['address'],
             'line_id' => $data['line_id'],
+            'is_recurring' => 1,
 
             'password' => Hash::make($data['mobile']),
         ]);

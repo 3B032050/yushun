@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('0912345678'),
             'mobile' => '0912345678',
             'address'=>'桃園市龜山區文化一路261號',
+            'is_recurring' => 1,
         ]);
         $this->call(ServiceAreaSeeder::class);
 

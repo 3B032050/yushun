@@ -97,18 +97,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row mb-0">
+                                    <div class="col-12 text-center">
+                                        <button type="submit" class="btn btn-primary w-50">
+                                            {{ __('確認') }}
+                                        </button>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                     </div>
                 </div>
                 <br>
-                <div class="row mb-0">
-                    <div class="col-12 text-center">
-                        <button type="submit" class="btn btn-primary w-50">
-                            {{ __('確認') }}
-                        </button>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -139,6 +140,15 @@
                 });
                 toggleButton.textContent = isExpanded ? '全部展開' : '全部收合';
                 isExpanded = !isExpanded;
+            });
+        });
+        document.querySelectorAll('.select-all-checkbox').forEach(function(selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function () {
+                const groupClass = this.getAttribute('data-group');
+                const checkboxes = document.querySelectorAll('.' + groupClass);
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
             });
         });
     </script>
