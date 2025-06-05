@@ -257,7 +257,7 @@
     #content.large textarea,
     #content.large label {
         font-size: 1.2rem;
-
+    }
     /* 字級按鈕排版 */
     .text-size-controls {
         display: flex;
@@ -280,7 +280,11 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             const savedSize = localStorage.getItem('preferredFontSize') || 'medium';
-            document.getElementById('content').className = savedSize;
+            const content = document.getElementById('content');
+            if (content) {  // 有這個元素才操作
+                content.classList.remove('small', 'medium', 'large');
+                content.classList.add(savedSize);
+            }
         });
     </script>
 @endpush

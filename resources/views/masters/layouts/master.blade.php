@@ -57,8 +57,8 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- 預留插入更多 JS -->
-@stack('scripts')
 
+@stack('scripts')
         <style>
             a {
                 text-decoration:none;
@@ -253,7 +253,7 @@
             #content.large textarea,
             #content.large label {
                 font-size: 1.2rem;
-
+            }
             /* 字級按鈕排版 */
             .text-size-controls {
                 display: flex;
@@ -265,8 +265,6 @@
                 padding: 2px 8px;
                 font-size: 14px;
             }
-        </style>
-        <style>
             #content.small {
                 font-size: 0.8rem;
             }
@@ -283,8 +281,18 @@
             #content .table td {
                 font-size: inherit;
             }
+            #content.small, #content.small * {
+                font-size: 0.8rem !important;
+            }
+
+            #content.medium, #content.medium * {
+                font-size: 1rem !important;
+            }
+
+            #content.large, #content.large * {
+                font-size: 1.2rem !important;
+            }
         </style>
-        @push('scripts')
             <script>
                 function setFontSize(size) {
                     const content = document.getElementById('content');
@@ -292,11 +300,18 @@
                     localStorage.setItem('preferredFontSize', size);
                 }
 
+                // document.addEventListener('DOMContentLoaded', () => {
+                //     const savedSize = localStorage.getItem('preferredFontSize') || 'medium';
+                //     document.getElementById('content').className = savedSize;
+                // });
                 document.addEventListener('DOMContentLoaded', () => {
                     const savedSize = localStorage.getItem('preferredFontSize') || 'medium';
-                    document.getElementById('content').className = savedSize;
+                    const content = document.getElementById('content');
+                    if (content) {  // 有這個元素才操作
+                        content.classList.remove('small', 'medium', 'large');
+                        content.classList.add(savedSize);
+                    }
                 });
             </script>
-        @endpush
     </body>
 </html>

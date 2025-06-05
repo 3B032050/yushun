@@ -17,12 +17,20 @@
 
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
-                <p style="font-size: 1.8em;">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">可預約時段</a> >
-                    <a href="{{ url()->previous() }}" class="custom-link">編輯可預約時段</a> >
-                    借用設備
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('masters.appointmenttime.index') }}" class="custom-link">可預約時段</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="{{ url()->previous() }}" class="custom-link">編輯可預約時段</a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">借用設備</li>
+                        </ol>
+                    </nav>
             </div>
             <h1 class="mt-4 text-center">借用設備</h1>
         </div>

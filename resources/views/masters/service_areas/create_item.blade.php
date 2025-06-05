@@ -12,11 +12,17 @@
 
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('masters.service_areas.index') }}" class="custom-link">可服務地區</a> >
-                    選擇服務項目
-                </p>
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+                    <ol class="breadcrumb breadcrumb-path mb-0">
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{{ route('masters.service_areas.index') }}" class="custom-link">可服務地區</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">選擇服務項目</li>
+                    </ol>
+                </nav>
 
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>

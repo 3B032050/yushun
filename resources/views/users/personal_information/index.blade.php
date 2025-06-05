@@ -39,19 +39,85 @@
                     <div class="row justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="card">
-                                <div class="card-header text-center">{{ __('個人資料') }}</div>
+                                <div class="card-header">{{ __('個人資料') }}</div>
+                                <div class="card-body">
+                                    <form method="POST" action="{{ route('users.personal_information.update', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}">
+                                        @csrf
+                                        @method('PATCH')
 
-                                <div class="card-body px-3 px-md-4">
-                                    <div class="mb-3 text-break"><strong>姓名：</strong> {{ $user->name }}</div>
-                                    <div class="mb-3 text-break"><strong>信箱：</strong> {{ $user->email }}</div>
-                                    <div class="mb-3 text-break"><strong>手機號碼：</strong> {{ $user->mobile }}</div>
-                                    <div class="mb-3 text-break"><strong>市話：</strong> {{ $user->phone }}</div>
-                                    <div class="mb-3 text-break"><strong>地址：</strong> {{ $user->address }}</div>
-                                    <div class="mt-4 text-center">
-                                        <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">
-                                            編輯
-                                        </a>
-                                    </div>
+                                        <div class="row mb-3">
+                                            <label for="name" class="col-md-4 col-form-label text-md-end">姓名：</label>
+                                            <div class="col-md-6">
+                                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                                       name="name" value="{{ old('name', $user->name) }}" readonly>
+                                                @error('name')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="email" class="col-md-4 col-form-label text-md-end">信箱：</label>
+                                            <div class="col-md-6">
+                                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
+                                                       name="email" value="{{ old('email', $user->email) }}" readonly>
+                                                @error('email')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="mobile" class="col-md-4 col-form-label text-md-end">手機號碼：</label>
+                                            <div class="col-md-6">
+                                                <input id="mobile" type="text" class="form-control @error('mobile') is-invalid @enderror"
+                                                       name="mobile" value="{{ old('mobile', $user->mobile) }}" readonly>
+                                                @error('mobile')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="phone" class="col-md-4 col-form-label text-md-end">市話：</label>
+                                            <div class="col-md-6">
+                                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror"
+                                                       name="phone" value="{{ old('phone', $user->phone) }}" readonly>
+                                                @error('phone')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="address" class="col-md-4 col-form-label text-md-end">地址：</label>
+                                            <div class="col-md-6">
+                                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror"
+                                                       name="address" value="{{ old('address', $user->address) }}" readonly>
+                                                @error('address')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label for="is_recurring" class="col-md-4 col-form-label text-md-end">客戶類型：</label>
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" value="{{ $user->is_recurring ? '定期' : '非定期' }}" readonly>
+                                                @error('is_recurring')
+                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                                @enderror
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-0">
+                                            <div class="col-md-8 offset-md-4">
+                                                <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">
+                                                    編輯
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
