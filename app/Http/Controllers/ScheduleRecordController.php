@@ -229,7 +229,7 @@ class ScheduleRecordController extends Controller
         $AdminServiceItem =AdminServiceItem::where('id', $serviceId)->first();
         // 基本價格
         $basePrice = $AdminServiceItem->price;
-        $is_recurring =$request->query('is_recurring');
+//        $is_recurring =$request->query('is_recurring');
         $address=$request->query('address');
         $areaKeyword = mb_substr($address, 0, 6, "UTF-8");
         // 替換 '台' 為 '臺'
@@ -253,9 +253,9 @@ class ScheduleRecordController extends Controller
         if ($totalHours < 4) {
             $extraFee += 50;
         }
-        if ($is_recurring == false) {
-            $extraFee += 50;
-        }
+//        if ($is_recurring == false) {
+//            $extraFee += 50;
+//        }
         if (!empty($serviceArea) && isset($serviceArea->status) && $serviceArea->status == 1)
         {
             $extraFee += 30;
