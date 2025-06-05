@@ -10,85 +10,78 @@ use Illuminate\Support\Facades\Auth;
 
 class MasterLoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
+    use AuthenticatesUsers;
 
-
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected function redirectTo()
+    // 指定要用的 guard
+    protected function guard()
     {
-        // 檢查是否為師傅
-        if (Auth::guard('master')->check()) {
-            return route('masters.index');
-        }
-
-        return '/home';
+        return Auth::guard('master');
     }
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    // 登入成功後導向路徑
+    protected $redirectTo = '/masters/index';
+
+    // 登入成功後的額外動作（你可以在這裡加更多邏輯）
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect()->route('masters.index');
+    }
 
     public function showLoginForm()
     {
         return view('auth.masters_login');
     }
+
     public function __construct()
     {
         $this->middleware('guest:master')->except('logout');
     }
 
+    // 這邊改成使用 trait 的 login 流程，改寫 validate 驗證規則
     public function login(Request $request)
     {
-        $this->validate($request, [
+        $request->validate([
             'email' => 'required|email',
             'phone' => 'required|string',
         ]);
 
-        // 將電話號碼作為密碼來驗證
-        if (Auth::guard('master')->attempt(['email' => $request->email, 'password' => $request->phone])) {
-            return redirect()->route('masters.index');
+        $email = $request->input('email');
+        $password = $request->input('phone');
+
+        // 檢查 email 是否存在
+        $userExists = \App\Models\Master::where('email', $email)->exists();
+
+        if (!$userExists) {
+            // 信箱不存在
+            $errors = ['email' => '該電子郵件地址尚未註冊'];
+
+            return redirect()->back()
+                ->withInput($request->only('email'))
+                ->withErrors($errors);
         }
 
-        return redirect()->back()->withInput($request->only('email', 'remember'));
+        // 用 phone 當密碼嘗試登入
+        if ($this->guard()->attempt(['email' => $email, 'password' => $password], $request->filled('remember'))) {
+            // 登入成功，呼叫 trait 的 sendLoginResponse()
+            return $this->sendLoginResponse($request);
+        }
+
+        // 密碼錯誤
+        $errors = ['password' => '密碼輸入錯誤'];
+
+        return redirect()->back()
+            ->withInput($request->only('email'))
+            ->withErrors($errors);
     }
 
     public function logout(Request $request)
     {
-        Auth::guard('master')->logout(); // 使用對應的 guard 進行登出
+        Auth::guard('master')->logout();
 
-        $request->session()->invalidate(); // 清除 session 資料
-        $request->session()->regenerateToken(); // 重新生成 CSRF token
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         Cookie::queue(Cookie::forget('remember_web'));
-        return redirect()->route('masters_login'); // 重定向到登入頁面
-    }
-//    public function login(Request $request)
-//    {
-//        $this->validate($request, [
-//            'email' => 'required|string|email',
-//            'password' => 'required|string',
-//        ]);
-//
-//        if ($this->attemptLogin($request)) {
-//            return $this->sendLoginResponse($request);
-//        }
-//
-//        return $this->sendFailedLoginResponse($request);
-//    }
 
+        return redirect()->route('masters_login');
+    }
 }

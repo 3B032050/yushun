@@ -8,6 +8,7 @@ use App\Models\AdminServiceItem;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Master;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -24,12 +25,14 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin123'),
             'phone' => 'admin123',
             'position' => 0,
+            'email_verified_at' => Carbon::now(),
         ]);
         $master = Master::factory()->create([
             'name' => 'master',
             'email' => 'master@gmail.com',
             'password' => bcrypt('master123'),
             'phone' => 'master123',
+            'email_verified_at' => Carbon::now(),
             'position' => 1,
         ]);
         $user = User::factory()->create([
@@ -39,6 +42,7 @@ class DatabaseSeeder extends Seeder
             'mobile' => '0912345678',
             'address'=>'桃園市龜山區文化一路261號',
             'is_recurring' => 1,
+            'email_verified_at' => Carbon::now(),
         ]);
         $this->call(ServiceAreaSeeder::class);
 

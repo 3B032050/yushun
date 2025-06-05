@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('introduction')->nullable();
             $table->string('position');
             $table->integer('total_hours')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             //position=0管理員,11是師傅
 //            $table->unsignedBigInteger('service_item_id')->nullable();
 //            //$table->foreign('service_item_id')->references('id')->on('service_items');

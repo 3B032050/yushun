@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Models;
-
+use App\Notifications\MasterVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable; // 確保引入此類
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 
-class Master extends Authenticatable // 修改這裡
+class Master extends Authenticatable   implements MustVerifyEmail
 {
     use Notifiable;
     use HasFactory;
@@ -21,6 +22,10 @@ class Master extends Authenticatable // 修改這裡
     ];
 
     protected $hidden = ['password', 'remember_token'];
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new MasterVerifyEmail);
+    }
     public function isMaster()
     {
         return true;

@@ -7,7 +7,11 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">{{ __('登入') }}</div>
-
+                @if (Auth::user() && !Auth::user()->hasVerifiedEmail())
+                    <div class="alert alert-warning">
+                        您尚未驗證信箱，<a href="{{ route('verification.notice') }}">點我前往驗證</a>
+                    </div>
+                @endif
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
@@ -60,20 +64,18 @@
                                 <a href="{{ route('google.login') }}" class="btn btn-danger">
                                     <i class="fa-brands fa-google"></i> {{ __('使用 Google 登入') }}
                                 </a>
-{{--                                @if (Route::has('password.request'))--}}
-{{--                                    <a class="btn btn-link" href="{{ route('password.request') }}">--}}
-{{--                                        {{ __('Forgot Your Password?') }}--}}
-{{--                                    </a>--}}
-{{--                                @endif--}}
                             </div>
                         </div>
-{{--                        <div class="row mb-3">--}}
-{{--                            <div class="col-md-8 offset-md-4">--}}
-{{--                                <a href="{{ route('google.login') }}" class="btn btn-danger">--}}
-{{--                                    <i class="fa-brands fa-google"></i> {{ __('使用 Google 登入') }}--}}
-{{--                                </a>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                        @if ($errors->any())
+                            <script>
+                                let messages = "";
+                                @foreach ($errors->all() as $error)
+                                    messages += "{{ $error }}\n";
+                                @endforeach
+                                alert(messages);  // 以瀏覽器 alert 彈窗顯示錯誤訊息
+                            </script>
+                        @endif
+
                     </form>
                 </div>
             </div>
