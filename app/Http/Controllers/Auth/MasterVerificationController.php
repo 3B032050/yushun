@@ -13,7 +13,10 @@ class MasterVerificationController extends Controller
     {
         return view('auth.verify_masters');
     }
-
+    protected function redirectTo()
+    {
+        return route('masters.index'); // 或你要導向的頁面
+    }
     public function verify(Request $request)
     {
         $user = \App\Models\Master::findOrFail($request->route('id'));

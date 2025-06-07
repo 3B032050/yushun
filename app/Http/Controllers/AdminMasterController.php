@@ -43,8 +43,7 @@ class AdminMasterController extends Controller
             'phone.required' => '電話為必填項目',
         ]);
 
-        // 新增師傅資料
-        Master::create([
+        $master = Master::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'phone' => $validatedData['phone'],
@@ -52,6 +51,9 @@ class AdminMasterController extends Controller
             'password' => Hash::make($validatedData['phone']),
         ]);
 
+        if (! $master->hasVerifiedEmail()) {
+            $master->markEmailAsVerified();
+        }
         // 回傳成功訊息並重導至列表頁
         return redirect()->route('admins.masters.index')->with('success', '師傅新增成功');
     }

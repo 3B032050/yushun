@@ -22,8 +22,8 @@
         </div>
 
         <div id="content" class="medium">
-            <div class="table-responsive d-flex justify-content-center">
-                <table class="table table-bordered table-hover" id="sortable-list" style="min-width: 700px;">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover w-100" id="sortable-list">
                     <thead class="table-light">
                     <tr>
                         <td colspan="6"></td>
@@ -53,10 +53,10 @@
                                 <a href="{{ route('admins.masters.edit', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
                             </td>
                             <td class="text-center">
-                                <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST">
+                                <form id="deleteForm_{{  $master->id }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST">
                                     @method('DELETE')
                                     @csrf
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $master->name }}', {{ $index + 1 }})">刪除</button>
+                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $master->name }}', {{ $master->id }})">刪除</button>
                                 </form>
                             </td>
                         </tr>
@@ -70,7 +70,7 @@
     <script>
         function confirmDelete(name, id) {
             if (confirm('確定要刪除師傅 ' + name + ' 嗎？')) {
-                document.getElementById('deleteForm' + id).submit();
+                document.getElementById('deleteForm_' + id).submit();
             }
         }
 
@@ -91,9 +91,9 @@
     }
 
     /* 表格與字級響應式 */
-    #sortable-list {
-        /* 保持一定最小寬度，手機滑動 */
-        min-width: 700px;
+    #sortable-list th:nth-child(2),
+    #sortable-list td:nth-child(2) {
+        min-width: 120px;
     }
 
     #sortable-list th, #sortable-list td {

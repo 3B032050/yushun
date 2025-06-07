@@ -43,7 +43,10 @@ class GoogleController extends Controller
                     'avatar' => $googleUser->avatar,
                 ]
             );
-
+            // 直接標記為已驗證
+            if (! $user->hasVerifiedEmail()) {
+                $user->markEmailAsVerified();
+            }
             // 登入用戶
             Auth::login($user);
 

@@ -43,10 +43,14 @@ Route::post('masters/logout', [\App\Http\Controllers\Auth\MasterLoginController:
 Route::get('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'showRegistrationForm'])->name('masters_register');
 Route::post('masters/register', [\App\Http\Controllers\Auth\MasterRegisterController::class, 'register']);
 
+
+Route::get('masters/email/verify/{id}/{hash}', [MasterVerificationController::class, 'verify'])
+    ->middleware(['signed', 'web']) // 注意這邊加 web 是確保 session 可用
+    ->name('masters.verification.verify');
+
+
 Route::middleware(['auth:master'])->group(function () {
     Route::get('masters/email/verify', [MasterVerificationController::class, 'notice'])->name('masters.verification.notice');
-    Route::get('masters/email/verify/{id}/{hash}', [MasterVerificationController::class, 'verify'])
-        ->middleware(['signed'])->name('masters.verification.verify');
     Route::post('masters/email/resend', [MasterVerificationController::class, 'resend'])->name('masters.verification.send');
 });
 Route::group(['middleware' => ['auth:master', 'verified']], function() {
