@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('quantity');
             $table->string('photo');
+            $table->string('storage_location');
             $table->timestamps();
         });
     }
