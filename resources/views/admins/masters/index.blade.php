@@ -36,7 +36,7 @@
                         <th class="text-center" style="width:15%;">名稱</th>
                         <th class="text-center" style="width:15%;">Email</th>
                         <th class="text-center" style="width:15%;">電話</th>
-                        <th class="text-center" style="width:15%;">總工時</th>
+                        <th class="text-center" style="width:15%;">總服務時數</th>
                         <th class="text-center" style="width:10%;">編輯</th>
                         <th class="text-center" style="width:10%;">刪除</th>
                     </tr>
