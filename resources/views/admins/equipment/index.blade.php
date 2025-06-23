@@ -26,8 +26,11 @@
                     <table class="table" style="width: 80%;" id="sortable-list">
                         <thead>
                         <tr>
-                            <th colspan="6" class="text-end">
-                                <a class="btn btn-success btn-sm" href="{{ route('admins.equipment.create') }}">新增設備</a>
+                            <th colspan="5"></th>
+                            <th class="text-end">
+                                <a class="btn btn-success btn-sm" href="{{ route('admins.equipment.create') }}">
+                                    <i class="fa fa-plus"></i> 新增設備
+                                </a>
                             </th>
                         </tr>
                         <tr>
@@ -35,8 +38,7 @@
                             <th style="width: 20%;">名稱</th>
                             <th style="width: 10%;">數量</th>
                             <th style="width: 30%;">圖片</th>
-                            <th style="width: 15%;">編輯</th>
-                            <th style="width: 15%;">刪除</th>
+                            <th colspan="2" style="width: 30%;">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -52,15 +54,20 @@
                                         <span class="text-muted">無圖片</span>
                                     @endif
                                 </td>
-                                <td>
-                                    <a href="{{ route('admins.equipment.edit', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
-                                </td>
-                                <td>
-                                    <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.equipment.destroy', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $equipment->name }}', {{ $index + 1 }})">刪除</button>
-                                    </form>
+                                <td colspan="2">
+                                    <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                        <a href="{{ route('admins.equipment.edit', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}"
+                                           class="btn btn-secondary btn-sm" title="編輯">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.equipment.destroy', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" method="POST" style="margin:0;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $equipment->name }}', {{ $index + 1 }})">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

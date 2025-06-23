@@ -28,8 +28,9 @@
         </div>
 
         <div id="content" class="medium">
-            <div class="table-responsive d-flex justify-content-center">
-                <table class="table table-bordered" style="width: 80%;" id="sortable-list">
+            <div class="table-responsive d-flex justify-content-center flex-column align-items-end mb-2" style="width: 80%; margin: 0 auto;">
+                <a href="{{ route('admins.uniforms.create') }}" class="btn btn-primary mb-2">新增制服</a>
+                <table class="table table-bordered w-100" id="sortable-list">
                     <thead class="table-light text-center">
                     <tr>
                         <th style="width: 15%;">師傅姓名</th>

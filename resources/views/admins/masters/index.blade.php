@@ -28,7 +28,9 @@
                     <tr>
                         <td colspan="6"></td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('admins.masters.create') }}">新增師傅</a>
+                            <a class="btn btn-success btn-sm" href="{{ route('admins.masters.create') }}">
+                                <i class="fa fa-plus"></i> 新增師傅
+                            </a>
                         </td>
                     </tr>
                     <tr>
@@ -37,8 +39,7 @@
                         <th class="text-center" style="width:15%;">Email</th>
                         <th class="text-center" style="width:15%;">電話</th>
                         <th class="text-center" style="width:15%;">總服務時數</th>
-                        <th class="text-center" style="width:10%;">編輯</th>
-                        <th class="text-center" style="width:10%;">刪除</th>
+                        <th class="text-center" colspan="2" style="width:20%;">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -48,16 +49,21 @@
                             <td class="text-center">{{ $master->name }}</td>
                             <td class="text-center">{{ $master->email }}</td>
                             <td class="text-center">{{ $master->phone }}</td>
-                            <td class="text-center">{{ $master->total_hours }} 小時</td>
-                            <td class="text-center">
-                                <a href="{{ route('admins.masters.edit', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
-                            </td>
-                            <td class="text-center">
-                                <form id="deleteForm_{{  $master->id }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST">
-                                    @method('DELETE')
-                                    @csrf
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $master->name }}', {{ $master->id }})">刪除</button>
-                                </form>
+                            <td class="text-center">{{ $master->total_hours }}</td>
+                            <td colspan="2" class="text-center">
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <a href="{{ route('admins.masters.edit', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}"
+                                       class="btn btn-secondary btn-sm" title="編輯">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <form id="deleteForm_{{ $master->id }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST" style="margin:0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $master->name }}', {{ $master->id }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach
