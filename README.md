@@ -19,12 +19,11 @@
 <a href="https://postimg.cc/xqRcfgF7" target="_blank"><img src="https://i.postimg.cc/PrGZMRbt/10.png" alt="10"/></a><br/><br/>
 <a href="https://postimg.cc/Czhnk9qS" target="_blank"><img src="https://i.postimg.cc/tCPdQjRZ/11.png" alt="11"/></a><br/><br/>
 <a href="https://postimg.cc/PNz8LdNS" target="_blank"><img src="https://i.postimg.cc/h4N85jnR/12.png" alt="12"/></a><br/><br/>
-<a href="https://postimg.cc/v1NCtRBj" target="_blank"><img src="https://i.postimg.cc/FRrmmNQ9/image.png" alt="image"/></a><br/><br/>
-<a href="https://postimg.cc/ZBNsPCXB" target="_blank"><img src="https://i.postimg.cc/NMChcX44/image.png" alt="image"/></a><br/><br/>
 <a href="https://postimg.cc/G9kSHTk6" target="_blank"><img src="https://i.postimg.cc/ZYgksr0Y/image.png" alt="image"/></a><br/><br/>
-<a href="https://postimg.cc/8fHHwW45" target="_blank"><img src="https://i.postimg.cc/QVLy8JWp/image.png" alt="image"/></a><br/><br/>
 <a href="https://postimg.cc/V0rt0Chp" target="_blank"><img src="https://i.postimg.cc/qqQxYcxJ/image.png" alt="image"/></a><br/><br/>
-<a href="https://postimg.cc/xkX923Nw" target="_blank"><img src="https://i.postimg.cc/Dzg01Cvw/image.png" alt="image"/></a><br/><br/>
+<a href="https://postimg.cc/ZBNsPCXB" target="_blank"><img src="https://i.postimg.cc/NMChcX44/image.png" alt="image"/></a><br/><br/>
+<a href="https://postimg.cc/8fHHwW45" target="_blank"><img src="https://i.postimg.cc/QVLy8JWp/image.png" alt="image"/></a><br/><br/>
+
 
 
 ## 使用者 - 客戶
