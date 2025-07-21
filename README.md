@@ -41,13 +41,20 @@
 
 
 ## 使用者 - 客戶
+第三方登入功能
 <a href="https://postimg.cc/K1gGM5Jm" target="_blank"><img src="https://i.postimg.cc/L8xnGCPg/1.png" alt="1"/></a><br/><br/>
+客戶首頁
 <a href="https://postimg.cc/Cz2M52Cv" target="_blank"><img src="https://i.postimg.cc/3x8kS5kH/1.png" alt="1"/></a><br/><br/>
+客戶個人資料
 <a href="https://postimg.cc/cKRdD4pj" target="_blank"><img src="https://i.postimg.cc/JhgtzsP1/2.png" alt="2"/></a><br/><br/>
+編輯個人資料
 <a href="https://postimg.cc/ftMD1QZb" target="_blank"><img src="https://i.postimg.cc/j572wRFy/3.png" alt="3"/></a><br/><br/>
+客戶預約時段
 <a href="https://postimg.cc/HJDp47hX" target="_blank"><img src="https://i.postimg.cc/1z4fSG0C/4.png" alt="4"/></a><br/><br/>
+選擇服務和時段
 <a href="https://postimg.cc/k28Vm9rN" target="_blank"><img src="https://i.postimg.cc/VkZXXLDh/image.png" alt="image"/></a><br/><br/>
 <a href="https://postimg.cc/PNr88BZh" target="_blank"><img src="https://i.postimg.cc/QNcgvDdB/image.png" alt="image"/></a><br/><br/>
+評論已完成的訂單
 <a href="https://postimg.cc/sQKQNJkt" target="_blank"><img src="https://i.postimg.cc/WzcGtWXb/image.png" alt="image"/></a><br/><br/>
 
 
@@ -90,4 +97,6 @@
 ## 實體關聯圖
 <a href='https://postimg.cc/rzjncXGr' target='_blank'><img src='https://i.postimg.cc/tCQL39Y2/image.png' border='0' alt='image'/></a>
 
+## 系統開發與工作分配
+[3B032007 劉秉樺](https://github.com/3B032007)
 
