@@ -33,10 +33,9 @@
                     <tr>
                         <th style="width: 5%;">#</th>
                         <th style="width: 20%;">名稱</th>
-                        <th style="width: 10%;">描述</th>
+                        <th style="width: 10%;">說明</th>
                         <th style="width: 10%;">價格</th>
-                        <th style="width: 15%;">編輯</th>
-                        <th style="width: 15%;">刪除</th>
+                        <th style="width: 20%;">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,14 +46,20 @@
                             <td class="text-truncate" style="max-width: 200px;">{{ $item->description }}</td>
                             <td>{{ $item->price }}</td>
                             <td>
-                                <a href="{{ route('admins.service_items.edit', ['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" class="btn btn-secondary btn-sm">編輯</a>
-                            </td>
-                            <td>
-                                <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.service_items.destroy',['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete('{{ $item->name }}', {{ $index + 1 }})">刪除</button>
-                                </form>
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <a href="{{ route('admins.service_items.edit', ['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}"
+                                       class="btn btn-secondary btn-sm" title="編輯">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.service_items.destroy',['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" method="POST" style="margin: 0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm" title="刪除"
+                                                onclick="confirmDelete('{{ $item->name }}', {{ $index + 1 }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @endforeach

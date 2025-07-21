@@ -15,6 +15,7 @@ class Equipment extends Model
         'name',
         'quantity',
         'photo',
+        'storage_location',
     ];
 
     public function borrowing_record()

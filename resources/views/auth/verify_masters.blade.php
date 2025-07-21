@@ -1,4 +1,4 @@
-@extends('users.layouts.master')
+@extends('masters.layouts.master')
 
 @section('title', '驗證你的信箱')
 
@@ -18,7 +18,7 @@
 
                         {{ __('在繼續操作之前，請檢查您的電子郵件以獲取驗證鏈接.') }}
                         {{ __('如果還沒有收到驗證信') }}，
-                        <form class="d-inline" method="POST" action="{{ route('verification.resend') }}">
+                        <form class="d-inline" method="POST" action="{{ route('masters.verification.send') }}">
                             @csrf
                             <button type="submit" class="btn btn-link p-0 m-0 align-baseline">{{ __('重新傳送') }}</button>。
                         </form>

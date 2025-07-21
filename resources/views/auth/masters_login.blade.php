@@ -53,6 +53,15 @@
                                 {{--                                @endif--}}
                             </div>
                         </div>
+                        @if ($errors->any())
+                            <script>
+                                let messages = "";
+                                @foreach ($errors->all() as $error)
+                                    messages += "{{ $error }}\n";
+                                @endforeach
+                                alert(messages);  // 以瀏覽器 alert 彈窗顯示錯誤訊息
+                            </script>
+                        @endif
                     </form>
                 </div>
             </div>

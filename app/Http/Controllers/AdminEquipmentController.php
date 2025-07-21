@@ -30,27 +30,39 @@ class AdminEquipmentController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
+            'storage_location' => 'nullable|string|max:255',
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $equipment = new Equipment;
+        try {
+            $equipment = new Equipment;
 
-        if ($request->hasFile('image_path')) {
-            $image = $request->file('image_path');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            if ($request->hasFile('image_path')) {
+                $image = $request->file('image_path');
+                $imageName = time() . '.' . $image->getClientOriginalExtension();
 
-            // 存到 public/storage/equipments
-            Storage::disk('equipments')->put($imageName, file_get_contents($image));
+                // 存到 public/storage/equipments
+                Storage::disk('equipments')->put($imageName, file_get_contents($image));
 
-            $equipment->photo = $imageName;
+                $equipment->photo = $imageName;
+            }
+
+            $equipment->name = $request->name;
+            $equipment->quantity = $request->quantity;
+            $equipment->storage_location = $request->storage_location;
+            $equipment->save();
+
+            return redirect()
+                ->route('admins.equipment.index')
+                ->with('success', '設備已成功新增');
+        } catch (\Exception $e) {
+            // 有錯誤時跳轉並顯示錯誤訊息
+            return back()
+                ->withInput()
+                ->with('error', '新增設備時發生錯誤：' . $e->getMessage());
         }
-
-        $equipment->name = $request->name;
-        $equipment->quantity = $request->quantity;
-        $equipment->save();
-
-        return redirect()->route('admins.equipment.index')->with('success', '設備已成功新增');
     }
+
 
     public function edit($hash_equipment)
     {

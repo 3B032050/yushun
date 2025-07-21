@@ -1,6 +1,6 @@
 @extends('masters.layouts.master')
 
-@section('title', '豫順家居媒合服務平台')
+@section('title', '家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
@@ -165,29 +165,37 @@
                 events: [
                         @foreach($appointmenttimes as $index => $appointmenttime)
                     {
-                        title: {!! json_encode('<b>客戶名稱：</b>' . ($appointmenttime->user ? $appointmenttime->user->name : "暫無客戶") .
-                            '<br><b>時段：</b>' . $appointmenttime->start_time . ' - ' . $appointmenttime->end_time .
+                        title: {!! json_encode(
+                            '<b>客戶名稱：</b>' . ($appointmenttime->user ? $appointmenttime->user->name : "暫無客戶")
+                            // 以下都先註解掉；如果要再開啟，把前面的 // 拿掉並在上一行最後＋ .
+                            /*
+                            . '<br><b>時段：</b>' . $appointmenttime->start_time . ' - ' . $appointmenttime->end_time .
                             '<br><b>狀態：</b>' .
-                               ($appointmenttime->status == 1 ? "已確認" :
+                                ($appointmenttime->status == 1 ? "已確認" :
                                 ($appointmenttime->status == 2 ? "已完成" :
                                 ($appointmenttime->status == 3 ? "不成立" :
                                 ($appointmenttime->status == 4 ? "取消" :
                                 ($appointmenttime->status == 0
                                     ? ($appointmenttime->user_id === null ? "無預約" : "待確認")
                                     : "未知狀態")))))
-                        ) !!},
+                            */
+                    ) !!},
 
                         start: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->start_time }}',
                         end: '{{ $appointmenttime->service_date }}T{{ $appointmenttime->end_time }}',
                         url: '{{ route('masters.appointmenttime.edit',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}',
 
-                        color: {!! json_encode(
-                            $appointmenttime->status == 1 ? "#28a745" :  // 綠色：已確認
-                            ($appointmenttime->status == 2 ? "#007bff" : // 藍色：已完成
-                            ($appointmenttime->status == 3 ? "#6c757d" : // 灰色：不成立
-                            ($appointmenttime->status == 4 ? "#ffc107" : // 黃色：取消
-                            "#dc3545"))) // 紅色：待確認
-                        ) !!},
+                        extendedProps: {
+                            bgColor: {!! json_encode(
+                                ($appointmenttime->status == 0 && $appointmenttime->user_id === null)
+                                    ? '#ffc107'                               // 空閒 → 黃色
+                                    : ($appointmenttime->status == 1 ? '#28a745' :   // 已確認
+                                      ($appointmenttime->status == 2 ? '#007bff' :   // 已完成
+                                      ($appointmenttime->status == 3 ? '#6c757d' :   // 不成立
+                                      ($appointmenttime->status == 4 ? '#ffc107' :   // 取消
+                                      '#dc3545'))))                                   // 其他
+                            ) !!}
+                        },
                         id: '{{ $appointmenttime->id }}'
                     }
                     @if (!$loop->last), @endif
@@ -196,6 +204,12 @@
                 ],
                 editable: true, // 可以拖拽修改
                 droppable: true, // 可以拖拽
+                eventDidMount: function(info) {
+                    var bg = info.event.extendedProps.bgColor || '#3788d8';
+                    info.el.style.backgroundColor = bg;
+                    info.el.style.borderColor     = bg;
+                    info.el.style.color = '#000000';
+                },
                 eventContent: function(arg) {
                     return {
                         html: `<div class="fc-event-title">${arg.event.title}</div>`  // 只顯示 title

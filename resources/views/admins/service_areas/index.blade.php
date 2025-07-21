@@ -60,12 +60,23 @@
                                         <span class="text-dark">蛋白區</span>
                                     @endif
                                 </td>
-                                <td class="d-flex gap-1 flex-wrap">
-                                    <a href="{{ route('admins.service_areas.edit', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" class="btn btn-warning btn-sm flex-grow-1 flex-md-grow-0">編輯</a>
-                                    <form action="{{ route('admins.service_areas.destroy', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" method="POST" style="margin:0;">
+                                <td class="d-flex gap-2 flex-wrap justify-content-center">
+                                    <a href="{{ route('admins.service_areas.edit', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}"
+                                       class="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
+                                       title="編輯">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <form action="{{ route('admins.service_areas.destroy', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}"
+                                          method="POST"
+                                          style="margin:0;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm flex-grow-1 flex-md-grow-0" onclick="return confirm('確定要刪除這個項目嗎？')">刪除</button>
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
+                                                title="刪除"
+                                                onclick="return confirm('確定要刪除這個項目嗎？')">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
                                     </form>
                                 </td>
                             </tr>

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('line_id')->nullable();
             $table->boolean('is_recurring')->default(false);
             $table->integer('recurring_interval')->nullable(); // 存放間隔天數
-//            $table->timestamp('email_verified_at')->nullable();
+           $table->timestamp('email_verified_at')->nullable();
 //            $table->string('password');
             $table->rememberToken();
             $table->timestamps();

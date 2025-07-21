@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdminUniform;
 use App\Http\Requests\StoreUniformRequest;
 use App\Http\Requests\UpdateUniformRequest;
+use App\Models\Master;
 use App\Models\RentUniform;
 use Illuminate\Support\Facades\Storage;
 use Vinkla\Hashids\Facades\Hashids;
@@ -28,7 +29,8 @@ class AdminUniformController extends Controller
      */
     public function create()
     {
-        return view('admins.uniforms.create');
+        $masters = Master::whereDoesntHave('rentUniforms')->get();
+        return view('admins.uniforms.create', compact('masters'));
     }
 
     /**
@@ -36,37 +38,24 @@ class AdminUniformController extends Controller
      */
     public function store(StoreUniformRequest $request)
     {
-        // 驗證表單資料
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'size_s' => 'required|integer|min:0',
-            'size_m' => 'required|integer|min:0',
-            'size_l' => 'required|integer|min:0',
-            'size_xl' => 'required|integer|min:0',
-            'size_xxl' => 'required|integer|min:0',
+            'master_id' => 'required|exists:masters,id',
+            'size' => 'required|string|max:10',
+            'quantity' => 'required|integer|min:1',
         ]);
 
-        if ($request->hasFile('image_path')) {
-            $image = $request->file('image_path');
-            $imageName = time().'.'.$image->getClientOriginalExtension();
-
-            // 存储原始图片
-            Storage::disk('uniforms')->put($imageName, file_get_contents($image));
+        // 避免重複新增
+        if (RentUniform::where('master_id', $request->master_id)->exists()) {
+            return redirect()->back()->with('error', '該師傅已經有借用紀錄');
         }
 
-        // 儲存制服資料
-        AdminUniform::create([
-            'name' => $request->input('name'),
-            'photo' => $imageName,
-            'S' => $request->input('size_s'),
-            'M' => $request->input('size_m'),
-            'L' => $request->input('size_l'),
-            'XL' => $request->input('size_xl'),
-            'XXL' => $request->input('size_xxl'),
+        RentUniform::create([
+            'master_id' => $request->master_id,
+            'size' => $request->size,
+            'quantity' => $request->quantity,
         ]);
 
-        return redirect()->route('admins.uniforms.index')->with('success', '制服新增成功！');
+        return redirect()->route('admins.uniforms.index')->with('success', '成功新增制服紀錄');
     }
 
     /**
