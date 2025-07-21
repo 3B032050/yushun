@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-lg-12 text-center" style="color: black;">
             <!-- 在此添加頁腳內容，例如聯繫方式或版權資訊 -->
-            <p>聯繫我們：豫順官網</p>
-            <p>電話：05-5881915</p>
-            <p>&copy; 豫順家居</p>
+            <p>聯繫我們：產學官網</p>
+            <p>電話：012345678</p>
+            <p>&copy; 產學家居</p>
         </div>
     </div>
 </div>
