@@ -17,7 +17,7 @@
 
         <div class="container">
             <h2 class="text-center mt-4">完成訂單</h2>
-            <form action="{{ route('masters.schedule_details.store', $appointmenttime->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('masters.schedule_details.store', ['hash_appointmenttime' => Hashids::encode($appointmenttime->id)]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="row">

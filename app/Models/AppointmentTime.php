@@ -25,7 +25,7 @@ class AppointmentTime extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function schedulerecord()
+    public function scheduleRecord()
     {
         return $this->hasOne(ScheduleRecord::class, 'appointment_time_id');
     }
