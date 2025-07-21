@@ -51,24 +51,43 @@
 <a href="https://postimg.cc/sQKQNJkt" target="_blank"><img src="https://i.postimg.cc/WzcGtWXb/image.png" alt="image"/></a><br/><br/>
 
 
-
 ## 使用者 - 管理員
+管理員首頁
 <a href="https://postimg.cc/MvSb4sfF" target="_blank"><img src="https://i.postimg.cc/RV3sWyS4/image.png" alt="image"/></a><br/><br/>
+師傅管理
 <a href="https://postimg.cc/5YPdGHnP" target="_blank"><img src="https://i.postimg.cc/PJHXCYZk/1.png" alt="1"/></a><br/><br/>
+新增師傅資料
 <a href="https://postimg.cc/Fk75Q96h" target="_blank"><img src="https://i.postimg.cc/0jC8DjdK/2.png" alt="2"/></a><br/><br/>
+編輯師傅資料
 <a href="https://postimg.cc/4ndTc5xj" target="_blank"><img src="https://i.postimg.cc/XNKNT1SN/3.png" alt="3"/></a><br/><br/>
+設備管理
 <a href="https://postimg.cc/t7MGNx1J" target="_blank"><img src="https://i.postimg.cc/ncHVZKp4/4.png" alt="4"/></a><br/><br/>
+新增設備
 <a href="https://postimg.cc/pp5bGL8Z" target="_blank"><img src="https://i.postimg.cc/KvJGYK8d/5.png" alt="5"/></a><br/><br/>
 <a href='https://postimg.cc/BLcFT3Zc' target='_blank'><img src='https://i.postimg.cc/DZRcKftD/6.png' border='0' alt='6'/></a>
+編輯設備
 <a href="https://postimg.cc/YvccJBzw" target="_blank"><img src="https://i.postimg.cc/cLCstsK6/6.png" alt="6"/></a><br/><br/>
+服務項目管理
 <a href="https://postimg.cc/rzxFsjZc" target="_blank"><img src="https://i.postimg.cc/CM6Zv6jZ/image.png" alt="image"/></a><br/><br/>
+新增服務項目
 <a href="https://postimg.cc/nC32D4MS" target="_blank"><img src="https://i.postimg.cc/6pXmFzKK/image.png" alt="image"/></a><br/><br/>
+服務地區管理
 <a href="https://postimg.cc/yJyzmp9C" target="_blank"><img src="https://i.postimg.cc/nL6ct6hr/7.png" alt="7"/></a><br/><br/>
+新增服務地區
 <a href="https://postimg.cc/cvYWHLLH" target="_blank"><img src="https://i.postimg.cc/JzYzpywb/8.png" alt="8"/></a><br/><br/>
+編輯服務地區
 <a href="https://postimg.cc/F7wmNLm8" target="_blank"><img src="https://i.postimg.cc/3xxwjXq8/9.png" alt="9"/></a><br/><br/>
+制服管理
 <a href="https://postimg.cc/cKSS8Gvc" target="_blank"><img src="https://i.postimg.cc/TPyYFRGB/10.png" alt="10"/></a><br/><br/>
+新增制服
 <a href="https://postimg.cc/vg8w37Lg" target="_blank"><img src="https://i.postimg.cc/LXL44NJT/11.png" alt="11"/></a><br/><br/>
+師傅排程管理
 <a href="https://postimg.cc/wyNL4Jqz" target="_blank"><img src="https://i.postimg.cc/d1H61mgh/image.png" alt="image"/></a><br/><br/>
+查看師傅排程
 <a href="https://postimg.cc/TKPmMBdC" target="_blank"><img src="https://i.postimg.cc/L8tVfMrK/image.png" alt="image"/></a><br/><br/>
+
+
+##實體關聯圖
+<a href='https://postimg.cc/rzjncXGr' target='_blank'><img src='https://i.postimg.cc/tCQL39Y2/image.png' border='0' alt='image'/></a>
 
 
