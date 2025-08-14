@@ -409,6 +409,7 @@ class ScheduleRecordController extends Controller
     private function sendAppointmentConfirmationEmail($appointmentTime, $request, $user)
     {
         $master = Master::find($request->master_id);
+        $appointmentTime = AppointmentTime::find($appointmentTime->id);
         $appointmentDetails = [
             'master_name' => $master->name ?? '未知師傅',
             'user_name' => $user->name ?? '未知用戶',

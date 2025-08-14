@@ -3,7 +3,7 @@
         <div class="col-lg-12 text-center">
             <p>聯繫我們：豫順官網</p>
             <p>電話：05-5881915</p>
-            <p>&copy; 豫順家居媒合服務平台</p>
+            <p>&copy; 豫順家居</p>
         </div>
     </div>
 </div>

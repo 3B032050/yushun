@@ -1,6 +1,6 @@
 @extends('users.layouts.master')
 
-@section('title', '家居媒合服務平台')
+@section('title', '豫順家居服務媒合平台')
 
 @section('content')
     <div class="content-wrapper">
@@ -138,6 +138,7 @@
 
 @push('styles')
     <!-- flatpickr CSS -->
+
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
 
     <!-- fullcalendar CSS -->
@@ -151,6 +152,7 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 @endpush
 @push('scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 

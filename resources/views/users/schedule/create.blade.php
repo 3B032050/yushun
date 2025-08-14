@@ -1,6 +1,6 @@
 @extends('users.layouts.master')
 
-@section('title', '家居媒合服務平台')
+@section('title', '豫順家居服務媒合平台')
 
 @section('content')
     <div class="content-wrapper">
@@ -125,7 +125,6 @@
         <div id="calendar"></div>
     </div>
 @endsection
-
 @push('styles')
     <!-- flatpickr CSS -->
     <link href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" rel="stylesheet" />
@@ -141,17 +140,21 @@
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 @endpush
 @push('scripts')
-    <!-- flatpickr JS -->
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- fullcalendar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+        <!-- jQuery UI -->
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-    <!-- select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+        <!-- flatpickr -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-    <!-- jquery-ui JS -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <!-- fullcalendar -->
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+
+        <!-- select2 -->
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

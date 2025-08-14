@@ -25,12 +25,13 @@ class ScheduleDetailController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(AppointmentTime $hash_appointmenttime)
+    public function create($hash_appointmenttime)
     {
-        $id = Hashids::decode($hash_appointmenttime)[0] ?? null;
+        $decoded = Hashids::decode($hash_appointmenttime);
+        $id = $decoded[0] ?? null;
 
         if (!$id) {
-            abort(404); // 無效 ID
+            abort(404);
         }
 
         $appointmenttime = AppointmentTime::findOrFail($id);
@@ -40,16 +41,22 @@ class ScheduleDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorescheduledetailRequest $request, AppointmentTime $appointmenttime)
+    public function store(StorescheduledetailRequest $request,$hash_appointmenttime)
     {
         // 驗證圖片
         $request->validate([
             'before_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'after_photo' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+        $decoded = Hashids::decode($hash_appointmenttime);
+        $id = $decoded[0] ?? null;
 
+        if (!$id) {
+            abort(404);
+        }
+
+        $appointmenttime = AppointmentTime::findOrFail($id);
         $scheduleRecord = $appointmenttime->scheduleRecord;
-
         $scheduleDetail = new ScheduleDetail();
         $scheduleDetail->schedule_record_id = $scheduleRecord->id;
 
