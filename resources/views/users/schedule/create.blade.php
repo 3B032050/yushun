@@ -136,464 +136,285 @@
     <!-- select2 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    <!-- jquery-ui CSS -->
+    <!-- jQuery UI CSS -->
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
 @endpush
+
 @push('scripts')
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-        <!-- jQuery UI -->
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-        <!-- flatpickr -->
-        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-        <!-- fullcalendar -->
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
-
-        <!-- select2 -->
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- flatpickr -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <!-- select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- FullCalendar 必須在初始化 script 之前 -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
+@push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // 先檢查必須的元素是否存在
             const calendarEl = document.getElementById('calendar');
             const modal = document.getElementById('schedule-modal');
-            const closeModalButtons = document.querySelectorAll('.close-modal');
             const modalDate = document.getElementById('modal-date');
             const selectedDateInput = document.getElementById('selected_date');
             const serviceSelect = document.getElementById('service_id');
             const masterSelect = document.getElementById('master_id');
             const availableTimesSelect = document.getElementById('available_times');
-            const confirmButton = document.getElementById('confirm-schedule');
             const scheduleForm = document.getElementById('schedule-form');
             const servicePriceElement = document.getElementById('service_price');
-            const TotalPriceElement = document.getElementById('total_price');
-            // let isRecurring = document.getElementById('is_recurring').checked;
-            // 設定預設地址
+            const totalPriceElement = document.getElementById('total_price');
+            const totalPriceInput = document.getElementById('total_price_input'); // 隱藏輸入欄位
+
+            const recurringIntervalEl = document.getElementById('recurring_interval');
+            const recurringTimesEl = document.getElementById('recurring_times');
+            const recurringDatesContainer = document.getElementById('recurring_dates');
+
+            const addressField = document.getElementById('address');
+            const addressOptionProfile = document.getElementById('use_profile_address');
+            const customRadio = document.getElementById('enter_new_address');
+            const customAddressInput = document.getElementById('custom_address_input');
+            const customAddress = document.getElementById('custom_address');
+
             let serviceAddress = '{{ Auth::user()->address }}';
             let selectedDate = null;
-            //定期客戶選擇
 
-            // document.getElementById('is_recurring').addEventListener('change', function () {
-            //     let recurringOptions = document.getElementById('recurring_options');
-            //     recurringOptions.style.display = this.checked ? 'block' : 'none';
-            //
-            //     // 當選擇定期客戶時，重新計算預約次數
-            //     if (this.checked) {
-            //         updateRecurringTimes();
-            //     } else {
-            //         // 如果取消選擇定期客戶，清除選項
-            //         document.getElementById('recurring_times').innerHTML = '<option value="1">1 次</option>';
-            //     }
-            // });
-
-            document.getElementById('recurring_interval').addEventListener('change', updateRecurringTimes);
-            document.getElementById('recurring_times').addEventListener('change', calculateRecurringDates);
+            // ------------------- 防呆：定期預約 -------------------
+            if (recurringIntervalEl) {
+                recurringIntervalEl.addEventListener('change', updateRecurringTimes);
+            }
+            if (recurringTimesEl) {
+                recurringTimesEl.addEventListener('change', calculateRecurringDates);
+            }
 
             function updateRecurringTimes() {
-                let selectedDate = document.getElementById('selected_date').value; // 選擇的日期
-                let recurringInterval = parseInt(document.getElementById('recurring_interval').value); // 間隔週數
+                if (!recurringIntervalEl || !recurringTimesEl || !selectedDateInput) return;
 
-                let recurringTimesContainer = document.getElementById('recurring_times');
-                recurringTimesContainer.innerHTML = ''; // 清空現有選項
+                let selectedDateVal = selectedDateInput.value;
+                let recurringInterval = parseInt(recurringIntervalEl.value);
+                recurringTimesEl.innerHTML = '';
 
-                if (!selectedDate || isNaN(recurringInterval)) {
-                    return;
-                }
+                if (!selectedDateVal || isNaN(recurringInterval)) return;
 
-                let startDate = new Date(selectedDate);
-                let year = startDate.getFullYear();
-                let month = startDate.getMonth(); // 0-11 表示月份
-
-                // 計算當月的最後一天
-                let monthEndDate = new Date(year, month + 1, 0); // 計算當月最後一天
-                let daysInMonth = monthEndDate.getDate(); // 當月的天數
-
-                // 計算距離月底的天數
-                let daysToEndOfMonth = daysInMonth - startDate.getDate();
-
-                // 計算當月最多有多少周（每週7天）
+                let startDate = new Date(selectedDateVal);
+                let monthEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+                let daysToEndOfMonth = monthEndDate.getDate() - startDate.getDate();
                 let maxWeeksInMonth = Math.floor(daysToEndOfMonth / 7);
-
-                // 根據間隔週數計算最大預約次數
                 let maxRecurringTimes = Math.floor(maxWeeksInMonth / recurringInterval);
 
-                // 確認最大預約次數
-                console.log(`Max recurring times calculated: ${maxRecurringTimes}`);
-                console.log(`Days to end of month: ${daysToEndOfMonth}`);
-
-                // 動態生成預約次數選項
-                // 如果 maxRecurringTimes 是 0，顯示提示文字
-                if (maxRecurringTimes === 0) {
+                if (maxRecurringTimes <= 0) {
                     let option = document.createElement('option');
                     option.value = 0;
                     option.textContent = "當月不滿足間隔天數，請重新選擇日期";
-                    recurringTimesContainer.appendChild(option);
+                    recurringTimesEl.appendChild(option);
                 } else {
-                    // 根據最大預約次數生成選項
                     for (let i = 1; i <= maxRecurringTimes; i++) {
                         let option = document.createElement('option');
                         option.value = i;
                         option.textContent = `${i} 次`;
-                        recurringTimesContainer.appendChild(option);
+                        recurringTimesEl.appendChild(option);
                     }
                 }
-                // 如果已選的次數大於最大次數，則設為最大次數
-                let currentSelectedTimes = document.getElementById('recurring_times').value;
-                if (currentSelectedTimes > maxRecurringTimes) {
-                    document.getElementById('recurring_times').value = maxRecurringTimes;
-                }
-
-                // 更新預約日期顯示
                 calculateRecurringDates();
             }
 
             function calculateRecurringDates() {
-                let selectedDate = document.getElementById('selected_date').value; // 選擇的日期
-                let recurringInterval = parseInt(document.getElementById('recurring_interval').value); // 間隔週數
-                let recurringTimes = parseInt(document.getElementById('recurring_times').value); // 預約次數
+                if (!recurringIntervalEl || !recurringTimesEl || !recurringDatesContainer || !selectedDateInput) return;
 
-                let recurringContainer = document.getElementById('recurring_dates');
-                recurringContainer.innerHTML = ''; // 清空舊的紀錄
+                let selectedDateVal = selectedDateInput.value;
+                let recurringInterval = parseInt(recurringIntervalEl.value);
+                let recurringTimes = parseInt(recurringTimesEl.value);
+                recurringDatesContainer.innerHTML = '';
 
-                if (!selectedDate || isNaN(recurringInterval) || isNaN(recurringTimes)) {
-                    return;
-                }
+                if (!selectedDateVal || isNaN(recurringInterval) || isNaN(recurringTimes)) return;
 
-                let startDate = new Date(selectedDate);
-                let year = startDate.getFullYear();
-                let month = startDate.getMonth(); // 0-11 表示月份
-
-                let weeksAdded = 0;
+                let startDate = new Date(selectedDateVal);
+                let monthEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
                 let addedDates = [];
-                let monthEndDate = new Date(year, month + 1, 0); // 取得當月的最後一天
 
-                // 計算當月最多有多少週
-                let maxPossibleTimes = Math.floor((monthEndDate.getDate() + (7 - monthEndDate.getDay())) / 7);
-
-                // 限制最大預約次數不超過當月的最大週數
-                while (weeksAdded < recurringTimes && weeksAdded < maxPossibleTimes) {
+                for (let i = 0; i < recurringTimes; i++) {
                     let nextDate = new Date(startDate);
-                    nextDate.setDate(startDate.getDate() + (weeksAdded * recurringInterval * 7)); // 計算下一次的日期
-
-                    // 如果 nextDate 超過了當月的最後一天，則不再計算
-                    if (nextDate > monthEndDate) {
-                        break;
-                    }
-
-                    addedDates.push(nextDate.toISOString().split('T')[0]); // 存入 YYYY-MM-DD 格式
-                    weeksAdded++;
+                    nextDate.setDate(startDate.getDate() + i * recurringInterval * 7);
+                    if (nextDate > monthEndDate) break;
+                    addedDates.push(nextDate.toISOString().split('T')[0]);
                 }
 
-                // 更新預約次數
-                if (addedDates.length === 0) {
-                    document.getElementById('recurring_times').value = 0;
-                } else {
-                    // 更新預約次數
-                    document.getElementById('recurring_times').value = addedDates.length;
-                }
-
-                console.log("預約產生的日期:", addedDates); // 可在 console 查看產生的日期
+                // 更新實際次數
+                recurringTimesEl.value = addedDates.length;
+                console.log("產生的日期:", addedDates);
             }
 
-            //取消
-            document.querySelector('.close-modal').addEventListener('click', function(event) {
-                event.preventDefault();  // 防止表單提交
-
-                // 清除選擇的資料或返回到初始狀態
-                clearSelectedData();
-                TotalPriceElement.textContent = '請選擇服務項目與時段';
-                // 關閉模態視窗
-                $('#modalId').modal('hide');  // 假設這是用來關閉模態視窗的代碼
-            });
-
-            // 用來清除資料的函式
-            function clearSelectedData() {
-                const formElement = document.getElementById('schedule-form');// 假設你要重置的是整個表單
-                const recurringOptions = document.getElementById('recurring_options');
-                if (formElement) {
-                    formElement.reset();  // 重置表單的所有資料
-                } else {
-                    console.error('Form element not found');
-                }
-            }
-
-            // 如果有多個取消按鈕，使用下面的程式碼來遍歷並關閉模態框
-            document.querySelectorAll('.close-modal').forEach(button => {
-                button.addEventListener('click', function() {
-                    modal.classList.add('hidden');  // 假設這是用來隱藏模態框的代碼
-                });
-            });
-            const addressField = document.getElementById('address'); // 隱藏的地址欄位
-            const addressOptionProfile = document.getElementById('use_profile_address'); // 預設地址選項
-            const customRadio = document.getElementById('enter_new_address'); // 自訂地址選項
-            const customAddressInput = document.getElementById('custom_address_input'); // 自訂地址輸入區塊
-            const customAddress = document.getElementById('custom_address'); // 自訂地址輸入框
-
-
-
-
-            // 切換地址輸入方式
+            // ------------------- 地址切換 -------------------
             function toggleAddressInput() {
-                if (customRadio.checked) {
-                    customAddressInput.style.display = 'block';
-                    serviceAddress = customAddress.value.trim();  // 如果有輸入，使用輸入的地址
+                if (!addressField) return;
+                if (customRadio && customRadio.checked) {
+                    if (customAddressInput) customAddressInput.style.display = 'block';
+                    serviceAddress = customAddress ? customAddress.value.trim() : serviceAddress;
                 } else {
-                    customAddressInput.style.display = 'none';
-                    customAddress.value = '';  // 清空輸入框，避免錯誤保留
-                    serviceAddress = '{{ Auth::user()->address }}'; // 重新設定為預設地址
+                    if (customAddressInput) customAddressInput.style.display = 'none';
+                    if (customAddress) customAddress.value = '';
+                    serviceAddress = '{{ Auth::user()->address }}';
                 }
-                addressField.value = serviceAddress;  // 更新隱藏欄位
-                //console.log('目前選擇的服務地址:', serviceAddress);
+                addressField.value = serviceAddress;
             }
-
-            // 監聽 radio 切換事件
-            addressOptionProfile.addEventListener('change', toggleAddressInput);
-            customRadio.addEventListener('change', toggleAddressInput);
-
-            // 監聽手動輸入變化
-            customAddress.addEventListener('input', function() {
-                if (customRadio.checked) {
+            if (addressOptionProfile) addressOptionProfile.addEventListener('change', toggleAddressInput);
+            if (customRadio) customRadio.addEventListener('change', toggleAddressInput);
+            if (customAddress) customAddress.addEventListener('input', function () {
+                if (customRadio && customRadio.checked) {
                     serviceAddress = this.value.trim();
-                    addressField.value = serviceAddress;
-                   // console.log('目前手動輸入的服務地址:', serviceAddress);
+                    if (addressField) addressField.value = serviceAddress;
                 }
             });
-
-                // 當用戶選擇服務項目時，檢查是否設置了地址
-            serviceSelect.addEventListener('change', function() {
-                if (!serviceAddress || (customRadio.checked && !customAddress.value.trim())) {
-                    alert('請先選擇或輸入地址');
-                    window.location.href = '/users/personal_information/edit';  // 重定向到個人資訊頁面
-                    return; // 如果地址未設定，阻止繼續選擇服務項目
-                }
-                //console.log('服務項目選擇了:', this.value);
-                //console.log('選擇的服務地址:', serviceAddress);
-            });
-
-            // 預設執行一次，確保畫面初始狀態
             toggleAddressInput();
 
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                locale: 'zh-tw',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                buttonText: {
-                    today: '今日',
-                    month: '月',
-                    week: '週',
-                    day: '日'
-                },
-                events: function(info, successCallback, failureCallback) {
-                    const events = [];
+            // ------------------- 日曆 -------------------
+            if (calendarEl) {
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'zh-tw',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    buttonText: { today: '今日', month: '月', week: '週', day: '日' },
+                    events: function(info, successCallback) {
+                        const events = [];
+                        @if($appointmenttimes && $appointmenttimes->count() > 0)
+                        @php $availableDates = $appointmenttimes->pluck('service_date')->unique(); @endphp
+                        @foreach($availableDates as $date)
+                        events.push({ title: '點選', start: '{{ $date }}', end: '{{ $date }}', color: '#28a745', textColor: '#ffffff' });
+                        @endforeach
+                        @else
+                        events.push({ title: '無可預約師傅', color: '#dc3545', textColor: '#ffffff' });
+                        @endif
+                        successCallback(events);
+                    },
+                    eventContent: function(arg) {
+                        return { html: `<div style="text-align: center;">${arg.event.title}</div>` };
+                    },
+                    dateClick: function(info) {
+                        selectedDate = info.dateStr;
+                        if (!modal || !modalDate || !selectedDateInput) return;
 
-                    @if($appointmenttimes && $appointmenttimes->count() > 0)
-                    @php
-                        $availableDates = $appointmenttimes->pluck('service_date')->unique();
-                    @endphp
+                        const today = new Date();
+                        today.setHours(0, 0, 0, 0);
+                        const clickedDate = new Date(info.dateStr);
+                        clickedDate.setHours(0, 0, 0, 0);
 
-                    @foreach($availableDates as $date)
-                    events.push({
-                        title: '點選',
-                        start: '{{ $date }}', // 只使用日期
-                        end: '{{ $date }}',
-                        color: '#28a745', // 綠色表示可預約
-                        textColor: '#ffffff', // 白色文字
-                    });
-                    @endforeach
-                    @else
-                    // 無可預約師傅，添加無法預約事件
-                    events.push({
-                        title: '無可預約師傅',
-                        color: '#dc3545', // 紅色表示無法預約
-                        textColor: '#ffffff', // 白色文字
-                    });
-                    @endif
+                        if (clickedDate <= today) { alert('選擇的日期不能是過去日期'); return; }
 
-                    // 使用 successCallback 返回事件
-                    successCallback(events);
-                },
-                eventContent: function(arg) {
-                    // 設置事件內容，包含標題並置中
-                    return { html: `<div style="text-align: center;">${arg.event.title}</div>` };
-                },
-                dateClick: function(info) {
-                   // console.log('Date clicked:', info.dateStr);
-                    selectedDate = new Date(info.dateStr);
-                    selectedDate.setHours(0, 0, 0, 0);
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0); // 設置今天的零點時間，便於比較
-
-                    // 比較所選日期是否是今天或之後的日期
-                    if (selectedDate <= today) {
-                        alert('選擇的日期不能是過去的日期，請選擇今天之後的日期');
-                        return; // 阻止顯示彈出視窗
+                        modalDate.textContent = clickedDate.toLocaleDateString('zh-TW', { year:'numeric', month:'long', day:'numeric' });
+                        selectedDateInput.value = info.dateStr;
+                        modal.classList.remove('hidden');
                     }
-                    // console.log('選擇的日期:', selectedDate);
-                    // console.log('今天的日期:', today);
-                    // 如果日期合法，顯示彈出視窗
-                    modalDate.textContent = selectedDate.toLocaleDateString('zh-TW', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    selectedDate = info.dateStr;
-                    document.getElementById('selected_date').value = info.dateStr;
-                    modal.classList.remove('hidden'); // 顯示彈出視窗
-                }
-            });
+                });
+                calendar.render();
+            }
 
-            calendar.render();
+            // ------------------- 服務項目選擇 -------------------
+            if (serviceSelect) {
+                serviceSelect.addEventListener('change', function () {
+                    if (!selectedDate) { alert('請先選擇日期'); return; }
 
-
-            serviceSelect.addEventListener('change', function () {
-                const serviceId = this.value;
-
-                // console.log('Service ID:', serviceId);
-                //console.log('selected_date:', document.getElementById('selected_date').value);
-                if (!selectedDate) {
-                    alert('請先選擇日期');
-                    return;
-                }
-
-                masterSelect.innerHTML = '<option value="">加載中...</option>';
-                masterSelect.disabled = true;
-
-                availableTimesSelect.innerHTML = '<option value="">請先選擇師傅</option>';
-                availableTimesSelect.disabled = true;
-
-                // 透過 AJAX 獲取對應的價格
-                fetch(`{{ url('users/schedule/getServicePrice') }}?service_id=${serviceId}&date=${selectedDate}&address=${serviceAddress}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === 'success') {
-                            servicePriceElement.textContent = `NT$ ${data.price}`;
-                        } else {
-                            servicePriceElement.textContent = '無法獲取價格';
-                        }
-                    })
-                    .catch(error => {
-                        servicePriceElement.textContent = '錯誤: 無法獲取價格';
-                        console.error('Error:', error);
-                    });
-
-
-
-                // 取得可預約的師傅
-                fetch(`{{ url('users/schedule/available_masters') }}?service_id=${serviceId}&date=${selectedDate}&address=${serviceAddress}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log('Data received:', data);
-                        //alert(JSON.stringify(data));
-                        if (data.status === 'empty') {
-                            masterSelect.innerHTML = '<option value="">該師傅當日無可預約時段</option>';
-                            masterSelect.disabled = true;
-                        }
-                        else if (data.status === 'error') {
-                            masterSelect.innerHTML = `<option value="">${data.message}</option>`;
-                            masterSelect.disabled = true;
-                        }else if (data.status === 'success' && data.data.length > 0) {
-                            masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
-                            data.data.forEach(master => {
-                                const option = document.createElement('option');
-                                option.value = master.id;
-                                option.textContent = master.name;
-                                masterSelect.appendChild(option);
-                            });
-
-                            masterSelect.disabled = false;
-                        } else {
-                            masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
-                            masterSelect.disabled = true;
-                        }
-                    })
-                    .catch(error => {
-                        masterSelect.innerHTML = '<option value="">無法加載師傅</option>';
+                    if (masterSelect) {
+                        masterSelect.innerHTML = '<option value="">加載中...</option>';
                         masterSelect.disabled = true;
-                        console.error('Error:', error);
-                    });
-            });
-            // 監聽師傅選擇
-            masterSelect.addEventListener('change', function () {
-                const masterId = this.value;
-                availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
-                availableTimesSelect.disabled = true;
-
-                if (!masterId) return;
-
-                fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}&address=${serviceAddress}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
-
-                        if (data.length === 0) {
-                            const option = document.createElement('option');
-                            option.value = "";
-                            option.textContent = "無可預約時段";
-                            availableTimesSelect.appendChild(option);
-                            availableTimesSelect.disabled = true;
-                        } else {
-                            data.forEach(time => {
-                                const option = document.createElement('option');
-                                option.value = time.id;
-                                option.textContent = `${time.start_time} - ${time.end_time}`;
-                                availableTimesSelect.appendChild(option);
-                            });
-                            availableTimesSelect.disabled = false;
-                        }
-                    })
-                    .catch(error => {
-                        availableTimesSelect.innerHTML = '<option value="">無法加載時段</option>';
+                    }
+                    if (availableTimesSelect) {
+                        availableTimesSelect.innerHTML = '<option value="">請先選擇師傅</option>';
                         availableTimesSelect.disabled = true;
-                        console.error('Error:', error);
-                    });
-
-                // ⭐⭐ 監聽時段選擇，請求價格 ⭐⭐
-                availableTimesSelect.addEventListener('change', function () {
-                    const appointment_time = this.value;
-                    const serviceId = document.getElementById('service_id').value;
-                    // const isRecurring = document.getElementById('is_recurring').checked ? 1 : 0;
-                    const totalPriceElement = document.getElementById('total_price');
-                    const totalPriceInput = document.getElementById('total_price_input'); // 隱藏輸入欄位
-
-                    console.log('選擇的時段:', appointment_time);
-                    // console.log('定期:', isRecurring);
-                    console.log('服務地點:', serviceAddress);
-
-                    if (!appointment_time || !serviceId) {
-                        totalPriceElement.textContent = '請選擇服務項目與時段';
-                        totalPriceInput.value = '';
-                        return;
                     }
 
-                    fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceId}&appointment_time=${appointment_time}&address=${serviceAddress}`)
-                        .then(response => response.json())
+                    // 獲取服務價格
+                    fetch(`{{ url('users/schedule/getServicePrice') }}?service_id=${this.value}&date=${selectedDate}&address=${serviceAddress}`)
+                        .then(res => res.json())
                         .then(data => {
-                            if (data.status === 'success') {
-                                totalPriceElement.textContent = `NT$ ${data.price}`;
-                                totalPriceInput.value = data.price; // ✅ 確保表單有提交總金額
+                            if (servicePriceElement) servicePriceElement.textContent = data.status === 'success' ? `NT$ ${data.price}` : '無法獲取價格';
+                        }).catch(err => console.error(err));
+
+                    // 獲取可預約師傅
+                    fetch(`{{ url('users/schedule/available_masters') }}?service_id=${this.value}&date=${selectedDate}&address=${serviceAddress}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (!masterSelect) return;
+                            masterSelect.innerHTML = '';
+                            if (data.status === 'success' && data.data.length > 0) {
+                                masterSelect.innerHTML = '<option value="">請選擇師傅</option>';
+                                data.data.forEach(master => {
+                                    const option = document.createElement('option');
+                                    option.value = master.id;
+                                    option.textContent = master.name;
+                                    masterSelect.appendChild(option);
+                                });
+                                masterSelect.disabled = false;
                             } else {
-                                totalPriceElement.textContent = '無法獲取價格';
-                                totalPriceInput.value = '';
+                                masterSelect.innerHTML = '<option value="">無可預約師傅</option>';
+                                masterSelect.disabled = true;
                             }
-                        })
-                        .catch(error => {
-                            totalPriceElement.textContent = '錯誤: 無法獲取價格';
-                            totalPriceInput.value = '';
-                            console.error('Error:', error);
-                        });
+                        }).catch(err => console.error(err));
+                });
+            }
+
+            // ------------------- 師傅選擇 -------------------
+            if (masterSelect && availableTimesSelect) {
+                masterSelect.addEventListener('change', function () {
+                    const masterId = this.value;
+                    if (!masterId) return;
+
+                    availableTimesSelect.innerHTML = '<option value="">加載中...</option>';
+                    availableTimesSelect.disabled = true;
+
+                    fetch(`{{ url('users/schedule/available_times') }}?date=${selectedDate}&master_id=${masterId}&address=${serviceAddress}`)
+                        .then(res => res.json())
+                        .then(data => {
+                            availableTimesSelect.innerHTML = '<option value="">請選擇可預約時段</option>';
+                            if (data.length === 0) {
+                                const option = document.createElement('option');
+                                option.value = "";
+                                option.textContent = "無可預約時段";
+                                availableTimesSelect.appendChild(option);
+                                availableTimesSelect.disabled = true;
+                            } else {
+                                data.forEach(time => {
+                                    const option = document.createElement('option');
+                                    option.value = time.id;
+                                    option.textContent = `${time.start_time} - ${time.end_time}`;
+                                    availableTimesSelect.appendChild(option);
+                                });
+                                availableTimesSelect.disabled = false;
+                            }
+                        }).catch(err => console.error(err));
+
+                    // 監聽時段選擇
+                    availableTimesSelect.addEventListener('change', function () {
+                        if (!this.value || !serviceSelect.value) {
+                            if (totalPriceElement) totalPriceElement.textContent = '請選擇服務項目與時段';
+                            if (totalPriceInput) totalPriceInput.value = '';
+                            return;
+                        }
+                        fetch(`{{ url('users/schedule/getTotalPrice') }}?service_id=${serviceSelect.value}&appointment_time=${this.value}&address=${serviceAddress}`)
+                            .then(res => res.json())
+                            .then(data => {
+                                if (totalPriceElement) totalPriceElement.textContent = data.status === 'success' ? `NT$ ${data.price}` : '無法獲取價格';
+                                if (totalPriceInput) totalPriceInput.value = data.status === 'success' ? data.price : '';
+                            }).catch(err => console.error(err));
+                    });
+                });
+            }
+
+            // ------------------- 關閉模態視窗 -------------------
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    if (modal) modal.classList.add('hidden');
+                    if (scheduleForm) scheduleForm.reset();
+                    if (totalPriceElement) totalPriceElement.textContent = '請選擇服務項目與時段';
                 });
             });
         });
-
-
     </script>
+@endpush
 
 
     @push('styles')
