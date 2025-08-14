@@ -1,6 +1,6 @@
 @extends('masters.layouts.master')
 
-@section('title', '編輯設備')
+@section('title', '豫順家居媒合服務平台')
 
 @section('content')
     <div class="container-fluid px-3 py-3">
