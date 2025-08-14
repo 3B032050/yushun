@@ -1,17 +1,11 @@
 @extends('masters.layouts.master')
 
-@section('title', '豫順家居媒合服務平台')
+@section('title', '家居媒合服務平台')
 
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
-                <p class="fs-4 mb-0">
-                    <a href="{{ route('masters.index') }}" class="custom-link"><i class="fa fa-home"></i></a> >
-                    <a href="{{ route('masters.service_areas.index') }}" class="custom-link">可服務地區</a> >
-                    <a href="{{ route('masters.service_areas.create_item') }}" class="custom-link">選擇服務項目</a> >
-                    選擇服務地區
-                </p>
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path mb-0">
                         <li class="breadcrumb-item">
