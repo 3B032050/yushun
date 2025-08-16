@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-custom">
     <div class="container-fluid px-3 px-lg-5">
-        <a class="navbar-brand fw-bold fs-3" href="{{ url('/index') }}">家居服務媒合平台</a>
+        <a class="navbar-brand fw-bold fs-3" href="{{ url('/index') }}">豫順家居服務媒合平台</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
     ];
     protected $routeMiddleware = [
         'master' => \App\Http\Middleware\MasterMiddleware::class,
+        'master.verified' => \App\Http\Middleware\EnsureMasterEmailIsVerified::class,
     ];
 }

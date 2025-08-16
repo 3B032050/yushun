@@ -13,12 +13,16 @@ class MasterMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
+
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user('master') && $request->user('master')->isMaster()) {
-            return $next($request);
+        $master = $request->user('master');
+
+        // 只有非登入使用者才導向登入頁
+        if (!$master || !$master->isMaster()) {
+            return redirect()->route('masters_login');
         }
 
-        return redirect('masters/index');
+        return $next($request);
     }
 }

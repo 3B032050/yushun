@@ -19,7 +19,7 @@ class MasterRegisterController extends Controller
 
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest:master');
     }
 
     public function showRegistrationForm()

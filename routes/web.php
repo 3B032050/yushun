@@ -53,7 +53,7 @@ Route::middleware(['auth:master'])->group(function () {
     Route::get('masters/email/verify', [MasterVerificationController::class, 'notice'])->name('masters.verification.notice');
     Route::post('masters/email/resend', [MasterVerificationController::class, 'resend'])->name('masters.verification.send');
 });
-Route::group(['middleware' => ['auth:master', 'verified']], function() {
+Route::group(['middleware' => ['auth:master', 'master.verified']], function () {
     Route::prefix('masters')->name('masters.')->group(function () {
         Route::get('/index', [App\Http\Controllers\MasterController::class, 'index'])->name('index');
         Route::get('/personal_information/index', [App\Http\Controllers\MasterPersonalInformationController::class, 'index'])->name("personal_information.index");
