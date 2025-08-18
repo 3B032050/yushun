@@ -109,6 +109,13 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
+                buttonText: {
+                    today: '今天',
+                    month: '月',
+                    week: '週',
+                    day: '日',
+                    list: '列表'
+                },
                 events: function(fetchInfo, successCallback, failureCallback) {
                     let masterId = document.getElementById('master-select').value;
                     console.log('選擇的師傅 ID:', masterId); // debug 用
