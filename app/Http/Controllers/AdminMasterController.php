@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Master;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Validation\ValidationException;
 
 class AdminMasterController extends Controller
 {
@@ -31,31 +33,44 @@ class AdminMasterController extends Controller
      */
     public function store(Request $request)
     {
-        // 驗證表單輸入
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:masters,email',
-            'phone' => 'required|string|max:15',
-        ], [
-            'name.required' => '名稱為必填項目',
-            'email.required' => 'Email 為必填項目',
-            'email.unique' => '該 Email 已存在',
-            'phone.required' => '電話為必填項目',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:masters,email',
+                'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/', Rule::unique('masters')],
+            ], [
+                'name.required'  => '名稱為必填項目',
+                'email.required' => 'Email 為必填項目',
+                'email.unique'   => '該 Email 已存在',
+                'phone.regex'    => '電話格式錯誤',
+                'phone.unique'   => '電話號碼已被使用',
+            ]);
 
-        $master = Master::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'phone' => $validatedData['phone'],
-            'position' => 1,
-            'password' => Hash::make($validatedData['phone']),
-        ]);
+            $master = Master::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'phone' => $validatedData['phone'],
+                'position' => 1,
+                'password' => Hash::make($validatedData['phone']),
+            ]);
 
-        if (! $master->hasVerifiedEmail()) {
-            $master->markEmailAsVerified();
+            if (! $master->hasVerifiedEmail()) {
+                $master->markEmailAsVerified();
+            }
+
+            return redirect()->route('admins.masters.index')->with('success', '師傅新增成功');
+
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('validation_errors', $e->validator->errors()->all());
         }
-        // 回傳成功訊息並重導至列表頁
-        return redirect()->route('admins.masters.index')->with('success', '師傅新增成功');
+        catch (\Exception $e) {
+            // 其他系統錯誤
+            return redirect()->back()
+                ->withInput()
+                ->with('error', '系統發生錯誤，請稍後再試');
+        }
     }
 
     /**
@@ -89,31 +104,53 @@ class AdminMasterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$hash_master)
+    public function update(Request $request, $hash_master)
     {
-        $id = Hashids::decode($hash_master)[0] ?? null;
+        try {
+            // 解碼 hash ID
+            $id = Hashids::decode($hash_master)[0] ?? null;
+            if (!$id) {
+                return redirect()->back()->with('error', '無效的師傅 ID');
+            }
 
-        if (!$id) {
-            abort(404); // 無效 ID
+            $master = Master::findOrFail($id);
+
+            // 驗證輸入
+            $validatedData = $request->validate([
+                'name'  => 'required|string|max:255',
+                'email' => [
+                    'required',
+                    'email',
+                    Rule::unique('masters')->ignore($master->id),
+                ],
+                'phone' => [
+                    'nullable',
+                    'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/',
+                    Rule::unique('masters')->ignore($master->id),
+                ],
+            ]);
+
+            // 更新資料
+            $master->update([
+                'name'  => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'phone' => $validatedData['phone'],
+            ]);
+
+            return redirect()->route('admins.masters.index')
+                ->with('success', '師傅資料更新成功');
+
+        }catch (ValidationException $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('validation_errors', $e->validator->errors()->all());
         }
-
-        $master = Master ::findOrFail($id);
-        // 驗證表單輸入
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:masters,email,' . $master->id . ',id',
-            'phone' => 'required|string|max:15',
-        ]);
-
-        // 更新師傅資料
-        $master->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-        ]);
-
-        // 回傳成功訊息並重導至列表頁
-        return redirect()->route('admins.masters.index')->with('success', '師傅資料更新成功');
+        catch (\Exception $e) {
+            // 其他系統錯誤
+            return redirect()->back()
+                ->withInput()
+                ->with('error', '系統發生錯誤，請稍後再試');
+        }
     }
 
     /**
@@ -121,15 +158,23 @@ class AdminMasterController extends Controller
      */
     public function destroy($hash_master)
     {
-        $id = Hashids::decode($hash_master)[0] ?? null;
+        try {
+            $id = Hashids::decode($hash_master)[0] ?? null;
 
-        if (!$id) {
-            abort(404); // 無效 ID
+            if (!$id) {
+                return redirect()->back()->with('error', '無效的師傅 ID');
+            }
+
+            $master = Master::findOrFail($id);
+            $master->delete();
+
+            return redirect()->route('admins.masters.index')
+                ->with('success', '師傅資料刪除成功');
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', '系統發生錯誤，無法刪除');
         }
-
-        $master = Master ::findOrFail($id);
-        $master->delete();
-
-        return redirect()->route('admins.masters.index');
     }
+
 }

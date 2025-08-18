@@ -45,7 +45,7 @@
                                     <i class="fa-sharp fa-solid fa-clipboard fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>師傅管理</h3>
+                                    <h3>師傅資料管理</h3>
                                 </div>
                             </a>
                         </div>

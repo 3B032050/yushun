@@ -27,4 +27,17 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    public function render($request, Throwable $exception)
+    {
+        // 表單驗證錯誤，照原本 Laravel 預設處理
+        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+            return parent::render($request, $exception);
+        }
+
+        // 其它錯誤 -> 統一跳彈窗
+        return response()->view('errors.popup', [
+            'message' => $exception->getMessage() // 這裡可以拿到錯誤訊息
+        ], 500);
+    }
+
 }

@@ -31,6 +31,39 @@
 
 {{-- 主要內容 --}}
 @yield('content')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '成功',
+            text: "{{ session('success') }}",
+            confirmButtonText: '確定'
+        });
+    </script>
+@endif
+
+@if(session('validation_errors'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '操作失敗',
+            text: "{{ implode('\n', session('validation_errors')) }}",
+            confirmButtonText: '確定'
+        });
+    </script>
+@endif
+
+@if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: '錯誤',
+            text: "{{ session('error') }}",
+            confirmButtonText: '返回'
+        });
+    </script>
+@endif
 
 {{-- 頁尾 --}}
 @include('users.layouts.partials.footer')
