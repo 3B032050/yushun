@@ -5,8 +5,8 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+            <div class="d-flex justify-content-between align-items-center">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="{{ route('admins.masters.index') }}">師傅管理</a></li>
@@ -76,8 +76,11 @@
                             </div>
 
                             <div class="row mb-0">
-                                <div class="col-md-9 offset-md-3">
+                                <div class="col-12 d-flex justify-content-center gap-2">
                                     <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
+                                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
+                                        {{ __('取消') }}
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -87,50 +90,6 @@
         </div>
     </div>
 
-    <style>
-        .breadcrumb-path {
-            font-size: 1.4em;
-            white-space: normal;
-            word-break: break-word;
-        }
-
-        @media (max-width: 768px) {
-            .breadcrumb-path {
-                font-size: 1.4em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .breadcrumb-path {
-                font-size: 1.2em;
-            }
-        }
-
-        .required {
-            color: red;
-            margin-left: 5px;
-            font-weight: bold;
-        }
-
-        .text-size-controls {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* 字級樣式 */
-        #content.small .text-content {
-            font-size: 14px;
-        }
-
-        #content.medium .text-content {
-            font-size: 18px;
-        }
-
-        #content.large .text-content {
-            font-size: 24px;
-        }
-    </style>
 
     @push('scripts')
         <script>

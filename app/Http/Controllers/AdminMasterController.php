@@ -54,9 +54,7 @@ class AdminMasterController extends Controller
                 'password' => Hash::make($validatedData['phone']),
             ]);
 
-            if (! $master->hasVerifiedEmail()) {
-                $master->markEmailAsVerified();
-            }
+            $master->sendEmailVerificationNotification();
 
             return redirect()->route('admins.masters.index')->with('success', '師傅新增成功');
 

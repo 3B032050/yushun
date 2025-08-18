@@ -5,9 +5,9 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-2 mb-3">
-                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
-                    <ol class="breadcrumb breadcrumb-path mb-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
+                    <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區管理</a></li>
                     </ol>
@@ -22,16 +22,21 @@
         </div>
 
         <div id="content" class="medium container-fluid px-3 px-md-4">
-            <form method="GET" action="{{ route('admins.service_areas.index') }}" class="d-flex flex-column flex-sm-row align-items-stretch align-items-sm-center mb-3 gap-2 gap-sm-2">
-                <input type="text" class="form-control" name="search" placeholder="搜尋服務地區" value="{{ request('search') }}">
-                <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
-                <a href="{{ route('admins.service_areas.index') }}" class="btn btn-secondary btn-sm">取消搜尋</a>
+            <form method="GET" action="{{ route('admins.service_areas.index') }}"
+                  class="d-flex flex-column flex-sm-row align-items-center justify-content-center mb-3 gap-2">
+                <!-- 搜尋框，占父容器一半 -->
+                <input type="text" class="form-control" style="max-width:50%;"
+                       name="search" placeholder="搜尋服務地區" value="{{ request('search') }}">
+
+                <!-- 按鈕區 -->
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm">搜尋</button>
+                    <a href="{{ route('admins.service_areas.index') }}" class="btn btn-secondary btn-sm">取消搜尋</a>
+                </div>
             </form>
 
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-                <h2 class="text-center mb-3 mb-md-0 flex-grow-1">服務區域列表</h2>
-                <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
-            </div>
+
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3"> <h2 class="text-center mb-3 mb-md-0 flex-grow-1">服務區域列表</h2> <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a> </div>
 
             <div class="table-responsive">
                 <table class="table table-striped table-bordered">

@@ -5,9 +5,8 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <!-- 麵包屑導航 -->
-                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
+            <div class="d-flex justify-content-between align-items-center">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item">
                             <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>

@@ -5,9 +5,9 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
-                <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
-                    <ol class="breadcrumb breadcrumb-path mb-0">
+            <div class="d-flex justify-content-between align-items-center">
+                <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
+                    <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
                         <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區管理</a></li>
                         <li class="breadcrumb-item active" aria-current="page">新增服務地區</li>
