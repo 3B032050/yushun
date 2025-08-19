@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item">設備管理</li>
+                        <li class="breadcrumb-item">設備資料管理</li>
                     </ol>
                 </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -18,7 +18,7 @@
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
-            <h1 class="mt-4 text-center">設備管理</h1>
+            <h1 class="mt-4 text-center">設備資料管理</h1>
         </div>
 
         <div id="content" class="medium">
@@ -29,7 +29,7 @@
                         <td colspan="6"></td>
                         <td class="text-center">
                             <a class="btn btn-success btn-sm" href="{{ route('admins.equipment.create') }}">
-                                <i class="fa fa-plus"></i> 新增設備
+                                <i class="fa fa-plus"></i> 新增設備資料
                             </a>
                         </td>
                     </tr>

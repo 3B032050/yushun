@@ -11,9 +11,9 @@
                             <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ route('admins.service_items.index') }}">服務項目管理</a>
+                            <a href="{{ route('admins.service_items.index') }}">服務項目資料管理</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">新增項目</li>
+                        <li class="breadcrumb-item active" aria-current="page">新增項目資料</li>
                     </ol>
                 </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -28,7 +28,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('新增服務項目') }}</div>
+                        <div class="card-header">{{ __('新增服務項目資料') }}</div>
 
                         <div class="card-body">
                             <form method="POST" action="{{ route('admins.service_items.store') }}" enctype="multipart/form-data">

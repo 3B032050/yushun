@@ -11,7 +11,7 @@
                         <li class="breadcrumb-item">
                             <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">服務項目管理</li>
+                        <li class="breadcrumb-item active" aria-current="page">服務項目資料管理</li>
                     </ol>
                 </nav>
                 <div class="btn-group btn-group-sm text-size-controls" role="group" aria-label="字級調整">
@@ -20,7 +20,7 @@
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
-            <h1 class="mt-3 text-center">服務項目管理</h1>
+            <h1 class="mt-3 text-center">服務項目資料管理</h1>
         </div>
 
         <div id="content" class="medium">
@@ -31,7 +31,7 @@
                         <td colspan="4"></td>
                         <td class="text-center">
                             <a class="btn btn-success btn-sm" href="{{ route('admins.service_items.create') }}">
-                                <i class="fa fa-plus"></i> 新增服務項目
+                                <i class="fa fa-plus"></i> 新增服務項目資料
                             </a>
                         </td>
                     </tr>
