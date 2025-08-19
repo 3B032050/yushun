@@ -34,38 +34,38 @@
     @yield('content')
 </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@if(session('success'))
-    <script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session()->has('success'))
         Swal.fire({
             icon: 'success',
             title: '成功',
-            text: "{{ session('success') }}",
+            text: "{{ session()->pull('success') }}",
             confirmButtonText: '確定'
         });
-    </script>
-@endif
+        @endif
 
-@if(session('validation_errors'))
-    <script>
+        @if(session()->has('validation_errors'))
         Swal.fire({
             icon: 'error',
             title: '驗證失敗',
-            text: "{{ implode('\n', session('validation_errors')) }}",
+            html: `{!! collect(session()->pull('validation_errors'))->map(function($e){ return e($e); })->implode('<br>') !!}`,
             confirmButtonText: '確定'
         });
-    </script>
-@endif
+        @endif
 
-@if(session('error'))
-    <script>
+        @if(session()->has('error'))
         Swal.fire({
             icon: 'error',
             title: '錯誤',
-            text: "{{ session('error') }}",
-            confirmButtonText: '返回'
+            text: "{{ session()->pull('error') }}",
+            confirmButtonText: '確定'
         });
-    </script>
-@endif
+        @endif
+    });
+</script>
+
+
 
 @include('masters.layouts.partials.footer')
 

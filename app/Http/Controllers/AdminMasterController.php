@@ -37,7 +37,11 @@ class AdminMasterController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
                 'email' => 'required|email|unique:masters,email',
-                'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/', Rule::unique('masters')],
+                'phone' => [
+                    'regex:/^09\d{8}$/',
+                    Rule::unique('masters')
+                ],
+
             ], [
                 'name.required'  => '名稱為必填項目',
                 'email.required' => 'Email 為必填項目',
@@ -123,9 +127,16 @@ class AdminMasterController extends Controller
                 ],
                 'phone' => [
                     'nullable',
-                    'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/',
-                    Rule::unique('masters')->ignore($master->id),
+                    'regex:/^09\d{8}$/',
+
+                Rule::unique('masters')->ignore($master->id),
                 ],
+            ], [
+                'name.required'  => '名稱為必填項目',
+                'email.required' => 'Email 為必填項目',
+                'email.unique'   => '該 Email 已存在',
+                'phone.regex'    => '電話格式錯誤',
+                'phone.unique'   => '電話號碼已被使用',
             ]);
 
             // 更新資料

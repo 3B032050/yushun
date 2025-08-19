@@ -80,10 +80,10 @@
                                 <!-- 儲存按鈕 -->
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ __('儲存') }}
+                                        <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
+                                         <button type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('admins.service_items.index') }}'">
+                                            返回
                                         </button>
-                                        <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
                                     </div>
                                 </div>
                             </form>
