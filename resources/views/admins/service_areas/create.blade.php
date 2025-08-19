@@ -5,7 +5,7 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mt-2 gap-2">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
@@ -21,80 +21,146 @@
             </div>
         </div>
 
-        <div id="content" class="medium">
-            <div class="container d-flex justify-content-center align-items-center">
-                <div class="col-md-6 col-12">
-                    <h2 class="text-center mb-4">新增服務地區</h2>
+        <div id="content" class="font-medium">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div class="card">
+                        <div class="card-header text-center">{{ __('新增服務地區') }}</div>
 
-                    <form action="{{ route('admins.service_areas.store') }}" method="POST" role="form" enctype="multipart/form-data">
-                        @csrf
-                        @method('POST')
+                        <div class="card-body">
+                            @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
 
-                        <div class="form-group">
-                            <label for="major_area">縣市</label>
-                            <input type="text" class="form-control" id="major_area" name="major_area" required>
-                        </div><br>
+                            <form method="POST" action="{{ route('admins.service_areas.store') }}" enctype="multipart/form-data">
+                                @csrf
+                                @method('POST')
 
-                        <div class="form-group">
-                            <label for="minor_area">鄉鎮</label>
-                            <input type="text" class="form-control" id="minor_area" name="minor_area" required>
-                        </div><br>
+                                <!-- 縣市名稱 -->
+                                <div class="row mb-3">
+                                    <label for="major_area" class="col-md-4 col-form-label text-md-end">{{ __('縣市') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="major_area" type="text" class="form-control @error('major_area') is-invalid @enderror"
+                                               name="major_area" value="{{ old('major_area') }}" required autocomplete="major_area"
+                                               placeholder="請輸入縣市" autofocus>
+                                        @error('major_area')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
 
-                        <div class="form-group">
-                            <label>區域類別</label>
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" id="egg_yolk_area" name="area_type" value="egg_yolk" required>
-                                <label class="form-check-label" for="egg_yolk_area">蛋黃區</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" id="egg_white_area" name="area_type" value="egg_white" required>
-                                <label class="form-check-label" for="egg_white_area">蛋白區</label>
-                            </div>
+                                <!-- 鄉鎮 -->
+                                <div class="row mb-3">
+                                    <label for="storage_location" class="col-md-4 col-form-label text-md-end">{{ __('鄉鎮') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="minor_area" type="number" class="form-control @error('minor_area') is-invalid @enderror"
+                                               name="minor_area" value="{{ old('minor_area') }}" required placeholder="請輸鄉鎮地區">
+                                        @error('minor_area')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- 區域類別 -->
+                                <div class="row mb-3">
+                                    <label class="col-md-4 col-form-label text-md-end">{{ __('區域類別') }}</label>
+                                    <div class="col-md-6 d-flex align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="egg_yolk_area" name="area_type" value="egg_yolk" required>
+                                            <label class="form-check-label" for="egg_yolk_area">蛋黃區</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="egg_white_area" name="area_type" value="egg_white" required>
+                                            <label class="form-check-label" for="egg_white_area">蛋白區</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 儲存按鈕 -->
+                                <div class="row mb-0">
+                                    <div class="col-md-8 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
+                                        <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary">新增地區</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <style>
-        #content.font-small {
-            font-size: 14px;
-        }
+        <style>
+            .breadcrumb-path {
+                font-size: 1.4em;
+                white-space: normal;
+                word-break: break-word;
+            }
 
-        #content.font-medium {
-            font-size: 16px;
-        }
+            @media (max-width: 768px) {
+                .breadcrumb-path {
+                    font-size: 1.3em;
+                }
+                .text-size-controls {
+                    margin-top: 0.5rem;
+                }
+            }
 
-        #content.font-large {
-            font-size: 18px;
-        }
+            @media (max-width: 480px) {
+                .breadcrumb-path {
+                    font-size: 1.1em;
+                }
+                .d-flex.flex-column.flex-md-row > .btn-group {
+                    width: 100%;
+                    justify-content: center;
+                }
+            }
 
-        #content.font-small .form-control,
-        #content.font-small .form-check-label {
-            font-size: 0.85rem;
-        }
+            #content.font-small {
+                font-size: 14px;
+            }
 
-        #content.font-medium .form-control,
-        #content.font-medium .form-check-label {
-            font-size: 1rem;
-        }
+            #content.font-medium {
+                font-size: 16px;
+            }
 
-        #content.font-large .form-control,
-        #content.font-large .form-check-label {
-            font-size: 1.15rem;
-        }
-    </style>
+            #content.font-large {
+                font-size: 18px;
+            }
 
-    <script>
-        function setFontSize(size) {
-            const content = document.getElementById('content');
-            content.classList.remove('font-small', 'font-medium', 'font-large');
-            content.classList.add(`font-${size}`);
-        }
-    </script>
+            #content.font-small .form-control,
+            #content.font-small .form-check-label {
+                font-size: 0.85rem;
+            }
+
+            #content.font-medium .form-control,
+            #content.font-medium .form-check-label {
+                font-size: 1rem;
+            }
+
+            #content.font-large .form-control,
+            #content.font-large .form-check-label {
+                font-size: 1.15rem;
+            }
+        </style>
+        <script>
+            function setFontSize(size) {
+                const content = document.getElementById('content');
+                content.classList.remove('font-small', 'font-medium', 'font-large');
+                content.classList.add(`font-${size}`);
+            }
+        </script>
 @endsection

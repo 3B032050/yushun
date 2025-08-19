@@ -88,6 +88,7 @@
                                         <button type="submit" class="btn btn-primary">
                                             {{ __('儲存') }}
                                         </button>
+                                        <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
                                     </div>
                                 </div>
                             </form>

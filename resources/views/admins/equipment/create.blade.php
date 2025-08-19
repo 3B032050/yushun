@@ -101,6 +101,7 @@
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
+                                        <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
                                     </div>
                                 </div>
                             </form>
@@ -176,8 +177,8 @@
             }
             document.getElementById('image_path').addEventListener('change', function () {
                 const file = this.files[0];
-                if (file && file.size > 2 * 1024 * 1024) { // 2MB
-                    alert('圖片大小不能超過 2MB');
+                if (file && file.size > 5 * 1024 * 1024) { // 2MB
+                    alert('圖片大小不能超過 5MB');
                     this.value = ''; // 清空選擇
                 }
             });

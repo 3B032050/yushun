@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區管理</a></li>
+                        <li class="breadcrumb-item">服務地區管理</li>
                     </ol>
                 </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -28,28 +28,25 @@
                 <a href="{{ route('admins.service_areas.index') }}" class="btn btn-secondary btn-sm">取消搜尋</a>
             </form>
 
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-3">
-                <h2 class="text-center mb-3 mb-md-0 flex-grow-1">服務區域列表</h2>
-                <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
-            </div>
-
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>主要區域</th>
-                        <th>次要區域</th>
-                        <th>狀態</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @if ($serviceAreas->isEmpty())
+            <div id="content" class="medium">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover w-100" id="sortable-list">
+                        <thead class="table-light">
                         <tr>
-                            <td colspan="4" class="text-center">沒有找到符合條件的服務地區。</td>
+                            <td colspan="3"></td>
+                            <td class="text-center">
+                                <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
+                            </td>
                         </tr>
-                    @else
-                        @foreach ($serviceAreas as $area)
+                        <tr>
+                            <th style="width: 20%;">主要區域</th>
+                            <th style="width: 20%;">次要區域</th>
+                            <th style="width: 10%;">狀態</th>
+                            <th style="width: 10%;">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($serviceAreas as $index => $area)
                             <tr>
                                 <td>{{ $area->major_area }}</td>
                                 <td>{{ $area->minor_area }}</td>
@@ -74,21 +71,24 @@
                                         <button type="submit"
                                                 class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
                                                 title="刪除"
-                                                onclick="return confirm('確定要刪除這個項目嗎？')">
+                                                onclick="return confirm('確定要刪除這個地區嗎？')">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
                                 </td>
                             </tr>
                         @endforeach
-                    @endif
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mt-3 gap-2">
-                <span>每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，當前在第 <strong>{{ $serviceAreas->currentPage() }}</strong> 頁，共有 <strong>{{ $serviceAreas->total() }}</strong> 筆資料。</span>
-                <div>
+                <span>
+                    每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，
+                    當前在第 <strong>{{ $serviceAreas->currentPage() }}</strong> 頁，
+                    共有 <strong>{{ $serviceAreas->total() }}</strong> 筆資料。
+                </span>                <div>
                     {{ $serviceAreas->appends(request()->query())->links() }}
                 </div>
             </div>

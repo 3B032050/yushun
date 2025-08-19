@@ -31,7 +31,7 @@ class AdminEquipmentController extends Controller
             'name' => 'required|string|max:255',
             'quantity' => 'required|integer|min:1',
             'storage_location' => 'nullable|string|max:255',
-            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:5120',
         ]);
 
         try {

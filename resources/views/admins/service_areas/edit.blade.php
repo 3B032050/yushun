@@ -21,43 +21,92 @@
             </div>
         </div>
 
-        <div id="content" class="medium">
-            <div class="container d-flex justify-content-center align-items-center">
-                <div class="col-md-6 col-12">
-                    <h2 class="text-center mb-4">編輯服務地區</h2>
+        <div id="content" class="font-medium">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div class="card">
+                        <div class="card-header text-center">{{ __('編輯服務地區') }}</div>
 
-                    <form action="{{ route('admins.service_areas.update', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($service_area->id)]) }}" method="POST" role="form">
-                        @csrf
-                        @method('PATCH')
+                        <div class="card-body">
+                            @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
 
-                        <div class="form-group mb-3">
-                            <label for="major_area">縣市</label>
-                            <input type="text" class="form-control" id="major_area" name="major_area" value="{{ old('major_area', $service_area->major_area) }}" required>
+                            <form action="{{ route('admins.service_areas.update', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($service_area->id)]) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+
+                                <!-- 縣市 -->
+                                <div class="row mb-3">
+                                    <label for="major_area" class="col-md-4 col-form-label text-md-end">{{ __('縣市') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="major_area" type="text"
+                                               class="form-control @error('major_area') is-invalid @enderror"
+                                               name="major_area"
+                                               value="{{ old('major_area', $service_area->major_area) }}"
+                                               required placeholder="請輸入縣市" autofocus>
+                                        @error('major_area')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- 鄉鎮 -->
+                                <div class="row mb-3">
+                                    <label for="minor_area" class="col-md-4 col-form-label text-md-end">{{ __('鄉鎮') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="minor_area" type="text"
+                                               class="form-control @error('minor_area') is-invalid @enderror"
+                                               name="minor_area"
+                                               value="{{ old('minor_area', $service_area->minor_area) }}"
+                                               required placeholder="請輸入鄉鎮地區">
+                                        @error('minor_area')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- 區域類別 -->
+                                <div class="row mb-4">
+                                    <label class="col-md-4 col-form-label text-md-end">{{ __('區域類別') }}</label>
+                                    <div class="col-md-6 d-flex align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="egg_yolk_area" name="area_type" value="1"
+                                                   {{ old('area_type', $service_area->status) == 1 ? 'checked' : '' }} required>
+                                            <label class="form-check-label" for="egg_yolk_area">蛋黃區</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input type="radio" class="form-check-input" id="egg_white_area" name="area_type" value="0"
+                                                   {{ old('area_type', $service_area->status) == 0 ? 'checked' : '' }} required>
+                                            <label class="form-check-label" for="egg_white_area">蛋白區</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 按鈕 -->
+                                <div class="row mb-0">
+                                    <div class="col-md-8 offset-md-4 d-flex gap-2">
+                                        <button type="submit" class="btn btn-primary">{{ __('更新地區') }}</button>
+                                        <a href="{{ route('admins.service_areas.index') }}" class="btn btn-secondary">{{ __('返回') }}</a>
+                                    </div>
+                                </div>
+
+                            </form>
                         </div>
-
-                        <div class="form-group mb-3">
-                            <label for="minor_area">鄉鎮</label>
-                            <input type="text" class="form-control" id="minor_area" name="minor_area" value="{{ old('minor_area', $service_area->minor_area) }}" required>
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label>區域類別</label>
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" id="egg_yolk_area" name="area_type" value="1"
-                                       {{ old('area_type', $service_area->status) == 1 ? 'checked' : '' }} required>
-                                <label class="form-check-label" for="egg_yolk_area">蛋黃區</label>
-                            </div>
-                            <div class="form-check">
-                                <input type="radio" class="form-check-input" id="egg_white_area" name="area_type" value="0"
-                                       {{ old('area_type', $service_area->status) == 0 ? 'checked' : '' }} required>
-                                <label class="form-check-label" for="egg_white_area">蛋白區</label>
-                            </div>
-                        </div>
-
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary px-4">更新地區</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>

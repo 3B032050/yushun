@@ -5,15 +5,15 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.masters.index') }}">師傅管理</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"> 編輯師傅</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.masters.index') }}">師傅資料管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"> 編輯師傅資料</li>
                     </ol>
                 </nav>
-                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
+                <div class="btn-group btn-group-sm text-size-controls mt-2" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
@@ -21,71 +21,82 @@
             </div>
         </div>
 
-        <div id="content" class="medium">
+        <div id="content" class="font-medium">
             <div class="row justify-content-center">
-                <div class="col-md-8">
+                <div class="col-12 col-md-10 col-lg-8">
                     <div class="card">
-                        <div class="card-header text-center">{{ __('編輯師傅') }}</div>
+                        <div class="card-header text-center">{{ __('編輯師傅資料') }}</div>
 
                         <div class="card-body">
-                            <form method="POST" action="{{ route('admins.masters.update', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" enctype="multipart/form-data">
-                                @csrf
-                                @method('PATCH')
+                            @if(session('success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {{ session('success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
+                            @if ($errors->any())
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            @endif
 
-                                <!-- 名稱 -->
+                                <form method="POST" action="{{ route('admins.masters.update', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" enctype="multipart/form-data">
+                                    @csrf
+                                    @method('PATCH')
+
+
+                                    <!-- 名稱 -->
                                 <div class="row mb-3">
-                                    <label for="name" class="col-md-3 col-form-label text-md-end">
-                                        <span class="required">*</span>{{ __('名稱') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
+                                    <label for="storage_location" class="col-md-4 col-form-label text-md-end">{{ __('名稱') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="name" type="text"
+                                               class="form-control @error('name') is-invalid @enderror text-content"
                                                name="name" value="{{ old('name', $master->name) }}" required autocomplete="name"
                                                placeholder="請輸入師傅名稱" autofocus>
                                         @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                 </div>
 
                                 <!-- Email -->
                                 <div class="row mb-3">
-                                    <label for="email" class="col-md-3 col-form-label text-md-end">
-                                        <span class="required">*</span>{{ __('Email') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
-                                               name="email" value="{{ old('email', $master->email) }}" required placeholder="請輸入師傅Email">
+                                    <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="email" type="email"
+                                               class="form-control @error('email') is-invalid @enderror text-content"
+                                               name="email" value="{{ old('email', $master->email) }}" required
+                                               placeholder="請輸入師傅Email">
                                         @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                 </div>
 
                                 <!-- 電話 -->
                                 <div class="row mb-3">
-                                    <label for="phone" class="col-md-3 col-form-label text-md-end">
-                                        <span class="required">*</span>{{ __('電話') }}
-                                    </label>
-                                    <div class="col-md-9">
-                                        <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror"
-                                               name="phone" value="{{ old('phone', $master->phone) }}" required placeholder="請輸入師傅電話">
+                                    <label for="phone" class="col-md-4 col-form-label text-md-end">{{ __('電話') }}</label>
+                                    <div class="col-md-6">
+                                        <input id="phone" type="text"
+                                               class="form-control @error('phone') is-invalid @enderror text-content"
+                                               name="phone" value="{{ old('phone', $master->phone) }}" required
+                                               placeholder="請輸入師傅電話">
                                         @error('phone')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
                                     </div>
                                 </div>
 
+                                <!-- 儲存按鈕 -->
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">
-                                        <button type="submit" class="btn btn-primary">
-                                            {{ __('儲存') }}
-                                        </button>
+                                        <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
+                                        <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
                                     </div>
                                 </div>
                             </form>
@@ -94,30 +105,54 @@
                 </div>
             </div>
         </div>
-    </div>
 
-    <style>
-        .required {
-            color: red;
-            margin-left: 4px;
-            font-weight: bold;
-        }
-        .breadcrumb-path {
-            font-size: 1.4em;
-            white-space: normal;
-            word-break: break-word;
-        }
-
-        @media (max-width: 768px) {
+        <style>
             .breadcrumb-path {
                 font-size: 1.4em;
+                white-space: normal;
+                word-break: break-word;
             }
-        }
 
-        @media (max-width: 480px) {
-            .breadcrumb-path {
-                font-size: 1.2em;
+            @media (max-width: 768px) {
+                .breadcrumb-path {
+                    font-size: 1.4em;
+                }
             }
-        }
-    </style>
+
+            @media (max-width: 480px) {
+                .breadcrumb-path {
+                    font-size: 1.2em;
+                }
+            }
+            .required {
+                color: red;
+                margin-left: 5px;
+                font-weight: bold;
+            }
+
+            .font-small {
+                font-size: 0.85rem;
+            }
+
+            .font-medium {
+                font-size: 1rem;
+            }
+
+            .font-large {
+                font-size: 1.15rem;
+            }
+
+            .btn-group-sm .btn {
+                padding: 2px 6px;
+                font-size: 0.75rem;
+            }
+        </style>
+
+        <script>
+            function setFontSize(size) {
+                const content = document.getElementById('content');
+                content.classList.remove('font-small', 'font-medium', 'font-large');
+                content.classList.add('font-' + size);
+            }
+        </script>
 @endsection

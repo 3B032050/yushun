@@ -95,13 +95,13 @@ class AdminServiceAreaController extends Controller
         $request->validate([
             'major_area' => 'required|string',
             'minor_area' => 'required|string',
-            'area_type'  => 'required|in:egg_yolk,egg_white', // 限定只能選擇蛋黃區或蛋白區
+            'area_type'  => 'required|in:0,1',
         ]);
 
         $service_area->update([
             'major_area' => $request->major_area,
             'minor_area' => $request->minor_area,
-            'status'     => $request->area_type === 'egg_yolk' ? 1 : 0, // 蛋黃區=1，蛋白區=0
+            'status'     => (int)$request->area_type, // 直接存 0 或 1
         ]);
 
         return redirect()->route('admins.service_areas.index')->with('success', '地區更新成功');

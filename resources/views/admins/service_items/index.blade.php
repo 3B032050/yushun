@@ -23,19 +23,24 @@
             <h1 class="mt-3 text-center">服務項目管理</h1>
         </div>
 
-        <div class="table-responsive d-flex justify-content-center">
-            <div id="content" class="font-medium" style="width: 80%;">
-                <div class="d-flex justify-content-end mb-2">
-                    <a class="btn btn-success btn-sm" href="{{ route('admins.service_items.create') }}">新增服務項目</a>
-                </div>
-                <table class="table" id="sortable-list">
-                    <thead>
+        <div id="content" class="medium">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover w-100" id="sortable-list">
+                    <thead class="table-light">
+                    <tr>
+                        <td colspan="4"></td>
+                        <td class="text-center">
+                            <a class="btn btn-success btn-sm" href="{{ route('admins.service_items.create') }}">
+                                <i class="fa fa-plus"></i> 新增服務項目
+                            </a>
+                        </td>
+                    </tr>
                     <tr>
                         <th style="width: 5%;">#</th>
-                        <th style="width: 20%;">名稱</th>
-                        <th style="width: 10%;">說明</th>
+                        <th style="width: 10%;">名稱</th>
+                        <th style="width: 20%;">說明</th>
                         <th style="width: 10%;">價格</th>
-                        <th style="width: 20%;">操作</th>
+                        <th style="width: 10%;">操作</th>
                     </tr>
                     </thead>
                     <tbody>

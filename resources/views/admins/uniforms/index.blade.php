@@ -5,118 +5,141 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-            <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="d-flex justify-content-between align-items-center mt-2 flex-column flex-md-row">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
-                    <ol class="breadcrumb breadcrumb-path mb-0">
+                    <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item">
-                            <a href="{{ route('masters.index') }}">
-                                <i class="fa fa-home"></i>
-                            </a>
+                            <a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a>
                         </li>
-                        <li class="breadcrumb-item">
-                            <a href="{{ route('admins.uniforms.index') }}">制服管理</a>
-                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">制服管理</li>
                     </ol>
                 </nav>
-                <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
+                <div class="btn-group btn-group-sm text-size-controls" role="group" aria-label="字級調整">
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
-            <h2 class="mt-4 text-center">制服管理</h2>
+            <h1 class="mt-3 text-center">制服管理</h1>
         </div>
 
         <div id="content" class="medium">
-            <div class="table-responsive d-flex justify-content-center flex-column align-items-end mb-2" style="width: 80%; margin: 0 auto;">
-                <a href="{{ route('admins.uniforms.create') }}" class="btn btn-primary mb-2">新增制服</a>
-                <table class="table table-bordered w-100" id="sortable-list">
-                    <thead class="table-light text-center">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover w-100" id="sortable-list">
+                    <thead class="table-light">
                     <tr>
+                        <td colspan="5"></td>
+                        <td class="text-center">
+                            <a class="btn btn-success btn-sm" href="{{ route('admins.uniforms.create') }}">
+                                <i class="fa fa-plus"></i> 新增制服
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="text-center" style="width:5%;">#</th>
                         <th style="width: 15%;">師傅姓名</th>
                         <th style="width: 10%;">尺寸</th>
                         <th style="width: 10%;">數量</th>
                         <th style="width: 15%;">時間</th>
+                        <th class="text-center" colspan="2" style="width:10%;">操作</th>
                     </tr>
                     </thead>
-                    <tbody class="text-center">
-                    @forelse($rent_uniforms as $rent_uniform)
+                    <tbody>
+                    @foreach($rent_uniforms as $index => $rent_uniform)
                         <tr>
-                            <td class="align-middle">{{ $rent_uniform->master->name }}</td>
-                            <td class="align-middle">{{ $rent_uniform->size }}</td>
-                            <td class="align-middle">{{ $rent_uniform->quantity }}</td>
-                            <td class="align-middle">{{ $rent_uniform->created_at->format('Y-m-d') }}</td>
+                            <td class="text-center">{{ $index + 1 }}</td>
+                            <td class="text-center">{{ $rent_uniform->master->name }}</td>
+                            <td class="text-center">{{ $rent_uniform->size }}</td>
+                            <td class="text-center">{{ $rent_uniform->quantity }}</td>
+                            <td class="text-center">{{  $rent_uniform->created_at->format('Y-m-d') }}</td>
+                            <td colspan="2" class="text-center">
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <form id="deleteForm_{{ $rent_uniform->id }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($rent_uniform->id)]) }}" method="POST" style="margin:0;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $rent_uniform->name }}', {{ $rent_uniform->id }})">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center">尚無資料</td>
-                        </tr>
-                    @endforelse
+                    @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <style>
-        .breadcrumb-path {
-            font-size: 1.4em;
-            white-space: normal;
-            word-break: break-word;
-        }
-
-        @media (max-width: 768px) {
-            .breadcrumb-path {
-                font-size: 1.3em;
-            }
-            .text-size-controls {
-                margin-top: 0.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .breadcrumb-path {
-                font-size: 1.1em;
-            }
-            .d-flex.flex-column.flex-md-row > .btn-group {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        #content.font-small {
-            font-size: 14px;
-        }
-
-        #content.font-medium {
-            font-size: 16px;
-        }
-
-        #content.font-large {
-            font-size: 18px;
-        }
-
-        #content.font-small .table th,
-        #content.font-small .table td {
-            font-size: 0.85rem;
-        }
-
-        #content.font-medium .table th,
-        #content.font-medium .table td {
-            font-size: 1rem;
-        }
-
-        #content.font-large .table th,
-        #content.font-large .table td {
-            font-size: 1.15rem;
-        }
-    </style>
-
     <script>
+        function confirmDelete(name, id) {
+            if (confirm('確定要刪除師傅 ' + name + ' 的制服資料嗎？')) {
+                document.getElementById('deleteForm_' + id).submit();
+            }
+        }
+
         function setFontSize(size) {
             const content = document.getElementById('content');
-            content.classList.remove('font-small', 'font-medium', 'font-large');
-            content.classList.add(`font-${size}`);
+            content.classList.remove('small', 'medium', 'large');
+            content.classList.add(size);
         }
     </script>
 @endsection
+
+<style>
+    /* 麵包屑響應式字級與換行 */
+    .breadcrumb-path {
+        font-size: 1.4em;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    /* 表格與字級響應式 */
+    #sortable-list th:nth-child(2),
+    #sortable-list td:nth-child(2) {
+        min-width: 120px;
+    }
+
+    #sortable-list th, #sortable-list td {
+        vertical-align: middle;
+    }
+
+    /* 手機小螢幕字級調整 */
+    @media (max-width: 768px) {
+        .breadcrumb-path {
+            font-size: 1.2em;
+        }
+        #sortable-list {
+            min-width: 600px;
+        }
+        #sortable-list th, #sortable-list td {
+            font-size: 0.9em;
+        }
+        .text-size-controls .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.85em;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .breadcrumb-path {
+            font-size: 1em;
+        }
+        #sortable-list {
+            min-width: 500px;
+        }
+        #sortable-list th, #sortable-list td {
+            font-size: 0.8em;
+        }
+        /* 手機版字級按鈕組寬度縮小 */
+        .text-size-controls .btn {
+            padding: 0.2rem 0.4rem;
+            font-size: 0.75em;
+        }
+    }
+
+    /* 按鈕微調 */
+    .btn-sm {
+        line-height: 1.2;
+    }
+</style>
