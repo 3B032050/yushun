@@ -110,49 +110,7 @@
                 </div>
             </div>
         </div>
-
-        <style>
-            .breadcrumb-path {
-                font-size: 1.4em;
-                white-space: normal;
-                word-break: break-word;
-            }
-
-            @media (max-width: 768px) {
-                .breadcrumb-path {
-                    font-size: 1.4em;
-                }
-            }
-
-            @media (max-width: 480px) {
-                .breadcrumb-path {
-                    font-size: 1.2em;
-                }
-            }
-            .required {
-                color: red;
-                margin-left: 5px;
-                font-weight: bold;
-            }
-
-            .font-small {
-                font-size: 0.85rem;
-            }
-
-            .font-medium {
-                font-size: 1rem;
-            }
-
-            .font-large {
-                font-size: 1.15rem;
-            }
-
-            .btn-group-sm .btn {
-                padding: 2px 6px;
-                font-size: 0.75rem;
-            }
-        </style>
-
+        
         <script>
             function previewImage(input) {
                 const preview = document.getElementById('image-preview');

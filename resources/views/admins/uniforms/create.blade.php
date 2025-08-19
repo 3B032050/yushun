@@ -63,7 +63,12 @@
                                 <input type="number" name="quantity" id="quantity" class="form-control" min="1" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">新增</button>
+                            <div class="row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
+                                    <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
