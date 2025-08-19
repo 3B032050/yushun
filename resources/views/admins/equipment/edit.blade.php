@@ -9,8 +9,8 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.equipment.index') }}">設備管理</a></li>
-                        <li class="breadcrumb-item active" aria-current="page"> 編輯設備</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.equipment.index') }}">設備資料管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page"> 編輯設備資料</li>
                     </ol>
                 </nav>
                 <div class="btn-group btn-group-sm text-size-controls mt-2" role="group" aria-label="字級調整">
@@ -25,7 +25,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     <div class="card">
-                        <div class="card-header text-center">{{ __('編輯設備') }}</div>
+                        <div class="card-header text-center">{{ __('編輯設備資料') }}</div>
 
                         <div class="card-body">
                             @if(session('success'))

@@ -55,7 +55,7 @@
                                     <i class="fa-regular fa-calendar-plus fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>設備管理</h3>
+                                    <h3>設備資料管理</h3>
                                 </div>
                             </a>
                         </div>
@@ -65,7 +65,7 @@
                                     <i class="fa-solid fa-chart-area fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>服務項目管理</h3>
+                                    <h3>服務項目資料管理</h3>
                                 </div>
                             </a>
                         </div>
@@ -75,7 +75,7 @@
                                     <i class="fa-sharp fa-solid fa-address-book fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>服務地區管理</h3>
+                                    <h3>服務地區資料管理</h3>
                                 </div>
                             </a>
                         </div>
@@ -85,7 +85,7 @@
                                     <i class="fa-sharp fa-solid fa-shirt fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>制服管理</h3>
+                                    <h3>制服資料管理</h3>
                                 </div>
                             </a>
                         </div>

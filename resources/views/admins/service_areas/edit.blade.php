@@ -9,8 +9,8 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區管理</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">編輯服務地區</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區資料管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">編輯服務地區資料</li>
                     </ol>
                 </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -25,7 +25,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     <div class="card">
-                        <div class="card-header text-center">{{ __('編輯服務地區') }}</div>
+                        <div class="card-header text-center">{{ __('編輯服務地區資料') }}</div>
 
                         <div class="card-body">
                             @if(session('success'))

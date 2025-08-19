@@ -9,8 +9,8 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path mb-0">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區管理</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">新增服務地區</li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.service_areas.index') }}">服務地區資料管理</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">新增服務地區資料</li>
                     </ol>
                 </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -25,7 +25,7 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     <div class="card">
-                        <div class="card-header text-center">{{ __('新增服務地區') }}</div>
+                        <div class="card-header text-center">{{ __('新增服務地區資料') }}</div>
 
                         <div class="card-body">
                             @if(session('success'))
@@ -64,10 +64,10 @@
 
                                 <!-- 鄉鎮 -->
                                 <div class="row mb-3">
-                                    <label for="storage_location" class="col-md-4 col-form-label text-md-end">{{ __('鄉鎮') }}</label>
+                                    <label for="minor_area" class="col-md-4 col-form-label text-md-end">{{ __('鄉鎮地區') }}</label>
                                     <div class="col-md-6">
-                                        <input id="minor_area" type="number" class="form-control @error('minor_area') is-invalid @enderror"
-                                               name="minor_area" value="{{ old('minor_area') }}" required placeholder="請輸鄉鎮地區">
+                                        <input id="minor_area" type="text" class="form-control @error('minor_area') is-invalid @enderror"
+                                               name="minor_area" value="{{ old('minor_area') }}" required placeholder="請輸入鄉鎮地區">
                                         @error('minor_area')
                                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror

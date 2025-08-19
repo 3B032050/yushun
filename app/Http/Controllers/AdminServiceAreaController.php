@@ -6,6 +6,7 @@ use App\Models\AdminServiceArea;
 use App\Http\Requests\StoreserviceareaRequest;
 use App\Http\Requests\UpdateserviceareaRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Vinkla\Hashids\Facades\Hashids;
 
 class AdminServiceAreaController extends Controller
@@ -32,19 +33,37 @@ class AdminServiceAreaController extends Controller
      */
     public function store(Request $request)
     {
+        // 先做字串標準化（去頭尾空白）
+        $major = trim((string)$request->major_area);
+        $minor = trim((string)$request->minor_area);
+
+        $request->merge([
+            'major_area' => $major,
+            'minor_area' => $minor,
+        ]);
+
         $request->validate([
-            'major_area' => 'required|string',
-            'minor_area' => 'required|string',
-            'area_type'  => 'required|in:egg_yolk,egg_white', // 確保只能擇一
+            'major_area' => [
+                'required','string',
+            ],
+            'minor_area' => [
+                'required','string',
+                Rule::unique('admin_service_areas', 'minor_area')
+                    ->where(fn($q) => $q->where('major_area', $major)),
+            ],
+            'area_type'  => 'required|in:egg_yolk,egg_white',
+        ], [
+            'minor_area.unique' => '相同縣市下的這個鄉鎮地區已存在。',
         ]);
 
         AdminServiceArea::create([
-            'major_area' => $request->major_area,
-            'minor_area' => $request->minor_area,
-            'status'     => $request->area_type === 'egg_yolk' ? 1 : 0, // 蛋黃區=1, 蛋白區=0
+            'major_area' => $major,
+            'minor_area' => $minor,
+            'status'     => $request->area_type === 'egg_yolk' ? 1 : 0,
         ]);
 
-        return redirect()->route('admins.service_areas.index');
+        return redirect()->route('admins.service_areas.index')
+            ->with('success', '新增成功');
     }
 
 

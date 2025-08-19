@@ -13,9 +13,9 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ route('admins.uniforms.index') }}">制服管理</a>
+                        <a href="{{ route('admins.uniforms.index') }}">制服資料管理</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">新增制服</li>
+                    <li class="breadcrumb-item active" aria-current="page">新增制服資料</li>
                 </ol>
             </nav>
             <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -29,7 +29,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">新增制服</div>
+                    <div class="card-header">新增制服資料</div>
                     <div class="card-body">
                         @if(session('error'))
                             <div class="alert alert-danger">{{ session('error') }}</div>

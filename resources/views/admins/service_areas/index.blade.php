@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item">服務地區管理</li>
+                        <li class="breadcrumb-item">服務地區資料管理</li>
                     </ol>
                 </nav>
                 <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -18,7 +18,7 @@
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
-            <h1 class="mt-4 text-center">服務地區</h1>
+            <h1 class="mt-4 text-center">服務地區資料管理</h1>
         </div>
 
         <div id="content" class="medium container-fluid px-3 px-md-4">
@@ -45,9 +45,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <th style="width: 20%;">主要區域</th>
-                            <th style="width: 20%;">次要區域</th>
-                            <th style="width: 10%;">狀態</th>
+                            <th style="width: 20%;">縣市</th>
+                            <th style="width: 20%;">鄉鎮地區</th>
+                            <th style="width: 10%;">區域類別</th>
                             <th style="width: 10%;">操作</th>
                         </tr>
                         </thead>

@@ -15,6 +15,9 @@ class AdminServiceArea extends Model
         'minor_area',
         'status',
     ];
+    protected $casts = [
+        'status' => 'boolean'
+    ];
     // AdminServiceArea 模型
     public function masterearea()
     {
