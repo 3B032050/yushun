@@ -3,6 +3,7 @@
 @section('title', '豫順家居媒合服務平台')
 
 @section('content')
+
     <div class="content-wrapper">
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2 flex-column flex-md-row">
@@ -20,7 +21,7 @@
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
             </div>
-            <h1 class="mt-3 text-center">師傅資料管理</h1>
+            <h1 class="mt-4 text-center">師傅資料管理</h1>
         </div>
 
         <div id="content" class="medium">
@@ -31,7 +32,7 @@
                         <td colspan="6"></td>
                         <td class="text-center">
                             <a class="btn btn-success btn-sm" href="{{ route('admins.masters.create') }}">
-                                <i class="fa fa-plus"></i> 新增師傅
+                                <i class="fa fa-plus"></i> 新增師傅資料
                             </a>
                         </td>
                     </tr>
@@ -90,60 +91,3 @@
     </script>
 @endsection
 
-<style>
-    /* 麵包屑響應式字級與換行 */
-    .breadcrumb-path {
-        font-size: 1.4em;
-        white-space: normal;
-        word-break: break-word;
-    }
-
-    /* 表格與字級響應式 */
-    #sortable-list th:nth-child(2),
-    #sortable-list td:nth-child(2) {
-        min-width: 120px;
-    }
-
-    #sortable-list th, #sortable-list td {
-        vertical-align: middle;
-    }
-
-    /* 手機小螢幕字級調整 */
-    @media (max-width: 768px) {
-        .breadcrumb-path {
-            font-size: 1.2em;
-        }
-        #sortable-list {
-            min-width: 600px;
-        }
-        #sortable-list th, #sortable-list td {
-            font-size: 0.9em;
-        }
-        .text-size-controls .btn {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.85em;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .breadcrumb-path {
-            font-size: 1em;
-        }
-        #sortable-list {
-            min-width: 500px;
-        }
-        #sortable-list th, #sortable-list td {
-            font-size: 0.8em;
-        }
-        /* 手機版字級按鈕組寬度縮小 */
-        .text-size-controls .btn {
-            padding: 0.2rem 0.4rem;
-            font-size: 0.75em;
-        }
-    }
-
-    /* 按鈕微調 */
-    .btn-sm {
-        line-height: 1.2;
-    }
-</style>
