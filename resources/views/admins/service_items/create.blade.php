@@ -38,7 +38,7 @@
                                 <!-- 名稱 -->
                                 <div class="row mb-3">
                                     <label for="name" class="col-md-4 col-form-label text-md-end">
-                                        <span class="required">*</span>{{ __('名稱 / Name') }}
+                                        {{ __('名稱') }}
                                     </label>
                                     <div class="col-md-6">
                                         <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
@@ -52,11 +52,11 @@
                                 <!-- 描述 -->
                                 <div class="row mb-3">
                                     <label for="description" class="col-md-4 col-form-label text-md-end">
-                                        <span class="required">*</span>{{ __('描述 / Description') }}
+                                        {{ __('服務項目說明') }}
                                     </label>
                                     <div class="col-md-6">
                                         <textarea id="description" class="form-control @error('description') is-invalid @enderror"
-                                                  name="description" required placeholder="請輸入項目內容">{{ old('description') }}</textarea>
+                                                  name="description" required placeholder="請輸入服務項目說明">{{ old('description') }}</textarea>
                                         @error('description')
                                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
@@ -66,11 +66,12 @@
                                 <!-- 價格 -->
                                 <div class="row mb-3">
                                     <label for="price" class="col-md-4 col-form-label text-md-end">
-                                        <span class="required">*</span>{{ __('價格 / Price') }}
+                                        {{ __('價格') }}
                                     </label>
                                     <div class="col-md-6">
-                                        <input id="price" type="text" class="form-control @error('price') is-invalid @enderror"
-                                               name="price" value="{{ old('price') }}" required placeholder="請輸入價格">
+                                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}"
+                                               required placeholder="請輸入價格(上限19999)" min="0" max="19999" step="1" inputmode="numeric"
+                                               oninput="this.value = this.value.replace(/[^0-9]/g,''); if (this.value !== '' && +this.value > 19999) this.value = 19999;">
                                         @error('price')
                                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror

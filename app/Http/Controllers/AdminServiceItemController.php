@@ -34,6 +34,15 @@ class AdminServiceItemController extends Controller
      */
     public function store(StoreserviceitemRequest $request)
     {
+        $request->validate([
+            'name'        => ['required','string'],
+            'description' => ['required','string'],
+            'price'       => ['required','integer','min:0','max:19999'],
+        ], [
+            'price.integer' => '價格必須是整數',
+            'price.min'     => '價格不得小於 0',
+            'price.max'     => '價格不得大於 19999',
+        ]);
         $item = new AdminServiceItem;
 
         $item->name = $request->name;
@@ -77,6 +86,15 @@ class AdminServiceItemController extends Controller
      */
     public function update(UpdateserviceitemRequest $request,  $hash_service_item)
     {
+        $request->validate([
+            'name'        => ['required','string'],
+            'description' => ['required','string'],
+            'price'       => ['required','integer','min:0','max:19999'],
+        ], [
+            'price.integer' => '價格必須是整數',
+            'price.min'     => '價格不得小於 0',
+            'price.max'     => '價格不得大於 19999',
+        ]);
         $id = Hashids::decode($hash_service_item)[0] ?? null;
 
         if (!$id) {

@@ -38,7 +38,7 @@
                     <tr>
                         <th style="width: 5%;">#</th>
                         <th style="width: 10%;">名稱</th>
-                        <th style="width: 20%;">說明</th>
+                        <th style="width: 20%;">服務項目說明</th>
                         <th style="width: 10%;">價格</th>
                         <th style="width: 10%;">操作</th>
                     </tr>
