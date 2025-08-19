@@ -64,10 +64,10 @@
 
                                 <!-- 鄉鎮 -->
                                 <div class="row mb-3">
-                                    <label for="storage_location" class="col-md-4 col-form-label text-md-end">{{ __('鄉鎮') }}</label>
+                                    <label for="minor_area" class="col-md-4 col-form-label text-md-end">{{ __('鄉鎮地區') }}</label>
                                     <div class="col-md-6">
-                                        <input id="minor_area" type="number" class="form-control @error('minor_area') is-invalid @enderror"
-                                               name="minor_area" value="{{ old('minor_area') }}" required placeholder="請輸鄉鎮地區">
+                                        <input id="minor_area" type="text" class="form-control @error('minor_area') is-invalid @enderror"
+                                               name="minor_area" value="{{ old('minor_area') }}" required placeholder="請輸入鄉鎮地區">
                                         @error('minor_area')
                                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                                         @enderror
