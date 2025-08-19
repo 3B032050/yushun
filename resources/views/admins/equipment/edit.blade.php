@@ -5,7 +5,6 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-fluid px-4">
-<<<<<<< HEAD
             <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
                     <ol class="breadcrumb breadcrumb-path">
@@ -19,20 +18,6 @@
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
                     <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
                 </div>
-=======
-            <div class="d-flex justify-content-between align-items-center">
-                <nav aria-label="breadcrumb" class="mb-2 mb-md-0">
-                    <ol class="breadcrumb breadcrumb-path">
-                    <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admins.equipment.index') }}">設備管理</a></li>
-                    <li class="breadcrumb-item active" aria-current="page"> 編輯設備</li>
-                </ol>
-            </nav>
-            <div class="btn-group btn-group-sm text-size-controls" role="group" aria-label="字級調整">
-                <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('small')">小</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('medium')">中</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="setFontSize('large')">大</button>
->>>>>>> refs/remotes/origin/master
             </div>
         </div>
 

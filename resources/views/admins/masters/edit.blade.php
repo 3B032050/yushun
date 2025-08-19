@@ -94,17 +94,9 @@
 
                                 <!-- 儲存按鈕 -->
                                 <div class="row mb-0">
-<<<<<<< HEAD
                                     <div class="col-md-8 offset-md-4">
                                         <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
                                         <button type="button" class="btn btn-secondary" onclick="history.back();">{{ __('返回') }}</button>
-=======
-                                    <div class="col-12 d-flex justify-content-center gap-2">
-                                        <button type="submit" class="btn btn-primary">{{ __('儲存') }}</button>
-                                        <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                                            {{ __('取消') }}
-                                        </button>
->>>>>>> refs/remotes/origin/master
                                     </div>
                                 </div>
                             </form>
@@ -114,7 +106,6 @@
             </div>
         </div>
 
-<<<<<<< HEAD
         <style>
             .breadcrumb-path {
                 font-size: 1.4em;
@@ -164,7 +155,4 @@
                 content.classList.add('font-' + size);
             }
         </script>
-=======
-
->>>>>>> refs/remotes/origin/master
 @endsection

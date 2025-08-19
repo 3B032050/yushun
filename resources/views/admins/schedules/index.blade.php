@@ -9,7 +9,7 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb breadcrumb-path">
                         <li class="breadcrumb-item"><a href="{{ route('masters.index') }}"><i class="fa fa-home"></i></a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.schedules.index') }}">排程管理</a></li>
+                        <li class="breadcrumb-item">排程管理</li>
                     </ol>
                 </nav>
             </div>

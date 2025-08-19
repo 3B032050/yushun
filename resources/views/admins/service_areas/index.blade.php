@@ -89,16 +89,6 @@
                 </div>
             </div>
 
-<<<<<<< HEAD
-            <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mt-3 gap-2">
-                <span>
-                    每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，
-                    當前在第 <strong>{{ $serviceAreas->currentPage() }}</strong> 頁，
-                    共有 <strong>{{ $serviceAreas->total() }}</strong> 筆資料。
-                </span>                <div>
-                    {{ $serviceAreas->appends(request()->query())->links() }}
-                </div>
-=======
             <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mt-3 gap-2 text-center">
                 <span>
                     每頁顯示 <strong>{{ $serviceAreas->perPage() }}</strong> 筆資料，
@@ -109,7 +99,7 @@
 
             <div class="d-flex justify-content-center mt-2">
                 {{ $serviceAreas->appends(request()->query())->links('pagination::bootstrap-4') }}
->>>>>>> refs/remotes/origin/master
+
             </div>
         </div>
     </div>
