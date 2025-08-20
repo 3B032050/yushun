@@ -104,6 +104,7 @@ class AdminEquipmentController extends Controller
 
         $equipment->name = $request->name;
         $equipment->quantity = $request->quantity;
+        $equipment->storage_location = $request->storage_location;
         $equipment->save();
 
         return redirect()->route('admins.equipment.index');

@@ -65,7 +65,7 @@
                                     <i class="fa-regular fa-calendar-plus fa-3x"></i>
                                 </div>
                                 <div>
-                                    <h3>設備資料管理</h3>
+                                    <h3>設備狀態資訊管理</h3>
                                 </div>
                             </a>
                         </div>
