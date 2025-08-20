@@ -23,24 +23,6 @@
             <h1 class="mt-4 text-center">客戶資料管理</h1>
         </div>
 
-        <div id="content" class="medium">
-            {{-- 成功 / 錯誤訊息 --}}
-            @if(session('success'))
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    {{ session('success') }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
-            @if ($errors->any())
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <ul class="mb-0">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            @endif
 
             <div class="table-responsive">
                 <table class="table table-bordered table-hover w-100" id="sortable-list">
