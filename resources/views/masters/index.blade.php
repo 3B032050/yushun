@@ -50,6 +50,16 @@
                             </a>
                         </div>
                         <div class="col-6 mb-3">
+                            <a href="{{ route('admins.users.index') }}" class="button-name w-100 text-decoration-none">
+                                <div>
+                                    <i class="fa-solid fa-file-invoice-dollar fa-3x"></i>
+                                </div>
+                                <div>
+                                    <h3>客戶資料管理</h3>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-6 mb-3">
                             <a href="{{ route('admins.equipment.index') }}" class="button-name w-100 text-decoration-none">
                                 <div>
                                     <i class="fa-regular fa-calendar-plus fa-3x"></i>

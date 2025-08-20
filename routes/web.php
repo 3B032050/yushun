@@ -136,6 +136,15 @@ Route::group(['middleware' => ['auth:master', 'master.verified']], function () {
         Route::patch('/masters/update/{hash_master}', [App\Http\Controllers\AdminMasterController::class, 'update'])->name('masters.update');
         Route::delete('/masters/destroy/{hash_master}', [App\Http\Controllers\AdminMasterController::class, 'destroy'])->name('masters.destroy');
 
+        // 使用者管理
+        Route::get('/users/index', [App\Http\Controllers\AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/create',[App\Http\Controllers\AdminUserController::class,'create'])->name('users.create');
+        Route::post('/users/store', [App\Http\Controllers\AdminUserController::class, 'store'])->name("users.store");
+        Route::get('/users/edit/{hash_user}', [App\Http\Controllers\AdminUserController::class, 'edit'])->name('users.edit');
+        Route::patch('/users/update/{hash_user}', [App\Http\Controllers\AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('/users/destroy/{hash_user}', [App\Http\Controllers\AdminUserController::class, 'destroy'])->name('users.destroy');
+
+
         Route::get('schedules/index', [App\Http\Controllers\AdminScheduleController::class, 'index'])->name('schedules.index');
         Route::get('schedules/getScheduleData', [App\Http\Controllers\AdminScheduleController::class, 'getScheduleData'])->name('schedules.getScheduleData');
     });
