@@ -88,20 +88,24 @@ class AdminMasterController extends Controller
      */
     public function edit($hash_master)
     {
-        $id = Hashids::decode($hash_master)[0] ?? null;
+        try {
+            $id = Hashids::decode($hash_master)[0] ?? null;
 
-        if (!$id) {
-            abort(404); // 無效 ID
+            if (!$id) {
+                abort(404); // 無效 ID
+            }
+
+            $master = Master::findOrFail($id);
+
+            return view('admins.masters.edit', [
+                'master' => $master,
+            ]);
+
+        } catch (\Exception $e) {
+            return back()->with('error', '讀取資料時發生錯誤：' . $e->getMessage());
         }
-
-        $master = Master ::findOrFail($id);
-
-        $data = [
-            'master'=> $master,
-        ];
-
-        return view('admins.masters.edit',$data);
     }
+
 
     /**
      * Update the specified resource in storage.

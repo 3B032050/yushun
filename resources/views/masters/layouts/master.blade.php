@@ -36,34 +36,41 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        @if(session()->has('success'))
+        const swalTarget = document.body;
+
+        @if(session()->has('success') && session('success'))
         Swal.fire({
             icon: 'success',
             title: '成功',
-            text: "{{ session()->pull('success') }}",
-            confirmButtonText: '確定'
+            text: "{{ session('success') }}",
+            confirmButtonText: '確定',
+            target: swalTarget
         });
         @endif
 
-        @if(session()->has('validation_errors'))
+        @if(session()->has('validation_errors') && is_array(session('validation_errors')) && count(session('validation_errors')) > 0)
+        let errors = @json(session('validation_errors')); // 安全轉為 JS array
         Swal.fire({
             icon: 'error',
             title: '驗證失敗',
-            html: `{!! collect(session()->pull('validation_errors'))->map(function($e){ return e($e); })->implode('<br>') !!}`,
-            confirmButtonText: '確定'
+            html: errors.map(e => e).join('<br>'),
+            confirmButtonText: '確定',
+            target: swalTarget
         });
         @endif
 
-        @if(session()->has('error'))
+        @if(session()->has('error') && session('error'))
         Swal.fire({
             icon: 'error',
             title: '錯誤',
-            text: "{{ session()->pull('error') }}",
-            confirmButtonText: '確定'
+            text: "{{ session('error') }}",
+            confirmButtonText: '確定',
+            target: swalTarget
         });
         @endif
     });
 </script>
+
 
 
 

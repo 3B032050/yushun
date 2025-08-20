@@ -64,16 +64,22 @@
                                 </div>
 
                                 <!-- 設備數量 -->
-                                <div class="row mb-3">
-                                    <label for="storage_location" class="col-md-4 col-form-label text-md-end">{{ __('數量') }}</label>
-                                    <div class="col-md-6">
-                                        <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror"
-                                               name="quantity" value="{{ old('quantity',$equipment->quantity) }}" required placeholder="請輸入設備數量">
-                                        @error('quantity')
-                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                        @enderror
+                                    <div class="row mb-3">
+                                        <label for="storage_location" class="col-md-4 col-form-label text-md-end">{{ __('數量') }}</label>
+                                        <div class="col-md-6">
+                                            <input id="quantity" type="number" class="form-control @error('quantity') is-invalid @enderror"
+                                                   name="quantity" value="{{ old('quantity', $equipment->quantity ?? 1) }}" required
+                                                   placeholder="請輸入設備數量(最少1)" min="1" step="1" inputmode="numeric"
+                                                   oninput="
+                                                   let v = parseInt(this.value);
+                                                   if (!isNaN(v) && v < 1) this.value = 1;
+                                               ">
+                                            @error('quantity')
+                                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                            @enderror
+
+                                        </div>
                                     </div>
-                                </div>
 
                                 <!-- 倉儲位置 -->
                                 <div class="row mb-3">
