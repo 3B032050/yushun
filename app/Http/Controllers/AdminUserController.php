@@ -33,8 +33,16 @@ class AdminUserController extends Controller
             $validated = $request->validate([
                 'name'     => 'required|string|max:255',
                 'email'    => 'required|email|max:150|unique:users,email',
-                'phone'    => ['nullable','string','max:30', Rule::unique('users','phone')],
-                'mobile'   => ['nullable','string','max:30', Rule::unique('users','mobile')],
+                'phone' => [
+                    'nullable',
+                    'regex:/^0\d{1,3}-\d{5,8}$/',
+                    Rule::unique('users','phone'),
+                ],
+                'mobile' => [
+                    'nullable',
+                    'regex:/^09\d{8}$/',
+                    Rule::unique('users','mobile'),
+                ],
                 'address'  => 'nullable|string|max:255',
                 'line_id'  => 'nullable|string|max:100',
             ], [
@@ -43,6 +51,8 @@ class AdminUserController extends Controller
                 'email.email'        => 'Email 格式錯誤',
                 'email.unique'       => '該 Email 已存在',
                 'phone.unique'       => '電話已被使用',
+                'phone.regex'        => '電話號碼格式錯誤，格式應為「區碼-號碼」',
+                'mobile.regex'       => '手機號碼格式錯誤，須為 09 開頭共 10 碼',
                 'mobile.unique'      => '手機已被使用',
             ]);
 
@@ -57,8 +67,6 @@ class AdminUserController extends Controller
                 'is_recurring' => $validated['is_recurring'],
             ]);
 
-            // 如有啟用驗證可開：$user->sendEmailVerificationNotification();
-
             return redirect()->route('admins.users.index')->with('success', '使用者新增成功');
         } catch (ValidationException $e) {
             return back()->withInput()->with('validation_errors', $e->validator->errors()->all());
@@ -66,6 +74,7 @@ class AdminUserController extends Controller
             return back()->withInput()->with('error', '系統發生錯誤，請稍後再試');
         }
     }
+
 
     /** 編輯表單 */
     public function edit($hash_user)
@@ -97,21 +106,35 @@ class AdminUserController extends Controller
             ]);
 
             $validated = $request->validate([
-                'name'     => 'required|string|max:255',
-                'email'    => ['required','email','max:150', Rule::unique('users','email')->ignore($user->id)],
-                'phone'    => ['nullable','string','max:30', Rule::unique('users','phone')->ignore($user->id)],
-                'mobile'   => ['string','max:30', Rule::unique('users','mobile')->ignore($user->id)],
-                'address'  => 'nullable|string|max:255',
-                'line_id'  => 'nullable|string|max:100',
+                'name'   => 'required|string|max:255',
+                'email'  => [
+                    'required',
+                    'email',
+                    'max:150',
+                    Rule::unique('users', 'email')->ignore($id),
+                ],
+                'phone' => [
+                    'nullable',
+                    'regex:/^0\d{1,3}-\d{5,8}$/',
+                    Rule::unique('users', 'phone')->ignore($id),
+                ],
+                'mobile' => [
+                    'nullable',
+                    'regex:/^09\d{8}$/',
+                    Rule::unique('users', 'mobile')->ignore($id),
+                ],
+                'address' => 'nullable|string|max:255',
+                'line_id' => 'nullable|string|max:100',
             ], [
                 'name.required'  => '名稱為必填項目',
                 'email.required' => 'Email 為必填項目',
                 'email.email'    => 'Email 格式錯誤',
                 'email.unique'   => '該 Email 已存在',
                 'phone.unique'   => '電話已被使用',
+                'phone.regex'    => '電話號碼格式錯誤，格式應為「區碼-號碼」',
+                'mobile.regex'   => '手機號碼格式錯誤，須為 09 開頭共 10 碼',
                 'mobile.unique'  => '手機已被使用',
             ]);
-
             // 組 payload
             $payload = [
                 'name'    => $validated['name'],

@@ -29,8 +29,8 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             //'email_verified_at' => now(),
-            'password' => Hash::make($phone),  // 使用電話號碼作為密碼
-            'phone' => $phone,  // 設定電話欄位
+            'password' => Hash::make($phone),  // 使用手機號碼作為密碼
+            'mobile' => $phone,  // 設定手機欄位
             'address'=> fake()->address(),
             'remember_token' => Str::random(10),
 

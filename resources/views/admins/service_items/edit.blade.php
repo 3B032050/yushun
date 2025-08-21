@@ -73,8 +73,8 @@
                                         {{ __('價格') }}
                                     </label>
                                     <div class="col-md-6">
-                                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price') }}"
-                                               required placeholder="請輸入價格(上限19999)" min="0" max="19999" step="1" inputmode="numeric"
+                                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror" name="price" value="{{ old('price', $service_item->price) }}"
+                                               required placeholder="請輸入價格(上限19999)" min="1" max="19999" step="1" inputmode="numeric"
                                                oninput="this.value = this.value.replace(/[^0-9]/g,''); if (this.value !== '' && +this.value > 19999) this.value = 19999;">
                                         @error('price')
                                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>

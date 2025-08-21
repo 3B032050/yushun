@@ -22,9 +22,9 @@ use App\Http\Controllers\Auth\GoogleController;
 //Route::get('/', function () {
 //    return view('index');
 //});
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::get('/index', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('index');
+Route::get('/', function () {
+    return redirect()->route('login'); // Laravel 預設登入頁
+});
 
 Route::get('login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [App\Http\Controllers\Auth\LoginController::class, 'login']);
