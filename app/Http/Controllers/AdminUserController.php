@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
@@ -80,7 +81,9 @@ class AdminUserController extends Controller
                 'line_id'      => $validated['line_id'] ?? null,
                 'is_recurring' => (int)$validated['is_recurring'],
             ]);
-
+            if (! $user->hasVerifiedEmail()) {
+                $user->sendEmailVerificationNotification();
+            }
             return redirect()
                 ->route('admins.users.index')
                 ->with('success', '使用者新增成功');
@@ -167,7 +170,7 @@ class AdminUserController extends Controller
                 'is_recurring.required' => '請選擇客戶類型',
                 'is_recurring.in'       => '客戶類型不正確',
             ]);
-
+            $emailChanged = $user->email !== $validated['email'];
             // 組 payload
             $payload = [
                 'name'         => $validated['name'],
@@ -185,7 +188,18 @@ class AdminUserController extends Controller
             }
 
             $user->update($payload);
+            // 如果 Email 有變更，重設驗證狀態並寄出驗證信
+            if ($emailChanged) {
+                $user->forceFill(['email_verified_at' => null])->save();
 
+
+                $freshuser = $user->fresh(); // 確保資料最新
+                $freshuser->sendEmailVerificationNotification();
+
+                Auth::guard('user')->logout();
+
+                // return redirect()->route('login')->with('warning', '您的信箱已更新，請重新登入並驗證新信箱。');
+            }
             return redirect()
                 ->route('admins.users.index')
                 ->with('success', '使用者資料更新成功');

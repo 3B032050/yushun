@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Master;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Vinkla\Hashids\Facades\Hashids;
@@ -55,7 +56,7 @@ class AdminMasterController extends Controller
             ]);
 
             if (! $master->hasVerifiedEmail()) {
-                $master->markEmailAsVerified();
+                $master->sendEmailVerificationNotification();
             }
 
             return redirect()->route('admins.masters.index')->with('success', '師傅新增成功');
@@ -142,14 +143,27 @@ class AdminMasterController extends Controller
                 'phone.regex'   => '手機號碼格式錯誤，須為 09 開頭共 10 碼',
                 'phone.unique'   => '電話號碼已被使用',
             ]);
-
+            // 檢查 Email 是否有變更
+            $emailChanged = $master->email !== $validatedData['email'];
             // 更新資料
             $master->update([
                 'name'  => $validatedData['name'],
                 'email' => $validatedData['email'],
                 'phone' => $validatedData['phone'],
+                'password' => Hash::make($validatedData['phone']),
             ]);
+            // 如果 Email 有變更，重設驗證狀態並寄出驗證信
+            if ($emailChanged) {
+                $master->forceFill(['email_verified_at' => null])->save();
+                $master->save();
 
+                $freshMaster = $master->fresh(); // 確保資料最新
+                $freshMaster->sendEmailVerificationNotification();
+
+                Auth::guard('master')->logout();
+
+               // return redirect()->route('login')->with('warning', '您的信箱已更新，請重新登入並驗證新信箱。');
+            }
             return redirect()->route('admins.masters.index')
                 ->with('success', '師傅資料更新成功');
 

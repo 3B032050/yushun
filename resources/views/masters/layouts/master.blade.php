@@ -33,44 +33,6 @@
 <div class="content-wrapper">
     @yield('content')
 </div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const swalTarget = document.body;
-
-        @if(session()->has('success') && session('success'))
-        Swal.fire({
-            icon: 'success',
-            title: '成功',
-            text: "{{ session('success') }}",
-            confirmButtonText: '確定',
-            target: swalTarget
-        });
-        @endif
-
-        @if(session()->has('validation_errors') && is_array(session('validation_errors')) && count(session('validation_errors')) > 0)
-        let errors = @json(session('validation_errors')); // 安全轉為 JS array
-        Swal.fire({
-            icon: 'error',
-            title: '驗證失敗',
-            html: errors.map(e => e).join('<br>'),
-            confirmButtonText: '確定',
-            target: swalTarget
-        });
-        @endif
-
-        @if(session()->has('error') && session('error'))
-        Swal.fire({
-            icon: 'error',
-            title: '錯誤',
-            text: "{{ session('error') }}",
-            confirmButtonText: '確定',
-            target: swalTarget
-        });
-        @endif
-    });
-</script>
-
 
 
 
@@ -236,5 +198,44 @@
                     }
                 });
             </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const showAlert = (icon, title, text, callback) => {
+            if (!document.body) return; // 安全檢查
+            Swal.fire({
+                icon: icon,
+                title: title,
+                html: text, // 用 html 可以支援 <br>
+                confirmButtonText: '確定',
+                target: document.body // 明確指定 body
+            }).then(() => {
+                if (callback) callback();
+            });
+        };
+
+        @if(session('success'))
+        showAlert('success', '成功', @json(session('success')));
+        @endif
+
+        @if(session()->has('validation_errors') && is_array(session('validation_errors')) && count(session('validation_errors')) > 0)
+        let errors = @json(session('validation_errors')).map(e => e).join('<br>');
+        showAlert('error', '驗證失敗', errors);
+        @endif
+
+        @if(session('error'))
+        showAlert('error', '錯誤', @json(session('error')));
+        @endif
+
+        @if(session('warning'))
+        showAlert('warning', '提醒', @json(session('warning')), () => {
+            window.location.href = "{{ route('login') }}";
+        });
+        @endif
+
+    });
+</script>
+
     </body>
 </html>

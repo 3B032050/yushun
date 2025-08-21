@@ -76,7 +76,9 @@
 
 <!-- 主內容 -->
 <div class="container mt-4">
+    {{-- 主要內容 --}}
     @yield('content')
+
 </div>
 
 <!-- 頁腳 -->
@@ -88,6 +90,45 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dselect@latest/dist/dselect.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const showAlert = (icon, title, text, callback) => {
+            if (!document.body) return; // 安全檢查
+            Swal.fire({
+                icon: icon,
+                title: title,
+                html: text, // 用 html 可以支援 <br>
+                confirmButtonText: '確定',
+                target: document.body // 明確指定 body
+            }).then(() => {
+                if (callback) callback();
+            });
+        };
+
+        @if(session('success'))
+        showAlert('success', '成功', @json(session('success')));
+        @endif
+
+        @if(session()->has('validation_errors') && is_array(session('validation_errors')) && count(session('validation_errors')) > 0)
+        let errors = @json(session('validation_errors')).map(e => e).join('<br>');
+        showAlert('error', '驗證失敗', errors);
+        @endif
+
+        @if(session('error'))
+        showAlert('error', '錯誤', @json(session('error')));
+        @endif
+
+        @if(session('warning'))
+        showAlert('warning', '提醒', @json(session('warning')), () => {
+            window.location.href = "{{ route('login') }}";
+        });
+        @endif
+
+    });
+</script>
+
 
 </body>
 </html>

@@ -7,6 +7,7 @@ use App\Http\Requests\StoremasterRequest;
 use App\Http\Requests\UpdatemasterRequest;
 use App\Models\RentUniform;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class MasterController extends Controller
 {
@@ -66,24 +67,29 @@ class MasterController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatemasterRequest $request, master $master)
-    {
-        $master = Auth::guard('master')->user();
+//    public function update(UpdatemasterRequest $request, master $master)
+//    {
+//        $master = Auth::guard('master')->user();
+//        // 檢查 Email 是否有變更
+//
+//
+//        $request->validate([
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|email|max:255|unique:masters,email,' . $master->id . ',id',
+//            'phone' => 'required|digits:10',
+//        ]);
+//
+//
+//        $master->update([
+//            'name' => $request->input('name'),
+//            'email' => $request->input('email'),
+//            'phone' => $request->input('phone'),
+//            'password' => Hash::make($request['phone']),
+//            //'email_verified_at' => $emailChanged ? null : $master->email_verified_at,
+//        ]);
 
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:masters,email,' . $master->id . ',id',
-            'phone' => 'required|digits:10',
-        ]);
+// 如果 Email 有變更，重設驗證狀態並寄出驗證信
 
-        $master->update([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'phone' => $request->input('phone'),
-        ]);
-
-        return redirect()->route('masters.personal_information.edit')->with('success', '個人資料更新成功');
-    }
 
     /**
      * Remove the specified resource from storage.
