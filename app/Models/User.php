@@ -28,7 +28,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'mobile',
         'address',
         'line_id',
+        'is_recurring',
     ];
+
     public function sendEmailVerificationNotification()
     {
         $this->notify(new UserVerifyEmail);
