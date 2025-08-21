@@ -41,7 +41,9 @@
                         <tr>
                             <td colspan="3"></td>
                             <td class="text-center">
-                                <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">新增地區</a>
+                                <a class="btn btn-success btn-sm" href="{{ route('admins.service_areas.create') }}">
+                                    <i class="fa fa-plus"></i> 新增地區
+                                </a>
                             </td>
                         </tr>
                         <tr>
@@ -65,7 +67,7 @@
                                 </td>
                                 <td class="d-flex gap-2 flex-wrap justify-content-center">
                                     <a href="{{ route('admins.service_areas.edit', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}"
-                                       class="btn btn-warning btn-sm d-flex align-items-center justify-content-center"
+                                       class="btn btn-secondary btn-sm"
                                        title="編輯">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
@@ -75,7 +77,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
-                                                class="btn btn-danger btn-sm d-flex align-items-center justify-content-center"
+                                                class="btn btn-danger btn-sm"
                                                 title="刪除"
                                                 onclick="return confirm('確定要刪除這個地區嗎？')">
                                             <i class="fa fa-trash"></i>
