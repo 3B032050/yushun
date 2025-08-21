@@ -15,7 +15,7 @@
                     <li class="breadcrumb-item">
                         <a href="{{ route('admins.uniforms.index') }}">制服資料管理</a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">新增制服資料</li>
+                    <li class="breadcrumb-item active" aria-current="page">編輯制服資料</li>
                 </ol>
             </nav>
             <div class="text-size-controls btn-group btn-group-sm" role="group" aria-label="字級調整">
@@ -29,35 +29,33 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    <div class="card-header">新增制服資料</div>
+                    <div class="card-header">編輯制服資料</div>
                     <div class="card-body">
                         @if(session('error'))
                             <div class="alert alert-danger">{{ session('error') }}</div>
                         @endif
-                        <form method="POST" action="{{ route('admins.uniforms.store') }}">
+                        <form method="POST"
+                              action="{{ route('admins.uniforms.update', ['hash_uniform' => \Vinkla\Hashids\Facades\Hashids::encode($uniform->id)]) }}">
                             @csrf
+                            @method('PATCH')
+
+                            {{-- 必要：hidden 帶回 master_id --}}
+                            <input type="hidden" name="master_id" value="{{ $uniform->master_id }}">
 
                             <div class="mb-3">
-                                <label for="master_id" class="form-label">選擇師傅</label>
-                                <select name="master_id" id="master_id"
-                                        class="form-select @error('master_id') is-invalid @enderror" required>
-                                    <option value="">請選擇</option>
-                                    @foreach($masters as $master)
-                                        <option value="{{ $master->id }}" {{ old('master_id') == $master->id ? 'selected' : '' }}>
-                                            {{ $master->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('master_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <label class="form-label">師傅</label>
+                                {{-- 只是顯示，不送出 master_id --}}
+                                <input type="text" class="form-control" value="{{ $uniform->master->name }}" readonly>
                             </div>
 
                             <div class="mb-3">
                                 <label for="size" class="form-label">尺寸</label>
                                 <select name="size" id="size" class="form-select @error('size') is-invalid @enderror" required>
-                                    @foreach(['S','M','L','XL','XXL'] as $s)
-                                        <option value="{{ $s }}" {{ old('size') === $s ? 'selected' : '' }}>{{ $s }}</option>
+                                    @php $sizes = ['S','M','L','XL','XXL']; @endphp
+                                    @foreach($sizes as $s)
+                                        <option value="{{ $s }}" {{ old('size', $uniform->size) === $s ? 'selected' : '' }}>
+                                            {{ $s }}
+                                        </option>
                                     @endforeach
                                 </select>
                                 @error('size')
@@ -69,7 +67,8 @@
                                 <label for="quantity" class="form-label">數量</label>
                                 <input type="number" name="quantity" id="quantity"
                                        class="form-control @error('quantity') is-invalid @enderror"
-                                       min="1" max="50" value="{{ old('quantity', 1) }}" required>
+                                       min="1" max="50"
+                                       value="{{ old('quantity', $uniform->quantity) }}" required>
                                 @error('quantity')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

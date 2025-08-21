@@ -46,18 +46,26 @@
                     </thead>
                     <tbody>
                     @foreach($rent_uniforms as $index => $rent_uniform)
+                        @php
+                            $masterName = optional($rent_uniform->master)->name ?? '（師傅資料不存在）';
+                            $dateStr    = optional($rent_uniform->created_at)->format('Y-m-d') ?? '-';
+                        @endphp
                         <tr>
                             <td class="text-center">{{ $index + 1 }}</td>
-                            <td class="text-center">{{ $rent_uniform->master->name }}</td>
+                            <td class="text-center">{{ $masterName }}</td>
                             <td class="text-center">{{ $rent_uniform->size }}</td>
                             <td class="text-center">{{ $rent_uniform->quantity }}</td>
-                            <td class="text-center">{{  $rent_uniform->created_at->format('Y-m-d') }}</td>
-                            <td colspan="2" class="text-center">
-                                <div class="d-flex justify-content-center gap-2 flex-wrap">
-                                    <form id="deleteForm_{{ $rent_uniform->id }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($rent_uniform->id)]) }}" method="POST" style="margin:0;">
+                            <td class="text-center">{{ $dateStr }}</td>
+                            <td colspan="2">
+                                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                                    <a href="{{ route('admins.uniforms.edit', ['hash_uniform' => \Vinkla\Hashids\Facades\Hashids::encode($rent_uniform->id)]) }}"
+                                       class="btn btn-secondary btn-sm" title="編輯">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <form id="deleteForm_{{ $rent_uniform->id }}" action="{{ route('admins.uniforms.destroy', ['hash_uniform' => \Vinkla\Hashids\Facades\Hashids::encode($rent_uniform->id)]) }}" method="POST" style="margin:0;">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $rent_uniform->name }}', {{ $rent_uniform->id }})">
+                                        <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $rent_uniform->master->name }}', {{ $rent_uniform->id }})">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
@@ -67,13 +75,14 @@
                     @endforeach
                     </tbody>
                 </table>
+
             </div>
         </div>
     </div>
 
     <script>
         function confirmDelete(name, id) {
-            if (confirm('確定要刪除師傅 ' + name + ' 的制服資料嗎？')) {
+            if (confirm('確定要刪除師傅 ' + name + ' 的制服嗎？')) {
                 document.getElementById('deleteForm_' + id).submit();
             }
         }

@@ -100,16 +100,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="row mb-3">
-                                            <label for="is_recurring" class="col-md-4 col-form-label text-md-end">客戶類型：</label>
-                                            <div class="col-md-6">
-                                                <input type="text" class="form-control" value="{{ $user->is_recurring ? '定期' : '非定期' }}" readonly>
-                                                @error('is_recurring')
-                                                <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
-                                                @enderror
-                                            </div>
-                                        </div>
-
                                         <div class="row mb-0">
                                             <div class="col-md-8 offset-md-4">
                                                 <a href="{{ route('users.personal_information.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" class="btn btn-primary">

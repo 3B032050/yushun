@@ -131,6 +131,21 @@
                                     </div>
                                 </div>
 
+                                {{-- 客戶類型 --}}
+                                <div class="row mb-3">
+                                    <label for="is_recurring" class="col-md-4 col-form-label text-md-end">{{ __('客戶類型') }}</label>
+                                    <div class="col-md-6">
+                                        <select id="is_recurring" name="is_recurring"
+                                                class="form-select @error('is_recurring') is-invalid @enderror">
+                                            <option value="0" {{ old('is_recurring') === '0' ? 'selected' : '' }} selected>定期</option>
+                                            <option value="1" {{ old('is_recurring') === '1' ? 'selected' : '' }}>非定期</option>
+                                        </select>
+                                        @error('is_recurring')
+                                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                                        @enderror
+                                    </div>
+                                </div>
+
                                 {{-- 按鈕列 --}}
                                 <div class="row mb-0">
                                     <div class="col-md-8 offset-md-4">

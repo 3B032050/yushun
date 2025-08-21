@@ -54,6 +54,7 @@ class AdminUserController extends Controller
                 'password' => Hash::make($validated['mobile']),
                 'address'  => $validated['address'] ?? null,
                 'line_id'  => $validated['line_id'] ?? null,
+                'is_recurring' => $validated['is_recurring'],
             ]);
 
             // 如有啟用驗證可開：$user->sendEmailVerificationNotification();
@@ -119,6 +120,7 @@ class AdminUserController extends Controller
                 'mobile'  => $validated['mobile'] ?? null,
                 'address' => $validated['address'] ?? null,
                 'line_id' => $validated['line_id'] ?? null,
+                'is_recurring' => $validated['is_recurring'],
             ];
 
             if (!empty($validated['mobile'])) {

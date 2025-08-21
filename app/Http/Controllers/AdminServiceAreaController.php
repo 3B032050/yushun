@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\AdminServiceArea;
 use App\Http\Requests\StoreserviceareaRequest;
 use App\Http\Requests\UpdateserviceareaRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Vinkla\Hashids\Facades\Hashids;
 
 class AdminServiceAreaController extends Controller
@@ -33,37 +36,45 @@ class AdminServiceAreaController extends Controller
      */
     public function store(Request $request)
     {
-        // 先做字串標準化（去頭尾空白）
-        $major = trim((string)$request->major_area);
-        $minor = trim((string)$request->minor_area);
+        try {
+            // 標準化
+            $major = trim((string)$request->major_area);
+            $minor = trim((string)$request->minor_area);
 
-        $request->merge([
-            'major_area' => $major,
-            'minor_area' => $minor,
-        ]);
+            $request->merge([
+                'major_area' => $major,
+                'minor_area' => $minor,
+            ]);
 
-        $request->validate([
-            'major_area' => [
-                'required','string',
-            ],
-            'minor_area' => [
-                'required','string',
-                Rule::unique('admin_service_areas', 'minor_area')
-                    ->where(fn($q) => $q->where('major_area', $major)),
-            ],
-            'area_type'  => 'required|in:egg_yolk,egg_white',
-        ], [
-            'minor_area.unique' => '相同縣市下的這個鄉鎮地區已存在。',
-        ]);
+            $request->validate([
+                'major_area' => ['required','string'],
+                'minor_area' => [
+                    'required','string',
+                    Rule::unique('admin_service_areas', 'minor_area')
+                        ->where(fn($q) => $q->where('major_area', $major)),
+                ],
+                'area_type'  => 'required|in:egg_yolk,egg_white',
+            ], [
+                'minor_area.unique' => '相同縣市下的這個鄉鎮地區已存在。',
+            ]);
 
-        AdminServiceArea::create([
-            'major_area' => $major,
-            'minor_area' => $minor,
-            'status'     => $request->area_type === 'egg_yolk' ? 1 : 0,
-        ]);
+            AdminServiceArea::create([
+                'major_area' => $major,
+                'minor_area' => $minor,
+                'status'     => $request->area_type === 'egg_yolk' ? 1 : 0,
+            ]);
 
-        return redirect()->route('admins.service_areas.index')
-            ->with('success', '新增成功');
+            return redirect()
+                ->route('admins.service_areas.index')
+                ->with('success', '新增成功');
+
+        } catch (ValidationException $e) {
+            return back()->withInput()->withErrors($e->validator)->with('error', '請修正表單後再送出');
+        } catch (QueryException $e) {
+            return back()->withInput()->with('error', '資料庫錯誤，請稍後再試');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', '系統發生錯誤，請稍後再試');
+        }
     }
 
 
@@ -103,27 +114,54 @@ class AdminServiceAreaController extends Controller
      */
     public function update(Request $request, $hash_service_area)
     {
-        $id = Hashids::decode($hash_service_area)[0] ?? null;
+        try {
+            $id = Hashids::decode($hash_service_area)[0] ?? null;
+            if (!$id) {
+                return redirect()->route('admins.service_areas.index')->with('error', '無效的地區 ID');
+            }
 
-        if (!$id) {
-            abort(404); // 無效 ID
+            $service_area = AdminServiceArea::findOrFail($id);
+
+            // 標準化
+            $major = trim((string)$request->major_area);
+            $minor = trim((string)$request->minor_area);
+
+            $request->merge([
+                'major_area' => $major,
+                'minor_area' => $minor,
+            ]);
+
+            $request->validate([
+                'major_area' => ['required','string'],
+                'minor_area' => [
+                    'required','string',
+                    Rule::unique('admin_service_areas', 'minor_area')
+                        ->where(fn($q) => $q->where('major_area', $major))
+                        ->ignore($service_area->id), // 忽略自己
+                ],
+                // 前端若用 0/1 傳值就維持 0,1；若用 egg_yolk/egg_white 請改掉這行（或同步前端）
+                'area_type'  => ['required','in:0,1'],
+            ], [
+                'minor_area.unique' => '相同縣市下的這個鄉鎮地區已存在。',
+            ]);
+
+            $service_area->update([
+                'major_area' => $major,
+                'minor_area' => $minor,
+                'status'     => (int) $request->area_type, // 0 或 1
+            ]);
+
+            return redirect()->route('admins.service_areas.index')->with('success', '地區更新成功');
+
+        } catch (ValidationException $e) {
+            return back()->withInput()->withErrors($e->validator)->with('error', '請修正表單後再送出');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admins.service_areas.index')->with('error', '找不到該地區資料');
+        } catch (QueryException $e) {
+            return back()->withInput()->with('error', '資料庫錯誤，請稍後再試');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', '系統發生錯誤，請稍後再試');
         }
-
-        $service_area = AdminServiceArea ::findOrFail($id);
-
-        $request->validate([
-            'major_area' => 'required|string',
-            'minor_area' => 'required|string',
-            'area_type'  => 'required|in:0,1',
-        ]);
-
-        $service_area->update([
-            'major_area' => $request->major_area,
-            'minor_area' => $request->minor_area,
-            'status'     => (int)$request->area_type, // 直接存 0 或 1
-        ]);
-
-        return redirect()->route('admins.service_areas.index')->with('success', '地區更新成功');
     }
 
 
@@ -132,14 +170,23 @@ class AdminServiceAreaController extends Controller
      */
     public function destroy($hash_service_area)
     {
-        $id = Hashids::decode($hash_service_area)[0] ?? null;
+        try {
+            $id = Hashids::decode($hash_service_area)[0] ?? null;
+            if (!$id) {
+                return redirect()->route('admins.service_areas.index')->with('error', '無效的地區 ID');
+            }
 
-        if (!$id) {
-            abort(404); // 無效 ID
+            $servicearea = AdminServiceArea::findOrFail($id);
+            $servicearea->delete();
+
+            return redirect()->route('admins.service_areas.index')->with('success', '刪除成功');
+
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admins.service_areas.index')->with('error', '找不到該地區資料');
+        } catch (QueryException $e) {
+            return redirect()->route('admins.service_areas.index')->with('error', '資料庫錯誤，請稍後再試');
+        } catch (\Exception $e) {
+            return redirect()->route('admins.service_areas.index')->with('error', '系統發生錯誤，請稍後再試');
         }
-
-        $servicearea = AdminServiceArea ::findOrFail($id);
-        $servicearea->delete();
-        return redirect()->route('admins.service_areas.index');
     }
 }

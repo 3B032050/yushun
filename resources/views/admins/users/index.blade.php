@@ -46,7 +46,7 @@
                 <table class="table table-bordered table-hover w-100" id="sortable-list">
                     <thead class="table-light">
                     <tr>
-                        <td colspan="7"></td>
+                        <td colspan="8"></td>
                         <td class="text-center">
                             <a class="btn btn-success btn-sm" href="{{ route('admins.users.create') }}">
                                 <i class="fa fa-plus"></i> 新增客戶資料
@@ -55,13 +55,14 @@
                     </tr>
                     <tr>
                         <th class="text-center" style="width:4%;">#</th>
-                        <th class="text-center" style="width:14%;">姓名</th>
-                        <th class="text-center" style="width:18%;">Email</th>
-                        <th class="text-center" style="width:12%;">電話</th>
-                        <th class="text-center" style="width:12%;">手機</th>
-                        <th class="text-center" style="width:22%;">地址</th>
+                        <th class="text-center" style="width:12%;">姓名</th>
+                        <th class="text-center" style="width:16%;">Email</th>
+                        <th class="text-center" style="width:10%;">電話</th>
+                        <th class="text-center" style="width:10%;">手機</th>
+                        <th class="text-center" style="width:18%;">地址</th>
                         <th class="text-center" style="width:10%;">LINE ID</th>
-                        <th class="text-center" style="width:8%;">操作</th>
+                        <th class="text-center" style="width:10%;">客戶類型</th> {{-- 新增 --}}
+                        <th class="text-center" style="width:10%;">操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -78,6 +79,15 @@
                                 {{ $user->address }}
                             </td>
                             <td class="text-center">{{ $user->line_id }}</td>
+                            <td class="text-center">
+                                @if($user->is_recurring == 0)
+                                    定期
+                                @elseif($user->is_recurring == 1)
+                                    非定期
+                                @else
+                                    <span class="text-muted">未設定</span>
+                                @endif
+                            </td>
                             <td class="text-center">
                                 <div class="d-flex justify-content-center gap-2 flex-wrap">
                                     <a href="{{ route('admins.users.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}"
@@ -99,40 +109,20 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center">目前沒有客戶資料</td>
+                            <td colspan="9" class="text-center">目前沒有客戶資料</td>
                         </tr>
                     @endforelse
                     </tbody>
                 </table>
             </div>
-
-{{--            --}}{{-- 分頁資訊 --}}
-{{--            @if($users instanceof \Illuminate\Pagination\AbstractPaginator)--}}
-{{--                <div class="d-flex flex-column flex-md-row justify-content-center align-items-center mt-3 gap-2">--}}
-{{--                    <div>--}}
-{{--                        <div>每頁顯示 <strong>{{ $users->perPage() }}</strong> 筆資料</div>--}}
-{{--                        <div>當前在第 <strong>{{ $users->currentPage() }}</strong> 頁</div>--}}
-{{--                        <div>共有 <strong>{{ $users->total() }}</strong> 筆資料</div>--}}
-{{--                    </div>--}}
-{{--                    <div>--}}
-{{--                        {{ $users->appends(request()->query())->links() }}--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            @endif--}}
         </div>
     </div>
 
     <script>
         function confirmDelete(name, id) {
-            if (confirm('確定要刪除使用者「' + name + '」嗎？')) {
+            if (confirm('確定要刪除客戶「' + name + '」的資料嗎？')) {
                 document.getElementById('deleteForm_' + id).submit();
             }
-        }
-
-        function setFontSize(size) {
-            const content = document.getElementById('content');
-            content.classList.remove('small', 'medium', 'large');
-            content.classList.add(size);
         }
     </script>
 @endsection
