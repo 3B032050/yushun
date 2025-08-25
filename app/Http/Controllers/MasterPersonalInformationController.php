@@ -8,20 +8,33 @@ use App\Models\Master;
 use App\Models\RentUniform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MasterPersonalInformationController extends Controller
 {
     public function index()
     {
-        $master = Auth::guard('master')->user();
+        try {
+            $master = Auth::guard('master')->user();
+            if (!$master) {
+                return redirect()->route('masters.login')->with('error', '請先登入');
+            }
 
-        $rental = RentUniform::where('master_id', $master->id)->first();;
-        $data = ['rental' => $rental,
-            'master' => $master];
+            // 多筆制服（由新到舊）
+            $uniforms = RentUniform::where('master_id', $master->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
 
-        return view('masters.personal_information.index',$data);
+            return view('masters.personal_information.index', [
+                'master'   => $master,
+                'uniforms' => $uniforms,
+            ]);
+        } catch (\Throwable $e) {
+            return back()->with('error', '系統發生錯誤，請稍後再試');
+        }
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,7 +47,7 @@ class MasterPersonalInformationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoremasterRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -54,8 +67,11 @@ class MasterPersonalInformationController extends Controller
     {
         $master = Auth::guard('master')->user();
         $hashedMasterId = Hashids::encode($master->id);
-        $rental = RentUniform::where('master_id', $master->id)->first();;
-        $data = ['rental' => $rental,
+        $uniforms = RentUniform::where('master_id', $master->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $data = ['uniforms' => $uniforms,
             'master' => $master,'hashedMasterId' => $hashedMasterId];
 
         return view('masters.personal_information.edit',$data);

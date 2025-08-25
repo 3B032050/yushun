@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('master_id');
             $table->string('size');
             $table->integer('quantity');
+            $table->unique('master_id', 'rent_uniforms_master_unique');
             $table->timestamps();
         });
     }

@@ -84,15 +84,14 @@ Route::group(['middleware' => ['auth:master', 'master.verified']], function () {
 //        Route::get('/rent_uniforms/index', [\App\Http\Controllers\MasterRentUniformController::class, 'index'])->name('rent_uniforms.index');
 //        Route::get('/rent_uniforms/create/{uniform}', [\App\Http\Controllers\MasterRentUniformController::class, 'create'])->name('rent_uniforms.create');
         Route::post('/rent_uniforms/store', [\App\Http\Controllers\MasterRentUniformController::class, 'store'])->name('rent_uniforms.store');
-//        Route::get('/rent_uniforms/history', [\App\Http\Controllers\MasterRentUniformController::class, 'history'])->name('rent_uniforms.history');
-//        Route::post('/rentals/{rental}/return', [\App\Http\Controllers\MasterRentUniformController::class, 'return'])->name('rent_uniforms.return');
+        Route::get('/rent_uniforms/edit/{hash_uniform}', [App\Http\Controllers\MasterRentUniformController::class, 'edit'])->name("rent_uniforms.edit");
+        Route::patch('/rent_uniforms/update/{hash_uniform}', [App\Http\Controllers\MasterRentUniformController::class, 'update'])->name('rent_uniforms.update');
 
         //借用設備
         Route::get('borrow_equipments/{hash_appointmenttime}/create', [\App\Http\Controllers\BorrowingRecordController::class, 'create'])->name('borrow_equipments.create');
         Route::post('borrow_equipments/{hash_appointmenttime}', [\App\Http\Controllers\BorrowingRecordController::class, 'store'])->name('borrow_equipments.store');
 
         Route::get('schedule_details/{hash_appointmenttime}/create', [\App\Http\Controllers\ScheduleDetailController::class, 'create'])->name('schedule_details.create');
-
         Route::post('schedule_details/{hash_appointmenttime}/store', [\App\Http\Controllers\ScheduleDetailController::class, 'store'])->name('schedule_details.store');
     });
     Route::prefix('admins')->name('admins.')->group(function () {

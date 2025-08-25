@@ -71,108 +71,91 @@
 
                             <hr>
 
-                            @if(!$rental)
-                                <form method="POST" action="{{ route('masters.rent_uniforms.store') }}">
-                                    @csrf
-                                    <div class="form-group mb-3 text-center"><strong>{{ __('請選擇制服尺寸和數量') }}</strong></div>
+                            {{-- 多尺寸：無資料 -> 顯示新增表單（整段鎖住）；有資料 -> 顯示列表（編輯鈕鎖住） --}}
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <span>制服尺寸資料</span>
+                                        </div>
 
-                                    <label for="size">尺寸</label>
-                                    <select name="size" id="size" class="form-control">
-                                        <option value="S">S</option>
-                                        <option value="M">M</option>
-                                        <option value="L">L</option>
-                                        <option value="XL">XL</option>
-                                        <option value="XXL">XXL</option>
-                                    </select>
+                                        <div class="card-body">
 
-                                    <div class="form-group mb-3 mt-2">
-                                        <label for="quantity">數量</label>
-                                        <input type="number" name="quantity" id="quantity" class="form-control" min="1" placeholder="請輸入數量">
-                                    </div>
+                                            @if($uniforms->isEmpty())
+                                                {{-- 無資料：顯示新增表單，但整段禁用 --}}
+                                                <fieldset disabled>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">尺寸</label>
+                                                        <select class="form-select">
+                                                            @foreach(['S','M','L','XL','XXL'] as $s)
+                                                                <option value="{{ $s }}">{{ $s }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
 
-                                    <div class="form-group text-center">
-                                        <button type="submit" class="btn btn-primary">確認</button>
-                                    </div>
-                                </form>
-                            @else
-                                <div class="row justify-content-center">
-                                    <div class="col-md-10">
-                                        <div class="card">
-                                            <div class="card-header text-center">已選擇制服尺寸</div>
-                                            <div class="card-body">
-                                                <table class="table table-striped text-center">
+                                                    <div class="mb-3">
+                                                        <label class="form-label">數量</label>
+                                                        <input type="number" class="form-control" min="1">
+                                                    </div>
+
+                                                    <div class="text-center">
+                                                        <button type="button" class="btn btn-primary" disabled>新增制服</button>
+                                                    </div>
+                                                </fieldset>
+                                                <div class="text-center text-muted mt-3">尚未登記</div>
+
+                                            @else
+                                                {{-- 有資料：顯示列表，編輯按鈕禁用 --}}
+                                                <table class="table table-striped text-center align-middle">
                                                     <thead>
                                                     <tr>
-                                                        <th>尺寸</th>
-                                                        <th>數量</th>
+                                                        <th scope="col">尺寸</th>
+                                                        <th scope="col">數量</th>
+                                                        <th scope="col">建立時間</th>
+                                                        <th scope="col" style="width: 140px;">操作</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <tr>
-                                                        <td>{{ $rental->size }}</td>
-                                                        <td>{{ $rental->quantity }}</td>
-                                                    </tr>
+                                                    @foreach($uniforms as $u)
+                                                        <tr>
+                                                            <td>{{ $u->size }}</td>
+                                                            <td>{{ $u->quantity }}</td>
+                                                            <td>{{ $u->created_at?->format('Y-m-d') ?? '-' }}</td>
+                                                            <td>
+                                                                {{-- 1) 用 button disabled 當作假按鈕 --}}
+                                                                <button type="button" class="btn btn-warning btn-sm" disabled>
+                                                                    <i class="fa fa-edit"></i> 編輯
+                                                                </button>
+
+                                                                {{-- 2) 或者若一定要用 <a>，就這樣（擇一保留）
+                                                                <a href="javascript:void(0)"
+                                                                   class="btn btn-warning btn-sm disabled no-click"
+                                                                   tabindex="-1" aria-disabled="true">
+                                                                    <i class="fa fa-edit"></i> 編輯
+                                                                </a>
+                                                                --}}
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                     </tbody>
                                                 </table>
-                                            </div>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>
-                            @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
-@push('styles')
-    <style>
-        .breadcrumb-path {
-            font-size: 1.4em;
-            white-space: normal;
-            word-break: break-word;
-        }
-
-        @media (max-width: 768px) {
-            .breadcrumb-path {
-                font-size: 1.3em;
-            }
-
-            .text-size-controls {
-                margin-top: 0.5rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .breadcrumb-path {
-                font-size: 1.1em;
-            }
-
-            .text-size-controls {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        #calendar {
-            max-width: 100%;
-            margin: 0 auto;
-            height: 600px;  /* 設置明確的高度 */
-        }  .required {
-               color: red;
-               margin-left: 5px;
-               font-weight: bold;
-           }
-
-        .card {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .content-wrapper {
-            min-height: calc(100vh - 60px);
-        }
-    </style>
-@endpush
-
+<style>
+    a.disabled, .no-click {
+        pointer-events: none;  /* 不能點 */
+        opacity: .65;          /* 視覺灰掉 */
+        cursor: not-allowed;
+    }
+</style>
