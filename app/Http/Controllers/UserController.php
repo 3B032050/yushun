@@ -58,6 +58,7 @@ class UserController extends Controller
 //            'address' => ['nullable', 'string', 'max:255'], // 地址
 //            'line_id' => ['nullable', 'string', 'max:255'], // LINE ID 選填
 //        ]);
+        $emailChanged = $user->email !== $request->input('email');
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
@@ -77,6 +78,18 @@ class UserController extends Controller
             'password' =>Hash::make($request->input('mobile')),// 密碼加密
 
         ]);
+        // 如果 Email 有變更，重設驗證狀態並寄出驗證信
+        if ($emailChanged) {
+            $user->email_verified_at = null;
+            $user->save();
+
+            $user->sendEmailVerificationNotification();// 先寄信
+
+            Auth::logout();
+
+            return redirect()->route('login')
+                ->with('warning', '您的信箱已更新，請重新登入並驗證新信箱。');
+        }
 
         return redirect()->route('users.personal_information.personal_index')->with('success', '個人資料更新成功');
     }

@@ -19,6 +19,7 @@ class Master extends Authenticatable   implements MustVerifyEmail
         'introduction',
         'position',
         'total_hours',
+        'email_verified_at',
     ];
 
     protected $hidden = ['password', 'remember_token'];

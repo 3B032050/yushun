@@ -31,39 +31,7 @@
 
 {{-- 主要內容 --}}
 @yield('content')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@if(session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: '成功',
-            text: "{{ session('success') }}",
-            confirmButtonText: '確定'
-        });
-    </script>
-@endif
 
-@if(session('validation_errors'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: '操作失敗',
-            text: "{{ implode('\n', session('validation_errors')) }}",
-            confirmButtonText: '確定'
-        });
-    </script>
-@endif
-
-@if(session('error'))
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: '錯誤',
-            text: "{{ session('error') }}",
-            confirmButtonText: '返回'
-        });
-    </script>
-@endif
 
 {{-- 頁尾 --}}
 @include('users.layouts.partials.footer')
@@ -323,5 +291,48 @@
 @endpush
 
 @stack('scripts')
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const showAlert = (icon, title, text, callback) => {
+            if (!document.body) return; // 安全檢查
+            Swal.fire({
+                icon: icon,
+                title: title,
+                html: text, // 用 html 可以支援 <br>
+                confirmButtonText: '確定',
+                target: document.body // 明確指定 body
+            }).then(() => {
+                if (callback) callback();
+            });
+        };
+
+        @if(session('success'))
+        showAlert('success', '成功', @json(session('success')));
+        @endif
+
+        @if(session()->has('validation_errors') && is_array(session('validation_errors')) && count(session('validation_errors')) > 0)
+        let errors = @json(session('validation_errors')).map(e => e).join('<br>');
+        showAlert('error', '驗證失敗', errors);
+        @endif
+
+        @if(session('error'))
+        showAlert('error', '錯誤', @json(session('error')));
+        @endif
+
+        @if(session('warning'))
+        showAlert('warning', '提醒', @json(session('warning')), () => {
+            window.location.href = "{{ route('login') }}";
+        });
+        @endif
+
+    });
+</script>
+
+
+
 </body>
 </html>

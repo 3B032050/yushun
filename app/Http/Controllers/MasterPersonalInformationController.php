@@ -8,7 +8,7 @@ use App\Models\Master;
 use App\Models\RentUniform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MasterPersonalInformationController extends Controller
@@ -89,7 +89,7 @@ class MasterPersonalInformationController extends Controller
         }
 
         $master = Master::findOrFail($masterId);
-
+        $emailChanged = $master->email !== $request['email'];
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:masters,email,' . $master->id . ',id',
@@ -100,10 +100,23 @@ class MasterPersonalInformationController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'phone' => $request->input('phone'),
+            'password' => Hash::make($request['phone']),
         ]);
+        if ($emailChanged) {
+            $master->email_verified_at = null;
+            $master->save();
 
-        return redirect()->route('masters.personal_information.index')->with('success', '個人資料更新成功');
+            $master->sendEmailVerificationNotification();// 先寄信
+
+            Auth::guard('master')->logout();
+
+            return redirect()->route('login')
+                ->with('warning', '您的信箱已更新，請重新登入並驗證新信箱。');
+        }
+
+        return redirect()->route('masters.personal_information.edit')->with('success', '個人資料更新成功');
     }
+
 
     /**
      * Remove the specified resource from storage.
