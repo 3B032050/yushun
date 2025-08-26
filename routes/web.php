@@ -94,7 +94,12 @@ Route::group(['middleware' => ['auth:master', 'master.verified']], function () {
         Route::get('schedule_details/{hash_appointmenttime}/create', [\App\Http\Controllers\ScheduleDetailController::class, 'create'])->name('schedule_details.create');
         Route::post('schedule_details/{hash_appointmenttime}/store', [\App\Http\Controllers\ScheduleDetailController::class, 'store'])->name('schedule_details.store');
     });
-    Route::prefix('admins')->name('admins.')->group(function () {
+     Route::prefix('admins')->name('admins.')->group(function () {
+
+        //個人資料
+        Route::get('/personal_information/index', [App\Http\Controllers\AdminPersonalInformationController::class, 'index'])->name("personal_information.index");
+        Route::get('/personal_information/edit', [App\Http\Controllers\AdminPersonalInformationController::class, 'edit'])->name("personal_information.edit");
+        Route::patch('/personal_information/update/{hashedMasterId}', [App\Http\Controllers\AdminPersonalInformationController::class, 'update'])->name('personal_information.update');
         //設備管理
         Route::get('/equipment/index', [App\Http\Controllers\AdminEquipmentController::class, 'index'])->name('equipment.index');
         Route::get('/equipment/create',[App\Http\Controllers\AdminEquipmentController::class,'create'])->name('equipment.create');

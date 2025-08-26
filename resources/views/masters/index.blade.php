@@ -44,6 +44,17 @@
                             </a>
                         </div>
                     @else
+                        {{-- 個人資料 --}}
+                        <div class="col-6 mb-3">
+                            <a href="{{ route('admins.personal_information.index') }}" class="button-name w-100 text-decoration-none">
+                                <div>
+                                    <i class="fa-solid fa-id-card fa-3x"></i>
+                                </div>
+                                <div>
+                                    <h3>個人資料</h3>
+                                </div>
+                            </a>
+                        </div>
                         {{-- 師傅資料管理 --}}
                         <div class="col-6 mb-3">
                             <a href="{{ route('admins.masters.index') }}" class="button-name w-100 text-decoration-none">

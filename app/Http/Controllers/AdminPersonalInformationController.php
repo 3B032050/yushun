@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoremasterRequest;
 use App\Http\Requests\UpdatemasterRequest;
 use App\Models\Master;
-use App\Models\RentUniform;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 use Vinkla\Hashids\Facades\Hashids;
+use Illuminate\Validation\ValidationException;
 
-class MasterPersonalInformationController extends Controller
+class AdminPersonalInformationController extends Controller
 {
     public function index()
     {
@@ -23,14 +21,9 @@ class MasterPersonalInformationController extends Controller
                 return redirect()->route('masters.login')->with('error', '請先登入');
             }
 
-            // 多筆制服（由新到舊）
-            $uniforms = RentUniform::where('master_id', $master->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
 
-            return view('masters.personal_information.index', [
+            return view('admins.personal_information.index', [
                 'master'   => $master,
-                'uniforms' => $uniforms,
             ]);
         } catch (\Throwable $e) {
             return back()->with('error', '系統發生錯誤，請稍後再試');
@@ -76,24 +69,19 @@ class MasterPersonalInformationController extends Controller
 
             $hashedMasterId = Hashids::encode($master->id);
 
-            $uniforms = RentUniform::where('master_id', $master->id)
-                ->orderBy('created_at', 'desc')
-                ->get();
-
             $data = [
-                'uniforms' => $uniforms,
                 'master' => $master,
                 'hashedMasterId' => $hashedMasterId
             ];
 
-            return view('masters.personal_information.edit', $data);
+            return view('admins.personal_information.edit', $data);
 
         } catch (\Throwable $e) {
-            // 回到上一頁並帶錯誤訊息
+            // 可選擇回到上一頁並帶錯誤訊息
             return back()->with('error', '系統發生錯誤，請稍後再試: ' . $e->getMessage());
         }
-    }
 
+    }
 
     /**
      * Update the specified resource in storage.
@@ -151,7 +139,7 @@ class MasterPersonalInformationController extends Controller
 
                 return redirect()->route('masters.login')->with('warning', '您的信箱已更新，請重新登入並驗證新信箱。');
             }
-            return redirect()->route('masters.personal_information.index')
+            return redirect()->route('admins.personal_information.index')
                 ->with('success', '資料更新成功');
 
         }catch (ValidationException $e) {
@@ -166,7 +154,6 @@ class MasterPersonalInformationController extends Controller
                 ->with('error', '系統發生錯誤，請稍後再試');
         }
     }
-
 
 
     /**

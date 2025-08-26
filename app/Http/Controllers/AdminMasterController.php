@@ -131,7 +131,7 @@ class AdminMasterController extends Controller
                     Rule::unique('masters')->ignore($master->id),
                 ],
                 'phone' => [
-                    'nullable',
+                    'required',
                     'regex:/^09\d{8}$/',
 
                 Rule::unique('masters')->ignore($master->id),
