@@ -7,64 +7,60 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Throwable;
+
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
     use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
-     *
-     * @var string
      */
-
     protected function authenticated($request, $user)
     {
-        return redirect('/users/index');
-    }
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        $email = $request->input($this->username());  // 預設是 email
-
-        // 檢查該 email 是否有對應使用者
-        $userExists = User::where('email', $email)->exists();
-
-        if (!$userExists) {
-            // 信箱不存在
-            $errors = [$this->username() => '該電子郵件地址尚未註冊'];
-        } else {
-            // 信箱存在但密碼錯誤
-            $errors = ['password' => '密碼輸入錯誤'];
+        try {
+            return redirect('/users/index');
+        } catch (Throwable $e) {
+            // 發生例外 → 導回登入頁並提示
+            return redirect()->route('login')->with('error', '登入後導向發生錯誤，請稍後再試');
         }
-
-        if ($request->expectsJson()) {
-            return response()->json($errors, 422);
-        }
-
-        return redirect()->back()
-            ->withInput($request->only($this->username(), 'remember'))
-            ->withErrors($errors);
     }
 
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * 登入失敗回應
+     */
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        try {
+            $email = $request->input($this->username());  // 預設是 email
+            $userExists = User::where('email', $email)->exists();
+
+            if (!$userExists) {
+                $errors = [$this->username() => '該電子郵件地址尚未註冊'];
+            } else {
+                $errors = ['password' => '密碼輸入錯誤'];
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json($errors, 422);
+            }
+
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors($errors);
+
+        } catch (Throwable $e) {
+            // 捕捉例外 → 一律回登入頁
+            return redirect()->route('login')->with('error', '登入驗證發生錯誤，請稍後再試');
+        }
+    }
+
+    /**
+     * 建構子
      */
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
-
 }

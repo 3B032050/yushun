@@ -63,9 +63,9 @@
                             <td class="text-center">{{ $user->line_id }}</td>
                             <td class="text-center">
                                 @if($user->is_recurring == 0)
-                                    定期
-                                @elseif($user->is_recurring == 1)
                                     非定期
+                                @elseif($user->is_recurring == 1)
+                                    定期
                                 @else
                                     <span class="text-muted">未設定</span>
                                 @endif

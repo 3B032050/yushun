@@ -67,6 +67,14 @@
                             </div>
 
                             <hr>
+                            <div class="row mb-3">
+                                <label class="col-md-4 col-form-label text-md-end">{{ __('入職時間') }}</label>
+                                <div class="col-md-6">
+                                    <input type="text" readonly
+                                           class="form-control-plaintext"
+                                           value="{{ $master->created_at?->format('Y-m-d') }}">
+                                </div>
+                            </div>
 
                             <div class="row mb-3">
                                 <label class="col-md-4 col-form-label text-md-end">{{ __('累積總工時') }}</label>

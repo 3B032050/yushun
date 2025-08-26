@@ -8,79 +8,78 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Throwable;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
     protected $redirectTo = '/users/index';
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('guest');
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * 驗證註冊資料
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => 'required|string|email|max:255|unique:users',
-            'phone' => ['nullable', 'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/',   Rule::unique('users')] ,// 市話選填
-            'address' => ['nullable', 'string', 'max:255'],
-            'line_id' => ['nullable', 'string', 'max:255'],
-        ]);
+        try {
+            return Validator::make($data, [
+                'name'    => ['required', 'string', 'max:255'],
+                'email'   => 'required|string|email|max:255|unique:users',
+                'phone'   => [
+                    'nullable',
+                    'regex:/^\(?0\d{1,2}\)?[- ]?\d{6,8}$/',
+                    Rule::unique('users')
+                ], // 市話選填
+                'address' => ['nullable', 'string', 'max:255'],
+                'line_id' => ['nullable', 'string', 'max:255'],
+            ], [
+                'name.required'   => '名稱為必填項目',
+                'email.required'  => 'Email 為必填項目',
+                'email.email'     => 'Email 格式錯誤',
+                'email.unique'    => '該 Email 已存在',
+                'phone.regex'     => '市話格式錯誤，例：02-23456789',
+                'phone.unique'    => '市話已被使用',
+            ]);
+        } catch (Throwable $e) {
+            // 如果驗證初始化失敗，回傳一個空的 Validator（避免崩潰）
+            return Validator::make([], []);
+        }
     }
 
     /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\Models\User
+     * 建立新使用者
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'mobile' => $data['mobile'],
-            'phone' => $data['phone'],
-            'address' => $data['address'],
-            'line_id' => $data['line_id'],
-            'is_recurring' => 1,
+        try {
+            return User::create([
+                'name'         => $data['name'],
+                'email'        => $data['email'],
+                'mobile'       => $data['mobile'] ?? null,
+                'phone'        => $data['phone'] ?? null,
+                'address'      => $data['address'] ?? null,
+                'line_id'      => $data['line_id'] ?? null,
+                'is_recurring' => 1, // 預設非定期
 
-            'password' => Hash::make($data['mobile']),
-        ]);
+                // 初始密碼設為手機號碼
+                'password'     => Hash::make($data['mobile'] ?? '123456'),
+            ]);
+        } catch (Throwable $e) {
+            // 如果資料庫異常，拋出錯誤給上層處理
+            throw $e;
+        }
     }
 
+    /**
+     * 註冊成功後導向
+     */
     protected function redirectTo()
     {
-        return '/users/index';  // 確保註冊後重定向到 /users/index
+        return '/users/index';
     }
 }
