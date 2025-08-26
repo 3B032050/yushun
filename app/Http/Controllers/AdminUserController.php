@@ -204,11 +204,10 @@ class AdminUserController extends Controller
                 ->route('admins.users.index')
                 ->with('success', '使用者資料更新成功');
 
-        } catch (ValidationException $e) {
-            return back()
+        }catch (ValidationException $e) {
+            return redirect()->back()
                 ->withInput()
-                ->withErrors($e->validator) // 讓 $errors 在 Blade 顯示
-                ->with('error', '請修正表單錯誤後再試');
+                ->with('validation_errors', $e->validator->errors()->all());
         } catch (\Throwable $e) {
             return back()
                 ->withInput()
