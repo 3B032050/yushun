@@ -4,17 +4,6 @@
 
 @section('content')
     <div class="content-wrapper">
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
@@ -200,22 +189,28 @@
                 let startDate = new Date(selectedDateVal);
                 let monthEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
                 let daysToEndOfMonth = monthEndDate.getDate() - startDate.getDate();
+
+                // 計算最多還能排幾次（不含起始那次）
                 let maxWeeksInMonth = Math.floor(daysToEndOfMonth / 7);
                 let maxRecurringTimes = Math.floor(maxWeeksInMonth / recurringInterval);
 
                 if (maxRecurringTimes <= 0) {
+                    // 提供 0 次選項
                     let option = document.createElement('option');
                     option.value = 0;
-                    option.textContent = "當月不滿足間隔天數，請重新選擇日期";
+                    option.textContent = "0 次";
                     recurringTimesEl.appendChild(option);
                 } else {
+                    // 正常生成選項 1 ~ max
                     for (let i = 1; i <= maxRecurringTimes; i++) {
                         let option = document.createElement('option');
                         option.value = i;
                         option.textContent = `${i} 次`;
                         recurringTimesEl.appendChild(option);
                     }
+                    recurringTimesEl.value = 1; // 預設選第一個
                 }
+
                 calculateRecurringDates();
             }
 
@@ -227,8 +222,7 @@
                 let recurringTimes = parseInt(recurringTimesEl.value);
                 recurringDatesContainer.innerHTML = '';
 
-                if (!selectedDateVal || isNaN(recurringInterval) || isNaN(recurringTimes)) return;
-
+                if (!selectedDateVal || isNaN(recurringInterval) || isNaN(recurringTimes) || recurringTimes === 0) return;
                 let startDate = new Date(selectedDateVal);
                 let monthEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
                 let addedDates = [];
@@ -236,13 +230,20 @@
                 for (let i = 0; i < recurringTimes; i++) {
                     let nextDate = new Date(startDate);
                     nextDate.setDate(startDate.getDate() + i * recurringInterval * 7);
-                    if (nextDate > monthEndDate) break;
+
+                    if (nextDate > monthEndDate) break; // 超過月底就不加
                     addedDates.push(nextDate.toISOString().split('T')[0]);
                 }
 
-                // 更新實際次數
                 recurringTimesEl.value = addedDates.length;
-                console.log("產生的日期:", addedDates);
+
+                addedDates.forEach(date => {
+                    let div = document.createElement('div');
+                    div.textContent = date;
+                    recurringDatesContainer.appendChild(div);
+                });
+
+                //console.log("產生的日期:", addedDates);
             }
 
             // ------------------- 地址切換 -------------------
@@ -308,6 +309,8 @@
                         modalDate.textContent = clickedDate.toLocaleDateString('zh-TW', { year:'numeric', month:'long', day:'numeric' });
                         selectedDateInput.value = info.dateStr;
                         modal.classList.remove('hidden');
+                        // ✅ 自動更新定期預約選項
+                        updateRecurringTimes();
                     }
                 });
                 calendar.render();
@@ -316,7 +319,12 @@
             // ------------------- 服務項目選擇 -------------------
             if (serviceSelect) {
                 serviceSelect.addEventListener('change', function () {
-                    if (!selectedDate) { alert('請先選擇日期'); return; }
+                    let selectedDateVal = document.getElementById('selected_date').value;
+                    if (!selectedDateVal) {
+                        alert('請先選擇日期');
+                        return;
+                    }
+                    selectedDate = selectedDateVal; // 保持同步
 
                     if (masterSelect) {
                         masterSelect.innerHTML = '<option value="">加載中...</option>';
