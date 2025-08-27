@@ -4,16 +4,16 @@
 
 @section('content')
     <div class="content-wrapper">
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+{{--        @if(session('error'))--}}
+{{--            <div class="alert alert-danger">--}}
+{{--                {{ session('error') }}--}}
+{{--            </div>--}}
+{{--        @endif--}}
+{{--        @if(session('success'))--}}
+{{--            <div class="alert alert-success">--}}
+{{--                {{ session('success') }}--}}
+{{--            </div>--}}
+{{--        @endif--}}
         <div class="container-fluid px-4">
             <div class="d-flex justify-content-between align-items-center mt-2">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">
@@ -42,12 +42,19 @@
                 <form method="POST" action="{{ route('masters.appointmenttime.update', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="mb-3">
                     @csrf
                     @method('PATCH')
-
+                    <div class="form-group mb-3">
+                        <label for="name">客戶名稱</label>
+                        @if(optional($appointmenttime->user)->name)
+                            <input type="text" id="name" name="name" value="{{ old('name', $appointmenttime->user->name) }}" class="form-control" disabled required>
+                        @else
+                            <input type="text" id="name" name="name" value="無客戶" class="form-control" disabled required>
+                        @endif
+                    </div>
                     <div class="form-group mb-3">
                         <label for="service_date">服務日期</label>
                         <input type="date" id="service_date" name="service_date" value="{{ old('service_date', $appointmenttime->service_date) }}" class="form-control"  disabled required>
                     </div>
-                    @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
+                    @if($appointmenttime->status == 0 ||$appointmenttime->status == 1)
                     <div class="form-group mb-3">
                         <label for="start_time">開始時間</label>
                         <input type="text" id="start_time" name="start_time" value="{{ old('start_time', $appointmenttime->start_time) }}" class="form-control" step="1"  required>
@@ -77,14 +84,14 @@
                         @endif
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="service">服務項目</label>
-                        @if(optional(optional($appointmenttime->schedulerecord)->service)->name)
-                            <input type="text" id="service" name="service" value="{{ old('service', optional(optional($appointmenttime->schedulerecord)->service)->name) }}" class="form-control" disabled required>
-                        @else
-                            <input type="text" id="service" name="service" value="無客戶" class="form-control" disabled required>
-                        @endif
-                    </div>
+{{--                    <div class="form-group mb-3">--}}
+{{--                        <label for="service">服務項目</label>--}}
+{{--                        @if(optional(optional($appointmenttime->schedulerecord)->service)->name)--}}
+{{--                            <input type="text" id="service" name="service" value="{{ old('service', optional(optional($appointmenttime->schedulerecord)->service)->name) }}" class="form-control" disabled required>--}}
+{{--                        @else--}}
+{{--                            <input type="text" id="service" name="service" value="無客戶" class="form-control" disabled required>--}}
+{{--                        @endif--}}
+{{--                    </div>--}}
                     <div class="form-group mb-3">
                         <label for="service_address">服務地址</label>
                         <input type="text" id="service_address" name="service_address" value="{{ old('service_address', $appointmenttime->service_address) }}" class="form-control" step="1" disabled required>
@@ -145,9 +152,12 @@
                     <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                     @endif
 
-                    @if($appointmenttime->status == 0 && $appointmenttime->user_id==null)
+                    @if($appointmenttime->status == 0 ||$appointmenttime->status == 1)
                         <div class="d-flex justify-content-between">
-                            <button type="submit" name="action" value="alter" class="btn btn-success w-100" >修改</button>
+                            <button type="button" id="btn-modify" class="btn btn-danger w-100">
+                                修改
+                            </button>
+
                         </div><br>
                         <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
                     @elseif($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
@@ -160,8 +170,12 @@
                         <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
                     @endif
                 </form>
-                    @if($appointmenttime->status == 0)  {{-- 只有在未接受的時段 (status = 0) 時才顯示刪除按鈕 --}}
-                    <form action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST"><br>
+                    @if($appointmenttime->status == 0)
+                        <form id="delete-form" action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" id="btn-delete" class="btn btn-secondary w-100">刪除</button>
+                        </form>
                     @endif
                 </div>
             </div>
@@ -187,6 +201,9 @@
                 disableMobile: true
             });
         </script>
+
+
+
     @endpush
 @endsection
 <style>

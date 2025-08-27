@@ -234,9 +234,46 @@
         });
         @endif
 
+        // 修改按鈕
+        const modifyBtn = document.getElementById('btn-modify');
+        if(modifyBtn){
+            modifyBtn.addEventListener('click', function() {
+                Swal.fire({
+                    title: '確定要修改這筆時段嗎？',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '確定',
+                    cancelButtonText: '取消',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        modifyBtn.closest('form').submit();
+                    }
+                });
+            });
+        }
+
+        // 刪除按鈕
+        const deleteBtn = document.getElementById('btn-delete');
+        if(deleteBtn){
+            deleteBtn.addEventListener('click', function() {
+                Swal.fire({
+                    title: '確定要刪除這筆時段嗎？',
+                    text: "刪除後將無法復原！",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: '是，刪除！',
+                    cancelButtonText: '取消',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteBtn.closest('form').submit();
+                    }
+                });
+            });
+        }
     });
 </script>
-
 
     </body>
 </html>
