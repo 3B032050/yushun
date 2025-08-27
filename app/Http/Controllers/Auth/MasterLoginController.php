@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Models\Master;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class MasterLoginController extends Controller
@@ -49,24 +50,24 @@ class MasterLoginController extends Controller
 
             if (!$master) {
                 return back()->withInput($request->only('email'))
-                    ->withErrors(['email' => '該電子郵件地址尚未註冊']);
+                    ->with('validation_errors', ['該電子郵件地址尚未註冊']);
             }
 
             // 嘗試登入
             if ($this->guard()->attempt($credentials, $request->filled('remember'))) {
                 $request->session()->regenerate();
-                return redirect()->intended(route('masters.index'));
+                return redirect()->intended(route('masters.index'))
+                    ->with('success', '登入成功！');
             }
 
             // 密碼錯誤
             return back()->withInput($request->only('email'))
-                ->withErrors(['password' => '密碼輸入錯誤']);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // 驗證失敗
-            return back()
+                ->with('validation_errors', ['密碼輸入錯誤']);
+
+        } catch (ValidationException $e) {
+            return redirect()->back()
                 ->withInput()
-                ->withErrors($e->validator)
-                ->with('error', '請檢查輸入的資料格式');
+                ->with('validation_errors', $e->validator->errors()->all());
         } catch (Throwable $e) {
             // 其他異常
             return back()
@@ -74,6 +75,7 @@ class MasterLoginController extends Controller
                 ->with('error', '系統發生錯誤，請稍後再試');
         }
     }
+
 
     public function logout(Request $request)
     {

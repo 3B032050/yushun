@@ -36,21 +36,22 @@ class LoginController extends Controller
             $userExists = User::where('email', $email)->exists();
 
             if (!$userExists) {
-                $errors = [$this->username() => '該電子郵件地址尚未註冊'];
+                $message = '該電子郵件地址尚未註冊';
             } else {
-                $errors = ['password' => '密碼輸入錯誤'];
+                $message = '密碼輸入錯誤';
             }
 
             if ($request->expectsJson()) {
-                return response()->json($errors, 422);
+                return response()->json(['error' => $message], 422);
             }
 
             return redirect()->back()
                 ->withInput($request->only($this->username(), 'remember'))
-                ->withErrors($errors);
+                ->with('error', $message);
 
         } catch (Throwable $e) {
-            return redirect()->route('login')->with('error', '登入驗證發生錯誤，請稍後再試');
+            return redirect()->route('login')
+                ->with('error', '登入驗證發生錯誤，請稍後再試');
         }
     }
 
