@@ -50,7 +50,6 @@ class LoginController extends Controller
                 ->withErrors($errors);
 
         } catch (Throwable $e) {
-            // 捕捉例外 → 一律回登入頁
             return redirect()->route('login')->with('error', '登入驗證發生錯誤，請稍後再試');
         }
     }
