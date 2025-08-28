@@ -152,29 +152,33 @@
                     <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                     @endif
 
-                    @if($appointmenttime->status == 0 ||$appointmenttime->status == 1)
-                        <div class="d-flex justify-content-between">
-                            <button type="button" id="btn-modify" class="btn btn-danger w-100">
-                                修改
-                            </button>
-
-                        </div><br>
-                        <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
-                    @elseif($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
+                    @if($appointmenttime->status == 0 && $appointmenttime->user_id != null)
                         <div class="d-flex justify-content-between">
                             <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
-                            <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>\
+                            <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
                         </div><br>
                         <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
+
+                    @elseif($appointmenttime->status == 0 || $appointmenttime->status == 1)
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn-modify btn btn-danger w-100">修改</button>
+                        </div><br>
+                        <button type="button" class="btn btn-primary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
+                            返回
+                        </button><br><br>
+
                     @else
-                        <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
+                        <button type="button" class="btn btn-primary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
+                            返回
+                        </button>
                     @endif
+
                 </form>
                     @if($appointmenttime->status == 0)
-                        <form id="delete-form" action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
+                        <form action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button type="button" id="btn-delete" class="btn btn-secondary w-100">刪除</button>
+                            <button type="button" class="btn-delete btn btn-secondary w-100">刪除</button>
                         </form>
                     @endif
                 </div>

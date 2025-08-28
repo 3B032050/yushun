@@ -18,7 +18,9 @@ use App\Http\Controllers\Auth\GoogleController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('/test-500', function() {
+    abort(500);
+});
 //Route::get('/', function () {
 //    return view('index');
 //});
@@ -175,4 +177,5 @@ Route::group(['middleware' => ['auth:master', 'master.verified']], function () {
             Route::post('schedule_details/review', [App\Http\Controllers\ScheduleDetailController::class, 'review'])->name('schedule_details.review');
         });
     });
+
 

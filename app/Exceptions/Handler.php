@@ -3,12 +3,14 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
-     * The list of the inputs that are never flashed to the session on validation exceptions.
+     * The list of inputs that are never flashed to the session on validation exceptions.
      *
      * @var array<int, string>
      */
@@ -27,17 +29,40 @@ class Handler extends ExceptionHandler
             //
         });
     }
+
+    /**
+     * Render an exception into an HTTP response.
+     */
     public function render($request, Throwable $exception)
     {
-        // 表單驗證錯誤，照原本 Laravel 預設處理
-        if ($exception instanceof \Illuminate\Validation\ValidationException) {
+        // 保留 ValidationException 原本處理
+        if ($exception instanceof ValidationException) {
             return parent::render($request, $exception);
         }
 
-        // 其它錯誤 -> 統一跳彈窗
-        return response()->view('errors.popup', [
-            'message' => $exception->getMessage() // 這裡可以拿到錯誤訊息
-        ], 500);
-    }
+        // HTTP Exception
+        if ($exception instanceof HttpExceptionInterface) {
+            $status = $exception->getStatusCode();
+            $message = $exception->getMessage() ?: null;
 
+            // 尋找對應 Blade
+            $view = view()->exists("errors.{$status}") ? "errors.{$status}" : 'errors.500';
+
+            return response()->view($view, [
+                'code' => $status,
+                'message' => $message,
+            ], $status);
+        }
+
+        // 非 HTTP Exception (Production)
+        if (config('app.debug') === false) {
+            return response()->view('errors.500', [
+                'code' => 500,
+                'message' => '系統發生錯誤，請稍後再試。',
+            ], 500);
+        }
+
+        // 開發模式保留 Laravel 原生錯誤頁
+        return parent::render($request, $exception);
+    }
 }

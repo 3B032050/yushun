@@ -4,16 +4,16 @@
 
 @section('content')
     <div class="content-wrapper">
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+{{--        @if(session('error'))--}}
+{{--            <div class="alert alert-danger">--}}
+{{--                {{ session('error') }}--}}
+{{--            </div>--}}
+{{--        @endif--}}
+{{--        @if(session('success'))--}}
+{{--            <div class="alert alert-success">--}}
+{{--                {{ session('success') }}--}}
+{{--            </div>--}}
+{{--        @endif--}}
         <div class="container-fluid px-4">
             <div style="margin-top: 10px;">
                 <nav aria-label="breadcrumb" class="mb-2 mb-md-0 w-100 w-md-auto">

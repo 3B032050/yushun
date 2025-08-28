@@ -203,13 +203,13 @@
     document.addEventListener('DOMContentLoaded', function() {
 
         const showAlert = (icon, title, text, callback) => {
-            if (!document.body) return; // 安全檢查
+            // if (!document.body) return; // 安全檢查
             Swal.fire({
                 icon: icon,
                 title: title,
                 html: text, // 用 html 可以支援 <br>
                 confirmButtonText: '確定',
-                target: document.body // 明確指定 body
+                // target: document.body // 明確指定 body
             }).then(() => {
                 if (callback) callback();
             });
@@ -235,9 +235,8 @@
         @endif
 
         // 修改按鈕
-        const modifyBtn = document.getElementById('btn-modify');
-        if(modifyBtn){
-            modifyBtn.addEventListener('click', function() {
+        document.querySelectorAll('.btn-modify').forEach(btn => {
+            btn.addEventListener('click', function() {
                 Swal.fire({
                     title: '確定要修改這筆時段嗎？',
                     icon: 'warning',
@@ -247,18 +246,17 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        modifyBtn.closest('form').submit();
+                        btn.closest('form').submit();
                     }
                 });
             });
-        }
+        });
 
         // 刪除按鈕
-        const deleteBtn = document.getElementById('btn-delete');
-        if(deleteBtn){
-            deleteBtn.addEventListener('click', function() {
+        document.querySelectorAll('.btn-delete').forEach(btn => {
+            btn.addEventListener('click', function() {
                 Swal.fire({
-                    title: '確定要刪除這筆時段嗎？',
+                    title: '確定要刪除這筆資料嗎？',
                     text: "刪除後將無法復原！",
                     icon: 'warning',
                     showCancelButton: true,
@@ -267,11 +265,12 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        deleteBtn.closest('form').submit();
+                        btn.closest('form').submit();
                     }
                 });
             });
-        }
+        });
+
     });
 </script>
 
