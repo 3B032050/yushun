@@ -233,10 +233,11 @@
             window.location.href = "{{ route('login') }}";
         });
         @endif
+    });
 
         // 修改按鈕
         document.querySelectorAll('.btn-modify').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 Swal.fire({
                     title: '確定要修改這筆時段嗎？',
                     icon: 'warning',
@@ -246,15 +247,22 @@
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        btn.closest('form').submit();
+                        // 如果有隱藏的 submit 按鈕就用它（帶 action="alter"）
+                        const submitAlterBtn = btn.closest('form').querySelector('button[name="action"][value="alter"]');
+                        if (submitAlterBtn) {
+                            submitAlterBtn.click();
+                        } else {
+                            // 沒有就直接送出表單
+                            btn.closest('form').submit();
+                        }
                     }
                 });
             });
         });
 
-        // 刪除按鈕
+// 刪除按鈕
         document.querySelectorAll('.btn-delete').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 Swal.fire({
                     title: '確定要刪除這筆資料嗎？',
                     text: "刪除後將無法復原！",
@@ -271,7 +279,6 @@
             });
         });
 
-    });
 </script>
 
     </body>

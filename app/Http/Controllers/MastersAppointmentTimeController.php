@@ -15,7 +15,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rule;
+
 use Vinkla\Hashids\Facades\Hashids;
 
 class MastersAppointmentTimeController extends Controller
@@ -149,6 +152,7 @@ class MastersAppointmentTimeController extends Controller
      */
     public function edit($hash_appointmenttime)
     {
+
         try {
             $id = Hashids::decode($hash_appointmenttime)[0] ?? null;
 
@@ -179,8 +183,7 @@ class MastersAppointmentTimeController extends Controller
     public function update(Request $request, $hash_appointmenttime)
     {
         try {
-            $decoded = Hashids::decode($hash_appointmenttime);
-            $id = $decoded[0] ?? null;
+            $id = Hashids::decode($hash_appointmenttime)[0] ?? null;
 
             if (!$id) {
                 return redirect()->route('masters.appointmenttime.index')
@@ -189,51 +192,79 @@ class MastersAppointmentTimeController extends Controller
 
             $appointmenttime = AppointmentTime::findOrFail($id);
 
-            // 檢查按鈕提交的行為
-            if ($request->has('action')) {
+            if (!$request->has('action')) {
+                return redirect()->back()->with('error', '沒有選擇任何動作，請重新操作');
+            }
 
-                if ($request->action == 'alter') {
+            switch ($request->action) {
+                case 'alter':
                     $validated = $request->validate([
                         'start_time' => 'required|after_or_equal:service_date',
                         'end_time' => 'required|after:start_time',
+                        'service_item_id' => 'sometimes|exists:admin_service_items,id',
+                    ], [
+                        'start_time.required' => '請選擇開始時間',
+                        'start_time.after_or_equal' => '開始時間必須在預約日期之後或相同',
+                        'end_time.required' => '請選擇結束時間',
+                        'end_time.after' => '結束時間需晚於開始時間',
+                        'service_item_id.exists' => '所選服務項目不存在',
                     ]);
 
-                    $updatedData = $request->only(['start_time', 'end_time']);
                     $changes = [];
-
-                    foreach ($updatedData as $key => $value) {
-                        if ($appointmenttime->$key !== $value) {
-                            $changes[$key] = $value;
+                    foreach (['start_time', 'end_time'] as $key) {
+                        if ($appointmenttime->$key != $validated[$key]) {
+                            $changes[$key] = $validated[$key];
                         }
                     }
 
                     if (!empty($changes)) {
                         $appointmenttime->update($changes);
+                    }
+
+                    if (!empty($validated['service_item_id']) && $appointmenttime->schedulerecord) {
+                        $sr = $appointmenttime->schedulerecord;
+                        if ($sr->service_id != $validated['service_item_id']) {
+                            $sr->service_id = $validated['service_item_id'];
+                            $sr->save();
+                        }
+                    }
+
+                    if (!empty($changes) || !empty($validated['service_item_id'])) {
                         return redirect()->route('masters.appointmenttime.index')
                             ->with('success', '時段更新成功');
                     }
 
-                } elseif ($request->action == 'accept') {
+                    return back()->with('error', '未發現任何變更');
+
+                case 'accept':
                     $appointmenttime->status = 1;
-                    ScheduleRecord::where('id', $request->appointment_time_id)
-                        ->where('master_id', $request->master_id)
-                        ->update(['status' => 1]);
+                    $appointmenttime->save();
+                    $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $appointmenttime->user);
+                    return redirect()->route('masters.appointmenttime.index')
+                        ->with('success', '訂單已接受');
 
-                    $user = $appointmenttime->user;
-                    $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $user);
-
-                } elseif ($request->action == 'reject') {
+                case 'reject':
                     $appointmenttime->status = 3;
-                    $user = $appointmenttime->user;
-                    $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $user);
-                }
+                    $appointmenttime->save();
+                    $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $appointmenttime->user);
+                    return redirect()->route('masters.appointmenttime.index')
+                        ->with('success', '訂單已拒絕');
 
-                $appointmenttime->save();
-                return redirect()->route('masters.appointmenttime.index')
-                    ->with('success', '訂單已更新');
+                case 'cancel':
+                    $appointmenttime->status = 4;
+                    $appointmenttime->save();
+
+                    if ($appointmenttime->schedulerecord) {
+                        $appointmenttime->schedulerecord->status = 4;
+                        $appointmenttime->schedulerecord->save();
+                    }
+
+                    return redirect()->route('masters.appointmenttime.index')
+                        ->with('success', '訂單已取消');
+
+                default:
+                    return redirect()->back()->with('error', '未知的動作');
             }
-
-            return redirect()->back()->with('error', '沒有選擇任何動作，請重新操作');
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return redirect()->route('masters.appointmenttime.index')
@@ -244,6 +275,7 @@ class MastersAppointmentTimeController extends Controller
                 ->with('validation_errors', $e->validator->errors()->all());
         } catch (\Exception $e) {
             return redirect()->back()
+                ->withInput()
                 ->with('error', '系統發生錯誤，請稍後再試');
         }
     }
