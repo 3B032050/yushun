@@ -162,7 +162,7 @@
                             {{-- 完成訂單按鈕 --}}
                             <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                         @endif
-                        
+
 
                             {{-- 按鈕區塊 --}}
                             @if($locked)
