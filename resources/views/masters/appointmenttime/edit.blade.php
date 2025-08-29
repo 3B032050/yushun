@@ -162,7 +162,7 @@
                             {{-- 完成訂單按鈕 --}}
                             <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                         @endif
-                        
+
 
                             {{-- 按鈕區塊 --}}
                             @if($locked)
@@ -173,13 +173,14 @@
                                 @if($appointmenttime->status == 0 || $appointmenttime->status == 1)
                                     <div class="d-flex flex-column gap-2">
                                         {{-- 修改（SweetAlert -> 點隱藏 submit） --}}
-                                        <button type="button" id="btn-modify" class="btn btn-danger w-100">修改</button>
-                                        <button type="submit" id="btn-submit-alter" name="action" value="alter" style="display:none;"></button>
+                                        <button type="button" class="btn-modify btn btn-danger w-100">修改排程</button>
+                                        <button type="submit" class="btn-submit-alter" name="action" value="alter" style="display:none;"></button>
+
 
                                         {{-- 只有進行中(status==1) 顯示取消 --}}
                                         @if($appointmenttime->status == 1)
-                                            <button type="button" id="btn-cancel" class="btn btn-warning w-100">取消訂單</button>
-                                            <button type="submit" id="btn-submit-cancel" name="action" value="cancel" style="display:none;"></button>
+                                            <button type="button" class="btn-cancel btn btn-warning w-100">取消排程</button>
+                                            <button type="submit" class="btn-submit-cancel" name="action" value="cancel" style="display:none;"></button>
                                         @endif
 
                                         <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
@@ -205,7 +206,7 @@
                             <form id="delete-form" action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" class="btn-delete btn btn-secondary w-100">刪除</button>
+                                <button type="button" class="btn-delete btn btn-secondary w-100">刪除排程</button>
                             </form>
                         @endif
                 </div>
