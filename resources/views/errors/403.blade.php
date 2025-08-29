@@ -9,7 +9,8 @@
 
         <div class="mt-4">
             <a href="{{ url()->previous() }}" class="btn btn-primary">返回上一頁</a>
-            <a href="{{ route('login') }}" class="btn btn-secondary">重新登入</a>
+            <a href="{{ route('logout.then.login') }}" class="btn btn-secondary">重新登入</a>
+
         </div>
     </div>
 @endsection

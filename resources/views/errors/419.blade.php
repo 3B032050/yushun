@@ -6,7 +6,8 @@
         <p class="lead">您的登入已逾時，請重新登入。</p>
 
         <div class="mt-4">
-            <a href="{{ route('login') }}" class="btn btn-primary">前往登入</a>
+            <a href="{{ route('logout.then.login') }}" class="btn btn-secondary">重新登入</a>
+
         </div>
     </div>
 @endsection

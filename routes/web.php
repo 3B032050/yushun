@@ -24,6 +24,12 @@ use App\Http\Controllers\Auth\GoogleController;
 //Route::get('/', function () {
 //    return view('index');
 //});
+Route::get('/logout-then-login', function () {
+    Auth::logout(); // Laravel 登出
+    request()->session()->invalidate(); // 清除 session
+    request()->session()->regenerateToken(); // 重新生成 CSRF token
+    return redirect()->route('login'); // 跳登入頁
+})->name('logout.then.login');
 Route::get('/', function () {
     return redirect()->route('login'); // Laravel 預設登入頁
 });

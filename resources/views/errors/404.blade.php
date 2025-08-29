@@ -8,7 +8,9 @@
             <h1 class="display-1 text-danger">404</h1>
             <h3 class="mb-4">抱歉，您訪問的頁面不存在。</h3>
             <p>請確認網址是否正確或返回首頁。</p>
-            <a href="{{ route('login') }}" class="btn btn-secondary">重新登入</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">返回上一頁</a>
+            <a href="{{ route('logout.then.login') }}" class="btn btn-secondary">重新登入</a>
+
         </div>
     </div>
 @endsection
