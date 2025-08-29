@@ -278,6 +278,28 @@
                 });
             });
         });
+    // 取消按鈕（可支援多個）
+    document.querySelectorAll('.btn-cancel').forEach(btn => {
+        const form = btn.closest('form');
+        if (!form) return;
+
+        const submitCancelBtn = form.querySelector('.btn-submit-cancel');
+        if (!submitCancelBtn) return;
+
+        btn.addEventListener('click', function () {
+            Swal.fire({
+                title: '確定要取消這筆訂單嗎？',
+                text: '取消後將無法再修改此訂單。',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '確定取消',
+                cancelButtonText: '返回',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) submitCancelBtn.click();
+            });
+        });
+    });
 
 </script>
 

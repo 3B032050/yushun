@@ -162,80 +162,52 @@
                             {{-- 完成訂單按鈕 --}}
                             <a href="{{ route('masters.schedule_details.create', ['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" class="btn btn-success w-100">完成訂單</a><br><br>
                         @endif
+                        
 
-<<<<<<< HEAD
-                    @if($appointmenttime->status == 0 && $appointmenttime->user_id != null)
-                        <div class="d-flex justify-content-between">
-                            <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
-                            <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
-                        </div><br>
-                        <a href="{{ url()->previous() }}" class="btn btn-secondary w-100">返回</a><br><br>
-
-                    @elseif($appointmenttime->status == 0 || $appointmenttime->status == 1)
-                        <div class="d-flex justify-content-between">
-                            <button type="button" class="btn-modify btn btn-danger w-100">修改</button>
-                        </div><br>
-                        <button type="button" class="btn btn-primary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
-                            返回
-                        </button><br><br>
-
-                    @else
-                        <button type="button" class="btn btn-primary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
-                            返回
-                        </button>
-                    @endif
-
-                </form>
-                    @if($appointmenttime->status == 0)
-                        <form action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
-=======
-                        {{-- 按鈕區塊 --}}
-                        @if($locked)
-                            <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
-                                返回
-                            </button>
-                        @else
-                            @if($appointmenttime->status == 0 || $appointmenttime->status == 1)
-                                <div class="d-flex flex-column gap-2">
-                                    {{-- 修改（SweetAlert -> 點隱藏 submit） --}}
-                                    <button type="button" id="btn-modify" class="btn btn-danger w-100">修改</button>
-                                    <button type="submit" id="btn-submit-alter" name="action" value="alter" style="display:none;"></button>
-
-                                    {{-- 只有進行中(status==1) 顯示取消 --}}
-                                    @if($appointmenttime->status == 1)
-                                        <button type="button" id="btn-cancel" class="btn btn-warning w-100">取消訂單</button>
-                                        <button type="submit" id="btn-submit-cancel" name="action" value="cancel" style="display:none;"></button>
-                                    @endif
-
-                                    <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
-                                        返回
-                                    </button>
-                                </div>
-                            @elseif($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
-                                <div class="d-flex justify-content-between">
-                                    <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
-                                    <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
-                                </div><br>
+                            {{-- 按鈕區塊 --}}
+                            @if($locked)
                                 <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
                                     返回
                                 </button>
                             @else
-                                <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
-                                    返回
-                                </button>
-                            @endif
-                        @endif
-                    </form>
+                                @if($appointmenttime->status == 0 || $appointmenttime->status == 1)
+                                    <div class="d-flex flex-column gap-2">
+                                        {{-- 修改（SweetAlert -> 點隱藏 submit） --}}
+                                        <button type="button" id="btn-modify" class="btn btn-danger w-100">修改</button>
+                                        <button type="submit" id="btn-submit-alter" name="action" value="alter" style="display:none;"></button>
 
-                    {{-- 刪除（只有未鎖且 status==0 才顯示） --}}
-                    @if(!$locked && $appointmenttime->status == 0)
-                        <form id="delete-form" action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
->>>>>>> refs/remotes/origin/master
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn-delete btn btn-secondary w-100">刪除</button>
+                                        {{-- 只有進行中(status==1) 顯示取消 --}}
+                                        @if($appointmenttime->status == 1)
+                                            <button type="button" id="btn-cancel" class="btn btn-warning w-100">取消訂單</button>
+                                            <button type="submit" id="btn-submit-cancel" name="action" value="cancel" style="display:none;"></button>
+                                        @endif
+
+                                        <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
+                                            返回
+                                        </button>
+                                    </div>
+                                @elseif($appointmenttime->status == 0 && $appointmenttime->user_id!=null)
+                                    <div class="d-flex justify-content-between">
+                                        <button type="submit" name="action" value="accept" class="btn btn-success w-100" onclick="return confirm('確定要接受這筆訂單？')">接受</button>
+                                        <button type="submit" name="action" value="reject" class="btn btn-secondary w-100" onclick="return confirm('確定不接受這筆訂單？')">不接受</button>
+                                    </div><br>
+                                @else
+                                    <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='{{ route('masters.appointmenttime.index') }}'">
+                                        返回
+                                    </button>
+
+                                @endif
+                            @endif
                         </form>
-                    @endif
+
+                        {{-- 刪除（只有未鎖且 status==0 才顯示） --}}
+                        @if(!$locked && $appointmenttime->status == 0)
+                            <form id="delete-form" action="{{ route('masters.appointmenttime.destroy',['hash_appointmenttime' => \Vinkla\Hashids\Facades\Hashids::encode($appointmenttime->id)]) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn-delete btn btn-secondary w-100">刪除</button>
+                            </form>
+                        @endif
                 </div>
             </div>
         </div>
@@ -263,63 +235,22 @@
                 disableMobile: true
             });
             @endif
-
-            // 修改（SweetAlert 後點擊隱藏 submit: action=alter）
-            (function () {
-                const modifyBtn = document.getElementById('btn-modify');
-                const submitAlterBtn = document.getElementById('btn-submit-alter');
-                if (modifyBtn && submitAlterBtn) {
-                    modifyBtn.addEventListener('click', function () {
-                        Swal.fire({
-                            title: '確定要修改這筆時段嗎？',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: '確定',
-                            cancelButtonText: '取消',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) submitAlterBtn.click();
-                        });
-                    });
-                }
-            })();
-
-            // 取消（SweetAlert 後點擊隱藏 submit: action=cancel）
-            (function () {
-                const cancelBtn = document.getElementById('btn-cancel');
-                const submitCancelBtn = document.getElementById('btn-submit-cancel');
-                if (cancelBtn && submitCancelBtn) {
-                    cancelBtn.addEventListener('click', function () {
-                        Swal.fire({
-                            title: '確定要取消這筆訂單嗎？',
-                            text: '取消後將無法再修改此訂單。',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonText: '確定取消',
-                            cancelButtonText: '返回',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) submitCancelBtn.click();
-                        });
-                    });
-                }
-            })();
         </script>
     @endpush
-@endsection
+            @endsection
 
-<style>
-    .breadcrumb-path {
-        font-size: 1.4em;
-        white-space: normal;
-        word-break: break-word;
-    }
-    @media (max-width: 768px) {
-        .breadcrumb-path { font-size: 1.3em; }
-        .text-size-controls { margin-top: 0.5rem; }
-    }
-    @media (max-width: 480px) {
-        .breadcrumb-path { font-size: 1.1em; }
-        .text-size-controls { width: 100%; justify-content: center; }
-    }
-</style>
+            <style>
+            .breadcrumb-path {
+                font-size: 1.4em;
+                white-space: normal;
+                word-break: break-word;
+            }
+            @media (max-width: 768px) {
+                .breadcrumb-path { font-size: 1.3em; }
+                .text-size-controls { margin-top: 0.5rem; }
+            }
+            @media (max-width: 480px) {
+                .breadcrumb-path { font-size: 1.1em; }
+                .text-size-controls { width: 100%; justify-content: center; }
+            }
+            </style>
