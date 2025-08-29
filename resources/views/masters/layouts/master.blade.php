@@ -234,10 +234,11 @@
         });
         @endif
 
-        // 修改按鈕
         const modifyBtn = document.getElementById('btn-modify');
-        if(modifyBtn){
-            modifyBtn.addEventListener('click', function() {
+        const submitAlterBtn = document.getElementById('btn-submit-alter');
+
+        if (modifyBtn && submitAlterBtn) {
+            modifyBtn.addEventListener('click', function () {
                 Swal.fire({
                     title: '確定要修改這筆時段嗎？',
                     icon: 'warning',
@@ -246,32 +247,36 @@
                     cancelButtonText: '取消',
                     reverseButtons: true
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        modifyBtn.closest('form').submit();
-                    }
+                    if (!result.isConfirmed) return;
+
+                    // 直接點擊隱藏的 submit 按鈕（會帶上 name="action" value="alter"）
+                    submitAlterBtn.click();
                 });
             });
         }
 
-        // 刪除按鈕
-        const deleteBtn = document.getElementById('btn-delete');
-        if(deleteBtn){
-            deleteBtn.addEventListener('click', function() {
-                Swal.fire({
-                    title: '確定要刪除這筆時段嗎？',
-                    text: "刪除後將無法復原！",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: '是，刪除！',
-                    cancelButtonText: '取消',
-                    reverseButtons: true
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        deleteBtn.closest('form').submit();
-                    }
+        // 刪除（SweetAlert 確認後送出 DELETE 表單）
+        (function () {
+            const deleteBtn = document.getElementById('btn-delete');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function () {
+                    Swal.fire({
+                        title: '確定要刪除這筆時段嗎？',
+                        text: "刪除後將無法復原！",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '是，刪除！',
+                        cancelButtonText: '取消',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const form = deleteBtn.closest('form');
+                            if (form) form.submit();
+                        }
+                    });
                 });
-            });
-        }
+            }
+        })();
     });
 </script>
 

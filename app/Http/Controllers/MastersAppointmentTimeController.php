@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 use Vinkla\Hashids\Facades\Hashids;
 
 class MastersAppointmentTimeController extends Controller
@@ -140,14 +141,14 @@ class MastersAppointmentTimeController extends Controller
     public function edit($hash_appointmenttime)
     {
         $id = Hashids::decode($hash_appointmenttime)[0] ?? null;
+        if (!$id) abort(404);
 
-        if (!$id) {
-            abort(404); // 無效 ID
-        }
+        $appointmenttime = AppointmentTime::with(['schedulerecord.service'])->findOrFail($id);
 
-        $appointmenttime = AppointmentTime::findOrFail($id);
+        // 服務項目清單（可依需求排序）
+        $items = AdminServiceItem::orderBy('name')->get();
 
-        return view('masters.appointmenttime.edit', compact('appointmenttime'));
+        return view('masters.appointmenttime.edit', compact('appointmenttime', 'items'));
     }
 
     /**
@@ -165,31 +166,52 @@ class MastersAppointmentTimeController extends Controller
         $appointmenttime = AppointmentTime::findOrFail($id);
         // 檢查按鈕提交的行為
         if ($request->has('action')) {
-            if ($request->action == 'alter')
-            {
-                // 驗證資料
+            if ($request->action === 'alter') {
+
+                // 驗證：時間＆服務項目（服務項目可選、但若有就必須存在於表）
                 $validated = $request->validate([
-                    'start_time' => 'required|after_or_equal:service_date', // start_time 必須在 service_date 之後
-                    'end_time' => 'required|after:start_time', // end_time 必須在 start_time 之後
+                    'start_time'        => ['required', 'after_or_equal:service_date'],
+                    'end_time'          => ['required', 'after:start_time'],
+                    'service_item_id'   => ['required'],
+                ], [
+                    'start_time.required' => '請選擇開始時間',
+                    'start_time.after_or_equal' => '開始時間必須在預約日期之後或相同',
+                    'end_time.required'   => '請選擇結束時間',
+                    'end_time.after'      => '結束時間需晚於開始時間',
+                    'service_item_id.exists' => '所選服務項目不存在',
                 ]);
 
-                // 先取得提交的資料
+                // 只更新有變更的欄位（start_time/end_time）
                 $updatedData = $request->only(['start_time', 'end_time']);
-
-                // 比對每個欄位是否有變更
                 $changes = [];
-
                 foreach ($updatedData as $key => $value) {
-                    if ($appointmenttime->$key !== $value) {
-                        $changes[$key] = $value;  // 只有當資料有變動時，才會添加到 $changes 陣列
+                    if ($appointmenttime->$key != $value) {
+                        $changes[$key] = $value;
+                    }
+                }
+                if (!empty($changes)) {
+                    $appointmenttime->update($changes);
+                }
+
+                // 服務項目變更（寫到關聯的 ScheduleRecord.service_id）
+                if (!empty($validated['service_item_id'])) {
+                    $sr = $appointmenttime->schedulerecord;
+                    if ($sr) {
+                        if ($sr->service_id != $validated['service_item_id']) {
+                            $sr->service_id = $validated['service_item_id'];
+                            $sr->save();
+                        }
                     }
                 }
 
-                // 如果有變更資料，執行更新操作
-                if (!empty($changes)) {
-                    $appointmenttime->update($changes);
-                    return redirect()->route('masters.appointmenttime.index')->with('success', '時段更新成功');
+                // 若有任何變更，就回成功訊息；否則給提示
+                if (!empty($changes) || !empty($validated['service_item_id'])) {
+                    return redirect()
+                        ->route('masters.appointmenttime.index')
+                        ->with('success', '時段更新成功');
                 }
+                return back()->with('error', '未發現任何變更');
+
             }
             else if ($request->action == 'accept') {
                 // 設置狀態為已確認
@@ -207,6 +229,17 @@ class MastersAppointmentTimeController extends Controller
                 $user = $appointmenttime->user;
                 $appointmenttime->status = 3;
                 $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $user);
+            }elseif ($request->action === 'cancel') { // 👈 新增取消
+                    $appointmenttime->status = 4;
+                    $appointmenttime->save();
+
+                    if ($appointmenttime->schedulerecord) {
+                        $appointmenttime->schedulerecord->status = 4;
+                        $appointmenttime->schedulerecord->save();
+                    }
+                return redirect()
+                    ->route('masters.appointmenttime.index')
+                    ->with('success', '訂單已取消');
             }
             // 保存狀態更改
             $appointmenttime->save();
