@@ -163,7 +163,11 @@ class MastersAppointmentTimeController extends Controller
 
             $appointmenttime = AppointmentTime::findOrFail($id);
 
-            return view('masters.appointmenttime.edit', compact('appointmenttime'));
+
+            // 服務項目清單（可依需求排序）
+            $items = AdminServiceItem::orderBy('name')->get();
+
+            return view('masters.appointmenttime.edit', compact('appointmenttime', 'items'));
 
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // 查無資料
