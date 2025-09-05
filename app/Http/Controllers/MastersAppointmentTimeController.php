@@ -203,9 +203,22 @@ class MastersAppointmentTimeController extends Controller
             switch ($request->action) {
                 case 'alter':
                     $validated = $request->validate([
-                        'start_time' => 'required|after_or_equal:service_date',
-                        'end_time' => 'required|after:start_time',
+
                         'service_item_id' => 'sometimes|exists:admin_service_items,id',
+                        'start_time' => ['required', 'date_format:H:i'],
+                        'end_time' => [
+                            'required',
+                            'date_format:H:i',
+                            'after:start_time',
+                            function ($attribute, $value, $fail) use ($request) {
+                                $startTime = \Carbon\Carbon::createFromFormat('H:i', $request->start_time);
+                                $endTime = \Carbon\Carbon::createFromFormat('H:i', $value);
+
+                                if ($startTime->diffInHours($endTime) < 3) {
+                                    $fail('開始與結束時間必須至少相隔 3 小時。');
+                                }
+                            }
+                        ],
                     ], [
                         'start_time.required' => '請選擇開始時間',
                         'start_time.after_or_equal' => '開始時間必須在預約日期之後或相同',
@@ -234,6 +247,7 @@ class MastersAppointmentTimeController extends Controller
                     }
 
                     if (!empty($changes) || !empty($validated['service_item_id'])) {
+                        $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $appointmenttime->user);
                         return redirect()->route('masters.appointmenttime.index')
                             ->with('success', '時段更新成功');
                     }
@@ -256,6 +270,7 @@ class MastersAppointmentTimeController extends Controller
 
                 case 'cancel':
                     $appointmenttime->status = 4;
+                    $this->sendAppointmentConfirmationEmail($appointmenttime, $request, $appointmenttime->user);
                     $appointmenttime->save();
 
                     if ($appointmenttime->schedulerecord) {

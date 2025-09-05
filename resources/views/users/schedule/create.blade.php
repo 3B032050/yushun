@@ -205,7 +205,7 @@
                     for (let i = 1; i <= maxRecurringTimes; i++) {
                         let option = document.createElement('option');
                         option.value = i;
-                        option.textContent = `${i} 次`;
+                        option.textContent = `除選擇日期之外預約 ${i} 次`;
                         recurringTimesEl.appendChild(option);
                     }
                     recurringTimesEl.value = 1; // 預設選第一個
@@ -227,15 +227,16 @@
                 let monthEndDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
                 let addedDates = [];
 
-                for (let i = 0; i < recurringTimes; i++) {
+
+                for (let i = 0; i <= recurringTimes; i++) {
                     let nextDate = new Date(startDate);
                     nextDate.setDate(startDate.getDate() + i * recurringInterval * 7);
 
-                    if (nextDate > monthEndDate) break; // 超過月底就不加
+                    if (nextDate > monthEndDate) break;
                     addedDates.push(nextDate.toISOString().split('T')[0]);
                 }
 
-                recurringTimesEl.value = addedDates.length;
+               // recurringTimesEl.value = addedDates.length;
 
                 addedDates.forEach(date => {
                     let div = document.createElement('div');

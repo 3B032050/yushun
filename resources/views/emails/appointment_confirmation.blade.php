@@ -16,6 +16,8 @@
         您的預約正在等待確認，請耐心等候。
     @elseif(isset($status) && $status == 3)
         很抱歉，您的預約未被通過，歡迎重新預約或洽詢客服。
+    @elseif(isset($status) && $status == 4)
+        很抱歉，您的預約已被取消，歡迎重新預約或洽詢客服。
     @else
         未知狀態
     @endif
