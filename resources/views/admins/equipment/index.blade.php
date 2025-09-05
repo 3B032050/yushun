@@ -56,21 +56,25 @@
                                     <span class="text-muted">無圖片</span>
                                 @endif
                             </td>
-                            <td colspan="2">
-                                <div class="d-flex gap-2 justify-content-center flex-wrap">
+                            <td colspan="2" class="text-center">
+                                <div class="d-flex gap-2 justify-content-center">
+                                    {{-- 編輯 --}}
                                     <a href="{{ route('admins.equipment.edit', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}"
-                                       class="btn btn-secondary btn-sm" title="編輯">
+                                       class="btn btn-secondary btn-sm btn-icon" title="編輯">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.equipment.destroy', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" method="POST" style="margin:0;">
+
+                                    {{-- 刪除 --}}
+                                    <form action="{{ route('admins.equipment.destroy', ['hash_equipment' => \Vinkla\Hashids\Facades\Hashids::encode($equipment->id)]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $equipment->name }}', {{ $index + 1 }})">
+                                        <button type="button" class="btn-delete btn btn-danger btn-sm btn-icon" title="刪除">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>
                             </td>
+
                         </tr>
                     @endforeach
                     </tbody>
@@ -78,76 +82,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function confirmDelete(name, id) {
-            if (confirm('確定要刪除設備「' + name + '」嗎？')) {
-                document.getElementById('deleteForm' + id).submit();
-            }
-        }
-
-        function setFontSize(size) {
-            const content = document.getElementById('content');
-            content.classList.remove('small', 'medium', 'large');
-            content.classList.add(size);
-        }
-    </script>
 @endsection
-
-<style>
-    /* 麵包屑響應式字級與換行 */
-    .breadcrumb-path {
-        font-size: 1.4em;
-        white-space: normal;
-        word-break: break-word;
-    }
-
-    /* 表格與字級響應式 */
-    #sortable-list th:nth-child(2),
-    #sortable-list td:nth-child(2) {
-        min-width: 120px;
-    }
-
-    #sortable-list th, #sortable-list td {
-        vertical-align: middle;
-    }
-
-    /* 手機小螢幕字級調整 */
-    @media (max-width: 768px) {
-        .breadcrumb-path {
-            font-size: 1.2em;
-        }
-        #sortable-list {
-            min-width: 600px;
-        }
-        #sortable-list th, #sortable-list td {
-            font-size: 0.9em;
-        }
-        .text-size-controls .btn {
-            padding: 0.25rem 0.5rem;
-            font-size: 0.85em;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .breadcrumb-path {
-            font-size: 1em;
-        }
-        #sortable-list {
-            min-width: 500px;
-        }
-        #sortable-list th, #sortable-list td {
-            font-size: 0.8em;
-        }
-        /* 手機版字級按鈕組寬度縮小 */
-        .text-size-controls .btn {
-            padding: 0.2rem 0.4rem;
-            font-size: 0.75em;
-        }
-    }
-
-    /* 按鈕微調 */
-    .btn-sm {
-        line-height: 1.2;
-    }
-</style>

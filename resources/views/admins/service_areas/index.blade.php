@@ -65,25 +65,24 @@
                                         <span class="text-dark">蛋白區</span>
                                     @endif
                                 </td>
-                                <td class="d-flex gap-2 flex-wrap justify-content-center">
+                                <td class="d-flex gap-2 justify-content-center">
+                                    {{-- 編輯 --}}
                                     <a href="{{ route('admins.service_areas.edit', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}"
-                                       class="btn btn-secondary btn-sm"
+                                       class="btn btn-secondary btn-sm btn-icon"
                                        title="編輯">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <form action="{{ route('admins.service_areas.destroy', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}"
-                                          method="POST"
-                                          style="margin:0;">
+
+                                    {{-- 刪除 --}}
+                                    <form action="{{ route('admins.service_areas.destroy', ['hash_service_area' => \Vinkla\Hashids\Facades\Hashids::encode($area->id)]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit"
-                                                class="btn btn-danger btn-sm"
-                                                title="刪除"
-                                                onclick="return confirm('確定要刪除這個地區嗎？')">
+                                        <button type="button" class="btn-delete btn btn-danger btn-sm btn-icon" title="刪除">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
                                 </td>
+
                             </tr>
                         @endforeach
                         </tbody>

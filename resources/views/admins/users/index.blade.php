@@ -71,18 +71,18 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                <div class="d-flex justify-content-center gap-2">
+                                    {{-- 編輯 --}}
                                     <a href="{{ route('admins.users.edit', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}"
-                                       class="btn btn-secondary btn-sm" title="編輯">
+                                       class="btn btn-secondary btn-sm btn-icon" title="編輯">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <form id="deleteForm_{{ $user->id }}"
-                                          action="{{ route('admins.users.destroy', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}"
-                                          method="POST" style="margin:0;">
+
+                                    {{-- 刪除 --}}
+                                    <form action="{{ route('admins.users.destroy', ['hash_user' => \Vinkla\Hashids\Facades\Hashids::encode($user->id)]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" title="刪除"
-                                                onclick="confirmDelete('{{ $user->name }}', {{ $user->id }})">
+                                        <button type="button" class="btn-delete btn btn-danger btn-sm btn-icon" title="刪除">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
@@ -99,12 +99,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        function confirmDelete(name, id) {
-            if (confirm('確定要刪除客戶「' + name + '」的資料嗎？')) {
-                document.getElementById('deleteForm_' + id).submit();
-            }
-        }
-    </script>
 @endsection

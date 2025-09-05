@@ -54,15 +54,18 @@
                             <td class="text-center">{{ $master->phone }}</td>
                             <td class="text-center">{{ $master->total_hours }}</td>
                             <td colspan="2" class="text-center">
-                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                <div class="d-flex justify-content-center gap-2">
+                                    {{-- 編輯 --}}
                                     <a href="{{ route('admins.masters.edit', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}"
-                                       class="btn btn-secondary btn-sm" title="編輯">
+                                       class="btn btn-secondary btn-sm btn-icon" title="編輯">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <form id="deleteForm_{{ $master->id }}" action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST" style="margin:0;">
+
+                                    {{-- 刪除 --}}
+                                    <form action="{{ route('admins.masters.destroy', ['hash_master' => \Vinkla\Hashids\Facades\Hashids::encode($master->id)]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" title="刪除" onclick="confirmDelete('{{ $master->name }}', {{ $master->id }})">
+                                        <button type="button" class="btn-delete btn btn-danger btn-sm btn-icon" title="刪除">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
@@ -77,12 +80,6 @@
     </div>
 
     <script>
-        function confirmDelete(name, id) {
-            if (confirm('確定要刪除師傅 ' + name + ' 嗎？')) {
-                document.getElementById('deleteForm_' + id).submit();
-            }
-        }
-
         function setFontSize(size) {
             const content = document.getElementById('content');
             content.classList.remove('small', 'medium', 'large');

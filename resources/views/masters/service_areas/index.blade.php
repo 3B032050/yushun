@@ -78,8 +78,8 @@
                                             <div class="accordion-body">
                                                 @foreach ($minorAreas as $adminArea)
                                                     <span class="badge bg-secondary area-badge">
-                                        {{ $adminArea->minor_area }}
-                                    </span>
+                                                        {{ $adminArea->minor_area }}
+                                                    </span>
                                                 @endforeach
                                             </div>
                                         </div>

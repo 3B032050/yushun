@@ -51,21 +51,24 @@
                             <td class="text-truncate" style="max-width: 200px;">{{ $item->description }}</td>
                             <td>{{ $item->price }}</td>
                             <td>
-                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                <div class="d-flex justify-content-center gap-2">
+                                    {{-- 編輯 --}}
                                     <a href="{{ route('admins.service_items.edit', ['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}"
-                                       class="btn btn-secondary btn-sm" title="編輯">
+                                       class="btn btn-secondary btn-sm btn-icon" title="編輯">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <form id="deleteForm{{ $index + 1 }}" action="{{ route('admins.service_items.destroy',['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" method="POST" style="margin: 0;">
+
+                                    {{-- 刪除 --}}
+                                    <form action="{{ route('admins.service_items.destroy',['hash_service_item' => \Vinkla\Hashids\Facades\Hashids::encode($item->id)]) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger btn-sm" title="刪除"
-                                                onclick="confirmDelete('{{ $item->name }}', {{ $index + 1 }})">
+                                        <button type="button" class="btn-delete btn btn-danger btn-sm btn-icon" title="刪除">
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
                                 </div>
                             </td>
+
                         </tr>
                     @endforeach
                     </tbody>
@@ -75,12 +78,6 @@
     </div>
 
     <script>
-        function confirmDelete(name, id) {
-            if (confirm('確定要刪除項目 "' + name + '" 嗎？')) {
-                document.getElementById('deleteForm' + id).submit();
-            }
-        }
-
         function setFontSize(size) {
             const content = document.getElementById('content');
             content.classList.remove('font-small', 'font-medium', 'font-large');
